@@ -1,0 +1,115 @@
+:root {
+  --color-bg: #050b06;
+  --color-radar-circle: #0d2112;
+  --color-radar-glow: rgba(0, 255, 65, 0.2);
+  --color-primary-green: #00ff41;
+  --color-secondary-green: #008f11;
+  --color-accent-red: #ff3333;
+  --color-text-main: #e0ffe0;
+  --color-text-muted: #7fa685;
+  --color-card-bg: rgba(13, 33, 18, 0.75);
+  --color-border: #008f11;
+  --font-family: "Inter", "Heebo", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at center, transparent 0%, var(--color-bg) 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      var(--color-radar-circle) 40px,
+      var(--color-radar-circle) 41px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      var(--color-radar-circle) 40px,
+      var(--color-radar-circle) 41px
+    );
+  background-attachment: fixed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary-green);
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: 1px solid var(--color-primary-green);
+  color: var(--color-primary-green);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: var(--color-radar-glow);
+  box-shadow: 0 0 10px var(--color-primary-green);
+}
+
+.card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-green);
+}
+
+/* Radar Scan Animation Overlay */
+.radar-scan {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200vw;
+  height: 200vw;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 270deg,
+    var(--color-radar-glow) 360deg
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  animation: scan 8s linear infinite;
+  z-index: -1;
+}
+
+@keyframes scan {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
