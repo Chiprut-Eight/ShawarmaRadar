@@ -130,7 +130,11 @@ const Home: React.FC = () => {
       </div>
 
       {/* King Radar Section (Top) */}
-      <div className="king-radar-container">
+      <div className="king-radar-container" style={{position: 'relative'}}>
+        <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px', zIndex: 10}}>
+          <Info size={16} />
+        </button>
+        
         <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
         <div className="king-radar-time">
           {formatTime(time)} • {formatDate(time)}
@@ -152,10 +156,6 @@ const Home: React.FC = () => {
                <div className="king-radar-address">{nationalKing.city}</div>
             )}
             <div className="king-radar-score">{nationalKing.bayesian_average.toFixed(1)}%</div>
-            
-            <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px', zIndex: 10}}>
-              <Info size={16} />
-            </button>
           </div>
         ) : (
           <div className="radar-display">
