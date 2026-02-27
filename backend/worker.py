@@ -160,10 +160,11 @@ def run_cron_cycle_sync():
     ]
     
     for target in seed_targets:
-        # Now simulating async inside sync wrapper since Fastapi executes lifespan thread
-        import asyncio
-        loop = asyncio.get_event_loop()
+        # Create a new event loop just for this thread execution
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         loop.run_until_complete(process_restaurant(scraper, social, wolt, ai, db, target["query"], target["city"]))
+        loop.close()
         
     print("Cycle complete.")
 
