@@ -123,29 +123,6 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Panel: Live Feed */}
-      <div className="feed-panel card">
-        <h3>{t('live_feed_title')}</h3>
-        <div className="scrolling-feed">
-          {recentReviews.length === 0 && <p className="sys-message" style={{color: 'var(--color-primary-green)'}}>{t('awaiting_transmissions')}</p>}
-          {recentReviews.map(review => {
-            // Negative sentiment threshold
-            const isNegative = review.sentiment <= 0;
-            return (
-              <div key={review.id} className={`feed-item ${isNegative ? 'negative' : ''}`}>
-                <div className="feed-meta">
-                   <span className="feed-target">{review.restaurant_name} ({review.city})</span>
-                   <span>{(review.sentiment * 10).toFixed(1)}/10</span>
-                </div>
-                <div className="feed-content">
-                  "{review.content.substring(0, 100)}{review.content.length > 100 ? '...' : ''}"
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Bottom Panel: Tension Meter */}
       <div className="tension-section card">
         <h3>{t('tension_meter')} (National Level)</h3>
