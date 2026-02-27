@@ -127,12 +127,11 @@ const Home: React.FC = () => {
       {/* Branding Header */}
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '20px'}}>
         <img src="/logo.jpeg" alt="ShawarmaRadar Logo" style={{width: 48, height: 48, borderRadius: '50%', border: '2px solid #facc15'}} />
-        <h1 style={{margin: 0, fontSize: '1.5rem', color: '#fff', letterSpacing: '1px'}}>ShawarmaRadar</h1>
       </div>
 
       {/* King Radar Section (Top) */}
       <div className="king-radar-container">
-        <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
+        <h2 className="king-radar-title">ShawarmaRadar</h2>
         <div className="king-radar-time">
           {formatTime(time)} • {formatDate(time)}
         </div>
