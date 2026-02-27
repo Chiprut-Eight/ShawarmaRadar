@@ -15,6 +15,7 @@ interface Restaurant {
   bayesian_average: number;
   last_score: number;
   total_reviews: number;
+  address?: string;
 }
 
 const RegionalDashboard: React.FC = () => {
@@ -74,9 +75,10 @@ const RegionalDashboard: React.FC = () => {
              </div>
           ) : localKing ? (
             <div className="regional-king-info">
-              <h4>{localKing.name} - {localKing.city}</h4>
+              <h2>{localKing.name} - {localKing.city}</h2>
+              {localKing.address && <p style={{fontSize: '0.9em', color: '#ccc', margin: '4px 0'}}>{localKing.address}</p>}
               <p>Score: {localKing.bayesian_average.toFixed(1)}</p>
-              <p>Intel Reports: {localKing.total_reviews}</p>
+              <p className="reports-count">{t('based_on_reports', { count: localKing.total_reviews })}</p>
             </div>
           ) : (
             <div className="sys-message">
@@ -94,9 +96,15 @@ const RegionalDashboard: React.FC = () => {
           <h3>Top Rankings Feed</h3>
           <div className="scrolling-intel">
             {restaurants.slice(1).map((place, idx) => (
-              <p key={place.id} className="live-intel-msg">
-                <span>[#{idx + 2}]</span> {place.name} ({place.city}) - Score: {place.bayesian_average.toFixed(1)}
-              </p>
+              <div key={place.id} className="secondary-ranking-card card">
+                <h3>#{idx + 2} {place.name}</h3>
+                {place.address && <p style={{fontSize: '0.8em', color: '#999', margin: '2px 0'}}>{place.address}</p>}
+                <p>
+                  <MapPin size={16} style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+                  {place.city}
+                </p>
+                <p>Score: {place.bayesian_average.toFixed(1)}</p>
+              </div>
             ))}
             {restaurants.length <= 1 && !loading && (
               <p className="sys-message">[SYSTEM] No additional intel.</p>

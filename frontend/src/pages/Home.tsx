@@ -14,6 +14,7 @@ interface Restaurant {
   bayesian_average: number;
   last_score: number;
   total_reviews: number;
+  address?: string;
 }
 
 
@@ -86,6 +87,7 @@ const Home: React.FC = () => {
               <Crown className="crown-icon" size={48} />
               <div className="king-info">
                 <h3>{nationalKing.name} - {nationalKing.city}</h3>
+                {nationalKing.address && <p style={{fontSize: '0.9em', color: '#ccc', margin: '4px 0'}}>{nationalKing.address}</p>}
                 <p>Score: {nationalKing.bayesian_average.toFixed(1)} / 100</p>
                 <p>{t('based_on_reports', { count: nationalKing.total_reviews })}</p>
               </div>
@@ -101,6 +103,7 @@ const Home: React.FC = () => {
           {runnersUp.map((place, idx) => (
             <div key={place.id} className="runner-up-card card">
                <h4>#{idx + 2} {place.name}</h4>
+               {place.address && <p style={{fontSize: '0.8em', color: '#999', margin: '2px 0'}}>{place.address}</p>}
                <p>{place.city} - Score: {place.bayesian_average.toFixed(1)}</p>
             </div>
           ))}

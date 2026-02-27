@@ -14,7 +14,7 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
     print(f"\n--- Processing {search_query} ---")
     
     # 1. Search for Place ID
-    place_id = scraper.search_place(search_query)
+    place_id, address = scraper.search_place(search_query)
     if not place_id:
         print(f"Could not find Place ID for {search_query}")
         return
@@ -62,7 +62,8 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
             name=display_name,
             city=default_city,
             region=region,
-            platform_id=place_id
+            platform_id=place_id,
+            address=address
         )
         db.add(restaurant)
         db.commit()
@@ -147,16 +148,16 @@ def run_cron_cycle_sync():
     
     # Seeds for strictly verified Shawarma stands across Israel
     seed_targets = [
-        {"query": "הקוסם תל אביב", "city": "תל אביב"},
-        {"query": "מפגש רמבם תל אביב", "city": "תל אביב"},
+        {"query": "שווארמה הקוסם תל אביב", "city": "תל אביב"},
+        {"query": "שווארמה מפגש רמבם תל אביב", "city": "תל אביב"},
         {"query": "שווארמה חזן חיפה", "city": "חיפה"},
         {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
         {"query": "שווארמה שמש רמת גן", "city": "רמת גן"},
-        {"query": "שווארמה הרצל 2 הוד השרון", "city": "הוד השרון"},
-        {"query": "שאולי חדרה", "city": "חדרה"},
-        {"query": "שווארמה אלבלד עוספיא", "city": "עוספיא"},
-        {"query": "שווארמה אל עריז נצרת", "city": "נצרת"},
-        {"query": "שווארמה מוטראן נצרת", "city": "נצרת"}
+        {"query": "שווארמה בכור את שושי אור יהודה", "city": "אור יהודה"},
+        {"query": "שווארמה שאולי חדרה", "city": "חדרה"},
+        {"query": "שווארמה אליעזר באר שבע", "city": "באר שבע"},
+        {"query": "שווארמה סבאח באר שבע", "city": "באר שבע"},
+        {"query": "שווארמה עומרי נצרת", "city": "נצרת"}
     ]
     
     for target in seed_targets:

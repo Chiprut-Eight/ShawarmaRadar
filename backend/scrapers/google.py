@@ -28,9 +28,11 @@ class GoogleBusinessScraper(PoliteScraper):
             data = response.json()
             results = data.get("results", [])
             if results:
-                print(f"Found lively Place ID for {query}: {results[0]['place_id']}")
-                return results[0]["place_id"]
-        return None
+                place_id = results[0]["place_id"]
+                address = results[0].get("formatted_address", "")
+                print(f"Found lively Place ID for {query}: {place_id} at {address}")
+                return place_id, address
+        return None, None
         
     def fetch_recent_reviews(self, place_id: str):
         """

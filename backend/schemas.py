@@ -25,6 +25,7 @@ class RestaurantBase(BaseModel):
     name: str
     city: str
     platform_id: str
+    address: Optional[str] = None
 
 class RestaurantCreate(RestaurantBase):
     pass
