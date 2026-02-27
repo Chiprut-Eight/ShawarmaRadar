@@ -7,8 +7,10 @@ from nlp import RankingEngine
 from database import engine, get_db
 import models
 from regions import get_region_by_city
+from scrapers.social import SocialMediaScanner
+from scrapers.wolt import WoltTracker
 
-async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, db: Session, search_query: str, default_city: str):
+async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMediaScanner, wolt: WoltTracker, ai: RankingEngine, db: Session, search_query: str, default_city: str):
     print(f"\n--- Processing {search_query} ---")
     
     # 1. Search for Place ID
@@ -17,8 +19,31 @@ async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, 
         print(f"Could not find Place ID for {search_query}")
         return
         
-    # 2. Fetch Reviews
-    reviews_data = scraper.fetch_recent_reviews(place_id)
+    # 2. Fetch Reviews from all sources
+    google_reviews = scraper.fetch_recent_reviews(place_id) or []
+    for gr in google_reviews:
+        gr["source"] = "google"
+        
+    social_reviews = []
+    if social and social.client:
+        base_hashtag = search_query.replace(" ", "")
+        print(f"Pulling Tiktok/Insta for #{base_hashtag}...")
+        try:
+            tiktok_data = social.scan_tiktok_hashtags([base_hashtag])
+            if tiktok_data:
+                for item in tiktok_data:
+                    social_reviews.append({"text": item.get("text", ""), "source": "tiktok", "time": None})
+            
+            insta_data = social.scan_instagram_tags([base_hashtag])
+            if insta_data:
+                for item in insta_data:
+                    social_reviews.append({"text": item.get("text", ""), "source": "instagram", "time": None})
+        except Exception as e:
+            print(f"Warning: Social scraping failed - {e}")
+            
+    # Combine reviews
+    reviews_data = google_reviews + social_reviews
+    
     if not reviews_data:
         print(f"Skipping {search_query} due to lack of data.")
         return
@@ -46,9 +71,8 @@ async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, 
     # 4. Process Reviews 
     new_reviews_count = 0
     for rev_data in reviews_data:
-        # Check if we already have this review (in real life we'd check author/time, but here we just take last 5 as distinct by published_at approx or just add them if we don't have matching content)
-        # For simplicity in this early version, we will just add them if text isn't in DB for this restaurant
         content = rev_data.get("text", "")
+        source_name = rev_data.get("source", "google")
         if not content:
             continue
             
@@ -71,7 +95,7 @@ async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, 
         
         review = models.Review(
             restaurant_id=restaurant.id,
-            source="google",
+            source=source_name,
             content=content,
             sentiment_score=sentiment,
             weight=weight,
@@ -81,6 +105,16 @@ async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, 
         new_reviews_count += 1
         
     db.commit()
+    
+    # 5. Get Wolt Rating (Optional)
+    try:
+        slug = wolt.search_venue(search_query)
+        if slug:
+            load = wolt.check_delivery_load(slug)
+            if load and load.get("rating"):
+                print(f"Wolt rating found: {load.get('rating')}")
+    except Exception as e:
+        pass
     
     # 5. Recalculate Scores
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
@@ -103,10 +137,12 @@ async def process_restaurant(scraper: GoogleBusinessScraper, ai: RankingEngine, 
         db.commit()
         print(f"Updated {restaurant.name} -> New Bayesian Score: {restaurant.bayesian_average:.2f}")
 
-async def run_cron_cycle():
+def run_cron_cycle_sync():
     print("Starting background worker cycle...")
     db: Session = next(get_db())
     scraper = GoogleBusinessScraper()
+    social = SocialMediaScanner()
+    wolt = WoltTracker()
     ai = RankingEngine()
     
     # Seeds for popular cities
@@ -116,7 +152,7 @@ async def run_cron_cycle():
         {"query": "שווארמה חזן חיפה", "city": "חיפה"},
         {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
         {"query": "סעיד באר שבע", "city": "באר שבע"},
-        {"query": "במבינו באר שבע", "city": "באר שבע"},
+        {"query": "שווארמה סבאח באר שבע", "city": "באר שבע"},
         {"query": "שאולי חדרה", "city": "חדרה"},
         {"query": "שווארמה מכרים באקה דאלית אל כרמל", "city": "דאלית אל כרמל"},
         {"query": "שווארמה אלבלד עוספיא", "city": "עוספיא"},
@@ -125,9 +161,17 @@ async def run_cron_cycle():
     ]
     
     for target in seed_targets:
-        await process_restaurant(scraper, ai, db, target["query"], target["city"])
+        # Now simulating async inside sync wrapper since Fastapi executes lifespan thread
+        import asyncio
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(process_restaurant(scraper, social, wolt, ai, db, target["query"], target["city"]))
         
     print("Cycle complete.")
+
+async def run_cron_cycle():
+    # Helper to prevent blocking main event loop since Apify client is sync
+    import asyncio
+    await asyncio.to_thread(run_cron_cycle_sync)
 
 if __name__ == "__main__":
     asyncio.run(run_cron_cycle())
