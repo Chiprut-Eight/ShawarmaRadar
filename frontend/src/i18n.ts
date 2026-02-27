@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   he: {
     translation: {
-      "app_name": "מכ\"ם השווארמה",
+      "app_name": "ShawarmaRadar",
       "toggle_lang": "English",
       "national_king": "המלך הארצי",
       "region_north": "צפון",

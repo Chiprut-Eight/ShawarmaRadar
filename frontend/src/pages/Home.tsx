@@ -131,7 +131,7 @@ const Home: React.FC = () => {
 
       {/* King Radar Section (Top) */}
       <div className="king-radar-container">
-        <h2 className="king-radar-title">ShawarmaRadar</h2>
+        <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
         <div className="king-radar-time">
           {formatTime(time)} • {formatDate(time)}
         </div>
