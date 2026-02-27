@@ -13,6 +13,24 @@ from worker import run_cron_cycle
 # Create db tables
 models.Base.metadata.create_all(bind=engine)
 
+def cleanup_legacy_data():
+    """ Delete old mock restaurants like Bambino and Said that were scarped previously """
+    from database import SessionLocal
+    db = SessionLocal()
+    try:
+        targets = ["%במבינו%", "%סעיד%"]
+        for target in targets:
+            rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
+            for r in rests:
+                db.query(models.Review).filter(models.Review.restaurant_id == r.id).delete()
+                db.delete(r)
+        db.commit()
+        print("Legacy data cleaned up from Database.")
+    except Exception as e:
+        print(f"Error cleaning DB: {e}")
+    finally:
+        db.close()
+
 async def background_worker():
     while True:
         try:
@@ -25,6 +43,9 @@ async def background_worker():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Clean up any lingering data
+    cleanup_legacy_data()
+    
     # Start the background task when the app starts
     task = asyncio.create_task(background_worker())
     yield
