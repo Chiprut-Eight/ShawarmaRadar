@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
-import { Globe, Crown, Info, Share2, Info as InfoIcon, Activity } from 'lucide-react';
+import { Globe, Crown, Info, Share2, Info as InfoIcon, Activity, MessageCircle } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -27,6 +27,10 @@ const Home: React.FC = () => {
   
   // Modals state
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
+  
+  // Business Search
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResult] = useState<string | null>(null);
 
   const fetchData = async () => {
     try {
@@ -78,67 +82,58 @@ const Home: React.FC = () => {
     return date.toTimeString().split(' ')[0];
   };
 
+  const handleSearchBusiness = () => {
+    if (!searchQuery.trim()) return;
+    // For now, mock a dynamic response based on query length just to show a yes/no
+    if (searchQuery.trim().length > 4) {
+      setSearchResult("כן! העסק שלך מזוהה ונמצא במעקב הרדאר.");
+    } else {
+      setSearchResult("לא מצאנו את העסק ברדאר, צור קשר להוספה.");
+    }
+  };
+
   return (
     <div className="home-container" dir="rtl">
-      {/* Header */}
-      <div className="radar-header">
-        <div className="radar-header-left">
-          <span className="lang-badge">HE</span>
-          <div className="time-block">
-            <span className="time">{formatTime(time)}</span>
-            <span className="date">{formatDate(time)}</span>
-          </div>
-          <div className="live-badge-main">LIVE •</div>
+      {/* King Radar Section (Top) */}
+      <div className="king-radar-container">
+        <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
+        <div className="king-radar-time">
+          {formatTime(time)} • {formatDate(time)}
         </div>
         
-        <div className="radar-header-right">
-          <h1 className="radar-title">
-            ShawarmaRadar <Globe className="globe-icon" size={24} />
-          </h1>
-          <span className="radar-subtitle">ישראל</span>
-        </div>
+        {loading ? (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <div>סורק רחוב...</div>
+          </div>
+        ) : nationalKing ? (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <Crown size={48} color="#facc15" style={{zIndex: 2}} />
+            <div className="king-radar-name">{nationalKing.name}</div>
+            {nationalKing.address ? (
+               <div className="king-radar-address">{nationalKing.city} • {nationalKing.address}</div>
+            ) : (
+               <div className="king-radar-address">{nationalKing.city}</div>
+            )}
+            <div className="king-radar-score">{nationalKing.bayesian_average.toFixed(1)}%</div>
+            
+            <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px'}}>
+              <Info size={16} />
+            </button>
+          </div>
+        ) : (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <div>{t('no_data')}</div>
+          </div>
+        )}
       </div>
 
-      {loading ? (
-        <div className="loading-scan">
-          [{t('scan_national')}]...
-        </div>
-      ) : (
+      {loading ? null : (
         <div className="signals-panel">
           <h2 className="signals-section-title">פעילות רחוב חיה</h2>
           
-          {/* King Data Signal */}
-          {nationalKing && (
-            <div className="signal-card">
-              <div className="signal-icon-box king-icon-box">
-                <Crown size={24} color="#facc15" />
-              </div>
-              
-              <div className="signal-content">
-                <div className="signal-title-row">
-                  <h3>{nationalKing.name}</h3>
-                  <span className="live-tag">LIVE</span>
-                  <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת קובעת את הציון?">
-                    <Info size={14} />
-                  </button>
-                </div>
-                <p className="signal-sub">
-                  {nationalKing.city} {nationalKing.address ? `• ${nationalKing.address}` : ''}
-                </p>
-              </div>
-
-              <div className="signal-graph">
-                <svg viewBox="0 0 100 30" className="sparkline gold">
-                  <polyline points="0,25 20,25 25,15 40,15 45,5 60,5 70,5 80,10 90,5 100,0" />
-                </svg>
-              </div>
-
-              <div className="signal-score king-score">
-                 {nationalKing.bayesian_average.toFixed(1)}%
-              </div>
-            </div>
-          )}
-
           {/* Runners Up Data Signals */}
           {runnersUp.map((place, idx) => (
             <div className="signal-card" key={place.id}>
@@ -150,9 +145,6 @@ const Home: React.FC = () => {
                 <div className="signal-title-row">
                   <h3>{place.name}</h3>
                   <span className="live-tag">LIVE</span>
-                  <button className="info-btn" onClick={() => setActiveInfo('ai')} title="הסבר על אלגוריתם הרדאר">
-                    <Info size={14} />
-                  </button>
                 </div>
                 <p className="signal-sub">
                   {place.city} {place.address ? `• ${place.address}` : ''}
@@ -176,6 +168,39 @@ const Home: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* Business Advertisement Section */}
+      <div className="business-section">
+        <h3>האם העסק שלך ברדאר?</h3>
+        <p>חפש את הרשומה שלך ובדוק אם המכ"ם שלנו סורק אותך (גם אם אינך בטופ):</p>
+        <div className="search-box">
+          <input 
+            type="text" 
+            placeholder="שם שווארמיה / עסק..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={handleSearchBusiness}>חפש</button>
+        </div>
+        {searchResult && (
+          <div style={{color: searchResult.includes('כן') ? '#4ade80' : '#ef4444', marginBottom: '1rem', fontWeight: 'bold'}}>
+            {searchResult}
+          </div>
+        )}
+        
+        <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
+          <h3>רוצים לשמוע איך ניתן לפרסם אצלנו?</h3>
+          <p>הגע ללקוחות רעבים ברגע המדויק שהם בודקים את המכ"ם.</p>
+          <a 
+            href="https://wa.me/972523445081?text=היי,%20ספר%20לי%20איך%20ניתן%20לפרסם%20את%20העסק%20שלי%20ב-ShawarmaRadar" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="whatsapp-btn"
+          >
+            <MessageCircle size={20} /> שלח הודעת ווצאפ עכשיו
+          </a>
+        </div>
+      </div>
 
       {/* Footer Section */}
       <div className="radar-footer">
@@ -213,7 +238,7 @@ const Home: React.FC = () => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <h3><Globe color="#3b82f6" /> אודות ShawarmaRadar</h3>
             <p>
-              שאוורמה רדאר (ShawarmaRadar) הוא פרויקט איסוף נתונים ולמידת מכונה ששם לו למטרה לייצר שקיפות מלאה לגבי סצנת אוכל הרחוב (ובעיקר שאוורמה) בישראל.
+              שאוורמה רדאר (ShawarmaRadar) הוא פרויקט איסוף נתונים ולמידת מכונה ששם לו למטרה לייצר שקיפות מלאה לגבי ביקורות על שווארמיות בישראל.
             </p>
             <p>
               המערכת סורקת באופן עצמאי הררי מידע פומבי (פוסטים בקהילות, תיוגים באינסטגרם, פידבק טרי בגוגל), מסננת רעשי רקע שיווקיים, ומזקקת את "חום הרחוב" הטהור אל תוך מכ"ם אחד וברור.
