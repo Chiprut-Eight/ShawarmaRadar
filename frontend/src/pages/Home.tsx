@@ -154,7 +154,7 @@ const Home: React.FC = () => {
             )}
             <div className="king-radar-score">{nationalKing.bayesian_average.toFixed(1)}%</div>
             
-            <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px'}}>
+            <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px', zIndex: 10}}>
               <Info size={16} />
             </button>
           </div>
