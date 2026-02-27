@@ -1,33 +1,48 @@
 from datetime import datetime, timezone
 import math
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class RankingEngine:
     def __init__(self):
-        # OpenAI or Anthropic API Client would be initialized here
-        pass
+        self.openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         
     def analyze_sentiment(self, text: str) -> float:
         """
-        Uses an LLM (e.g. GPT-4o) to analyze Hebrew text and return
+        Uses OpenAI GPT-4o-mini to analyze Hebrew text and return
         a sentiment score between -1.0 (very negative) and 1.0 (very positive).
         """
-        # Mock sentiment analysis
-        # In actual implementation: response = openai.ChatCompletion.create(...)
-        print(f"Analyzing sentiment for text: '{text[:20]}...'")
+        if not text or not self.openai_client.api_key:
+            return 0.0
+            
+        system_prompt = '''
+        You are a sentiment analysis engine for Hebrew restaurant reviews (specifically Shawarma).
+        Analyze the following review and return ONLY a float number between -1.0 and 1.0.
+        -1.0 = Extremely negative, terrible experience, food poisoning, etc.
+        0.0 = Neutral, okay, average.
+        1.0 = Extremely positive, mind-blowing, best ever.
+        Take Israeli slang ("אש", "פצצה", "על הפנים", "פח", "נדיר") into heavy consideration.
+        Calculate the sentiment carefully. Respond ONLY with the number, no text, no explanation.
+        '''
         
-        # Simple mock logic based on keywords
-        positive_words = ["טעים", "אש", "מטורף", "ממליץ", "נדיר", "מלך", "פצצה", "מעולה"]
-        negative_words = ["יבש", "מגעיל", "יקר", "אכזבה", "על הפנים", "גרוע", "שירות רע"]
-        
-        score = 0.0
-        for word in positive_words:
-            if word in text:
-                score += 0.5
-        for word in negative_words:
-            if word in text:
-                score -= 0.5
-                
-        return max(-1.0, min(1.0, score))
+        try:
+            response = self.openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": text}
+                ],
+                temperature=0.0,
+                max_tokens=10
+            )
+            score_str = response.choices[0].message.content.strip()
+            return float(score_str)
+        except Exception as e:
+            print(f"Error analyzing sentiment with OpenAI: {e}")
+            return 0.0
 
     def calculate_recency_weight(self, published_at: datetime) -> float:
         """

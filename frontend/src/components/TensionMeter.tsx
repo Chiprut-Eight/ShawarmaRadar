@@ -7,7 +7,8 @@ interface TensionMeterProps {
 
 const TensionMeter: React.FC<TensionMeterProps> = ({ value }) => {
   // Color calculation based on tension value
-  const hue = ((1 - (value / 100)) * 120).toString(10);
+  // Calm (0) = Light Yellow/Amber (hue 45), Warzone (100) = Red (hue 0)
+  const hue = 45 - (value / 100) * 45;
   const color = `hsl(${hue}, 100%, 50%)`;
 
   return (

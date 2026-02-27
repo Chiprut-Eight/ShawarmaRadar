@@ -1,14 +1,14 @@
 :root {
-  --color-bg: #050b06;
-  --color-radar-circle: #0d2112;
-  --color-radar-glow: rgba(0, 255, 65, 0.2);
-  --color-primary-green: #00ff41;
-  --color-secondary-green: #008f11;
+  --color-bg: #0a0a05;
+  --color-radar-circle: #1f1a0a;
+  --color-radar-glow: rgba(255, 179, 0, 0.2);
+  --color-primary-green: #ffb300; /* Keeping variable name for compatibility but value is amber */
+  --color-secondary-green: #ff8f00;
   --color-accent-red: #ff3333;
-  --color-text-main: #e0ffe0;
-  --color-text-muted: #7fa685;
-  --color-card-bg: rgba(13, 33, 18, 0.75);
-  --color-border: #008f11;
+  --color-text-main: #fff8e1;
+  --color-text-muted: #ffe082;
+  --color-card-bg: rgba(31, 26, 10, 0.85);
+  --color-border: #ff8f00;
   --font-family: "Inter", "Heebo", system-ui, sans-serif;
 }
 

@@ -26,4 +26,5 @@
   font-size: 0.8rem;
   color: var(--color-text-muted);
   font-family: monospace;
+  text-shadow: 0 0 5px rgba(255, 179, 0, 0.3);
 }

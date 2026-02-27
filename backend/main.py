@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from typing import List
 import uvicorn
 
-from . import models, schemas
-from .database import engine, get_db
+import models, schemas
+from database import engine, get_db
 
 # Create db tables
 models.Base.metadata.create_all(bind=engine)
@@ -54,15 +54,53 @@ async def websocket_radar(websocket: WebSocket):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
-@app.get("/api/restaurants", response_model=List[schemas.RestaurantSchema])
-def get_restaurants(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    restaurants = db.query(models.Restaurant).offset(skip).limit(limit).all()
-    return restaurants
+@app.get("/api/rankings/national")
+def get_national_king(db: Session = Depends(get_db)):
+    """ Returns the top 1 'King' and the next top runners up nationally """
+    # Sort by bayesian_average descending
+    top_restaurants = db.query(models.Restaurant).order_by(models.Restaurant.bayesian_average.desc()).limit(10).all()
+    
+    if not top_restaurants:
+        return {"king": None, "runnersUp": []}
+        
+    return {
+        "king": top_restaurants[0],
+        "runnersUp": top_restaurants[1:]
+    }
+
+@app.get("/api/rankings/region/{region_id}")
+def get_regional_rankings(region_id: str, db: Session = Depends(get_db)):
+    """ Returns the top restaurants for a specific region ID (north, center, south, etc) """
+    regional_restaurants = db.query(models.Restaurant)\
+        .filter(models.Restaurant.region == region_id)\
+        .order_by(models.Restaurant.bayesian_average.desc())\
+        .limit(10).all()
+        
+    return regional_restaurants
 
 @app.get("/api/regions/{region_name}", response_model=List[schemas.RestaurantSchema])
 def get_restaurants_by_region(region_name: str, db: Session = Depends(get_db)):
     restaurants = db.query(models.Restaurant).filter(models.Restaurant.region == region_name).order_by(models.Restaurant.bayesian_average.desc()).all()
     return restaurants
+
+@app.get("/api/reviews/recent")
+def get_recent_reviews(limit: int = 20, db: Session = Depends(get_db)):
+    """ Returns the most recent reviews combined with restaurant data for the Live Feed """
+    recent_reviews = db.query(models.Review)\
+        .order_by(models.Review.published_at.desc())\
+        .limit(limit).all()
+        
+    results = []
+    for rev in recent_reviews:
+        results.append({
+            "id": rev.id,
+            "restaurant_name": rev.restaurant.name if rev.restaurant else "Unknown Target",
+            "city": rev.restaurant.city if rev.restaurant else "",
+            "content": rev.content,
+            "sentiment": rev.sentiment_score,
+            "published_at": rev.published_at.isoformat() if rev.published_at else None
+        })
+    return results
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
