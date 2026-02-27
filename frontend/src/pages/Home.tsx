@@ -16,20 +16,11 @@ interface Restaurant {
   total_reviews: number;
 }
 
-interface Review {
-  id: number;
-  restaurant_name: string;
-  city: string;
-  content: string;
-  sentiment: number;
-  published_at: string;
-}
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
   const [nationalKing, setNationalKing] = useState<Restaurant | null>(null);
   const [runnersUp, setRunnersUp] = useState<Restaurant[]>([]);
-  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
@@ -40,13 +31,6 @@ const Home: React.FC = () => {
         const rankData = await rankRes.json();
         setNationalKing(rankData.king);
         setRunnersUp(rankData.runnersUp || []);
-      }
-      
-      // Fetch live feed
-      const feedRes = await fetch(`${API_URL}/api/reviews/recent`);
-      if (feedRes.ok) {
-        const feedData = await feedRes.json();
-        setRecentReviews(feedData || []);
       }
     } catch (error) {
       console.error("Failed to fetch data", error);

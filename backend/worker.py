@@ -145,16 +145,15 @@ def run_cron_cycle_sync():
     wolt = WoltTracker()
     ai = RankingEngine()
     
-    # Seeds for popular cities
+    # Seeds for strictly verified Shawarma stands across Israel
     seed_targets = [
         {"query": "הקוסם תל אביב", "city": "תל אביב"},
         {"query": "מפגש רמבם תל אביב", "city": "תל אביב"},
         {"query": "שווארמה חזן חיפה", "city": "חיפה"},
         {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
-        {"query": "סעיד באר שבע", "city": "באר שבע"},
-        {"query": "שווארמה סבאח באר שבע", "city": "באר שבע"},
+        {"query": "שווארמה שמש רמת גן", "city": "רמת גן"},
+        {"query": "שווארמה הרצל 2 הוד השרון", "city": "הוד השרון"},
         {"query": "שאולי חדרה", "city": "חדרה"},
-        {"query": "שווארמה מכרים באקה דאלית אל כרמל", "city": "דאלית אל כרמל"},
         {"query": "שווארמה אלבלד עוספיא", "city": "עוספיא"},
         {"query": "שווארמה אל עריז נצרת", "city": "נצרת"},
         {"query": "שווארמה מוטראן נצרת", "city": "נצרת"}
