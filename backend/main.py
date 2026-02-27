@@ -3,14 +3,35 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import uvicorn
+import asyncio
+from contextlib import asynccontextmanager
 
 import models, schemas
 from database import engine, get_db
+from worker import run_cron_cycle
 
 # Create db tables
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="ShawarmaRadar API")
+async def background_worker():
+    while True:
+        try:
+            print("Background: Starting worker cycle...")
+            await run_cron_cycle()
+        except Exception as e:
+            print(f"Background worker error: {e}")
+        # Wait 30 minutes before running again (simulating hourly/daily cron in an active web service)
+        await asyncio.sleep(1800)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Start the background task when the app starts
+    task = asyncio.create_task(background_worker())
+    yield
+    # Cancel the task when the app stops
+    task.cancel()
+
+app = FastAPI(title="ShawarmaRadar API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

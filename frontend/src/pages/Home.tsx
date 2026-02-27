@@ -71,20 +71,20 @@ const Home: React.FC = () => {
       {/* Left Panel: Info / Legend */}
       <div className="info-panel">
         <div className="info-card card">
-          <h3><Info size={20} /> אגדת נתונים</h3>
+          <h3><Info size={20} /> {t('legend_title')}</h3>
           <p>
-            <strong>ציון המכ"ם (0-100):</strong><br/>
-            ציון משוקלל המבוסס על "ממוצע בייסיאני". הציון מחבר בין הסנטימנט הכללי של הביקורות לבין כמות הביקורות, מה שאומר שמקומות עם מעט מדי מידע לא יוכלו להטות את המערכת.
+            <strong>{t('legend_radar_title')}</strong><br/>
+            {t('legend_radar_desc')}
           </p>
           <p>
-            <strong>עיבוד שפה נטבעית (AI):</strong><br/>
-            כל ביקורת מנותחת ע"י מודל שפה של OpenAI המכיר את הסלנג הישראלי (כגון "פצצה" או "על הפנים") כדי להחליט על חיוביות הטקסט.
+            <strong>{t('legend_ai_title')}</strong><br/>
+            {t('legend_ai_desc')}
           </p>
         </div>
         <div className="info-card card">
-          <h3><Activity size={20} /> מדד המתח</h3>
+          <h3><Activity size={20} /> {t('tension_meter')}</h3>
           <p>
-             מד המתח מעניק משקל יתר לפעילות מה-24 שעות האחרונות (Recency Decay factor). ככל שהרשת סוערת יותר סביב המיקום כרגע - המדד יעלה לכיוון האזור האדום. מטרתנו לזהות שינויים פתאומיים באיכות המקום.
+             {t('legend_tension_desc')}
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@ const Home: React.FC = () => {
           {loading ? (
             <div className="empty-state pulse-effect">
               <div className="radar-sweep"></div>
-              <p className="scan-text">Scanning for the National King...</p>
+              <p className="scan-text">{t('scan_national')}</p>
             </div>
           ) : nationalKing ? (
             <div className="king-card card pulse-effect">
@@ -103,12 +103,12 @@ const Home: React.FC = () => {
               <div className="king-info">
                 <h3>{nationalKing.name} - {nationalKing.city}</h3>
                 <p>Score: {nationalKing.bayesian_average.toFixed(1)} / 100</p>
-                <p>Based on {nationalKing.total_reviews} Intel Reports</p>
+                <p>{t('based_on_reports', { count: nationalKing.total_reviews })}</p>
               </div>
             </div>
           ) : (
             <div className="empty-state">
-              <p className="scan-text">No data found.</p>
+              <p className="scan-text">{t('no_data')}</p>
             </div>
           )}
         </div>
@@ -125,9 +125,9 @@ const Home: React.FC = () => {
 
       {/* Right Panel: Live Feed */}
       <div className="feed-panel card">
-        <h3>Live Intel Feed</h3>
+        <h3>{t('live_feed_title')}</h3>
         <div className="scrolling-feed">
-          {recentReviews.length === 0 && <p className="sys-message" style={{color: 'var(--color-primary-green)'}}>[SYSTEM] Awaiting transmissions...</p>}
+          {recentReviews.length === 0 && <p className="sys-message" style={{color: 'var(--color-primary-green)'}}>{t('awaiting_transmissions')}</p>}
           {recentReviews.map(review => {
             // Negative sentiment threshold
             const isNegative = review.sentiment <= 0;
