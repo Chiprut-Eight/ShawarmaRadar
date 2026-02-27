@@ -14,6 +14,13 @@ REGIONS = {
     "כרמיאל": "north", "karmiel": "north",
     "קרית שמונה": "north", "kiryat shmona": "north",
     "בית שאן": "north", "beit she'an": "north",
+    "עוספיא": "north", "usfiya": "north", "דלית אל כרמל": "north", "דאלית אל כרמל": "north", "daliyat al-karmel": "north",
+    "שפרעם": "north", "שפר עמר": "north", "shefa-'amr": "north",
+    "טמרה": "north", "tamra": "north", "סכנין": "north", "sakhnin": "north",
+    "כפר יאסיף": "north", "kfar yasif": "north", "ירכא": "north", "yarka": "north", "פקיעין": "north", "peki'in": "north",
+    "מג'דל שמס": "north", "majd al-shams": "north",
+    
+
     
     # מרכז (Center)
     "תל אביב": "center", "תל אביב-יפו": "center", "tel aviv": "center", "tel aviv-yafo": "center", "tlv": "center",
