@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
-import { Globe, Crown, Info, Share2, Info as InfoIcon, Activity, MessageCircle } from 'lucide-react';
+import { Crown, Info, Share2, Info as InfoIcon, Activity, MessageCircle, Download, Globe } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -31,6 +31,19 @@ const Home: React.FC = () => {
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState<string | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // PWA Prompt
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -82,18 +95,41 @@ const Home: React.FC = () => {
     return date.toTimeString().split(' ')[0];
   };
 
-  const handleSearchBusiness = () => {
+  const handleSearchBusiness = async () => {
     if (!searchQuery.trim()) return;
-    // For now, mock a dynamic response based on query length just to show a yes/no
-    if (searchQuery.trim().length > 4) {
-      setSearchResult("כן! העסק שלך מזוהה ונמצא במעקב הרדאר.");
+    setIsSearching(true);
+    setSearchResult(null);
+    try {
+      const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}`);
+      const data = await res.json();
+      setSearchResult(data.message);
+    } catch (e) {
+      setSearchResult("שגיאה בחיבור לשרת הרדאר.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
     } else {
-      setSearchResult("לא מצאנו את העסק ברדאר, צור קשר להוספה.");
+      alert('להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו "Add to Home Screen". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו "Add to Home screen".');
     }
   };
 
   return (
     <div className="home-container" dir="rtl">
+      {/* Branding Header */}
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '20px'}}>
+        <img src="/logo.jpeg" alt="ShawarmaRadar Logo" style={{width: 48, height: 48, borderRadius: '50%', border: '2px solid #facc15'}} />
+        <h1 style={{margin: 0, fontSize: '1.5rem', color: '#fff', letterSpacing: '1px'}}>ShawarmaRadar</h1>
+      </div>
+
       {/* King Radar Section (Top) */}
       <div className="king-radar-container">
         <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
@@ -180,10 +216,12 @@ const Home: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button onClick={handleSearchBusiness}>חפש</button>
+          <button onClick={handleSearchBusiness} disabled={isSearching}>
+            {isSearching ? 'סורק...' : 'חפש'}
+          </button>
         </div>
         {searchResult && (
-          <div style={{color: searchResult.includes('כן') ? '#4ade80' : '#ef4444', marginBottom: '1rem', fontWeight: 'bold'}}>
+          <div style={{color: searchResult.includes('כן') ? '#facc15' : '#ef4444', marginBottom: '1rem', fontWeight: 'bold'}}>
             {searchResult}
           </div>
         )}
@@ -209,6 +247,9 @@ const Home: React.FC = () => {
         </button>
         <button className="footer-btn" onClick={handleShare}>
           <Share2 size={18} /> שתף מכ"ם
+        </button>
+        <button className="footer-btn" onClick={handleInstallClick}>
+          <Download size={18} /> שמור במסך הבית
         </button>
       </div>
 

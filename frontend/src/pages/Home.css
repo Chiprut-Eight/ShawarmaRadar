@@ -17,6 +17,14 @@
   margin-bottom: 2rem;
 }
 
+.king-radar-con.time-block {
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  color: #facc15;
+  font-size: 0.9rem;
+}
+
 .king-radar-title {
   color: #fff;
   font-size: 1.5rem;
@@ -131,7 +139,7 @@
   align-items: center;
   justify-content: center;
   margin-left: 1rem; /* Adjust for RTL */
-  color: #4ade80;
+  color: #facc15;
   font-weight: bold;
   font-size: 1.1rem;
 }
@@ -161,12 +169,12 @@
 }
 
 .live-tag {
-  background: rgba(74, 222, 128, 0.1);
-  color: #4ade80;
+  background: rgba(250, 204, 21, 0.1);
+  color: #facc15;
   font-size: 0.65rem;
   padding: 2px 6px;
   border-radius: 4px;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(250, 204, 21, 0.2);
 }
 
 .info-btn {
@@ -185,7 +193,7 @@
 }
 
 .info-btn:hover {
-  background: #4ade80;
+  background: #facc15;
   color: #000;
 }
 
@@ -211,7 +219,7 @@
 }
 
 .sparkline.gold { stroke: #facc15; }
-.sparkline.green { stroke: #4ade80; }
+.sparkline.green { stroke: #facc15; }
 .sparkline.gray { stroke: #555; }
 
 .signal-score {
@@ -219,7 +227,7 @@
   font-weight: bold;
   min-width: 60px;
   text-align: right;
-  color: #4ade80;
+  color: #facc15;
   font-family: monospace;
 }
 
@@ -253,7 +261,7 @@
 }
 
 .modal-content h3 {
-  color: #4ade80;
+  color: #facc15;
   margin-top: 0;
   margin-bottom: 1rem;
   display: flex;
@@ -280,7 +288,7 @@
 }
 
 .close-btn:hover {
-  background: #4ade80;
+  background: #facc15;
   color: #000;
 }
 
@@ -325,7 +333,7 @@
 }
 
 .business-section h3 {
-  color: #4ade80;
+  color: #facc15;
   margin-top: 0;
   margin-bottom: 1rem;
 }
@@ -355,7 +363,7 @@
 
 .search-box button {
   padding: 10px 20px;
-  background: #4ade80;
+  background: #facc15;
   color: #000;
   border: none;
   font-weight: bold;
@@ -364,7 +372,7 @@
 }
 
 .search-box button:hover {
-  background: #22c55e;
+  background: #eab308;
 }
 
 .whatsapp-btn {
@@ -389,7 +397,7 @@
 .loading-scan {
   text-align: center;
   padding: 3rem;
-  color: #4ade80;
+  color: #facc15;
   font-family: monospace;
   animation: pulse-op 1.5s infinite;
 }

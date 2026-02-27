@@ -120,6 +120,18 @@ def get_regional_rankings(region_id: str, db: Session = Depends(get_db)):
         
     return regional_restaurants
 
+@app.get("/api/restaurants/search")
+def search_restaurant(q: str = "", db: Session = Depends(get_db)):
+    """ Returns whether a restaurant exists in the DB based on search term """
+    if not q or len(q.strip()) < 2:
+        return {"exists": False, "message": "אנא הזן שם ארוך יותר"}
+    
+    # Simple LIKE search
+    exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{q.strip()}%")).first()
+    if exists:
+        return {"exists": True, "message": f"כן! העסק '{exists.name}' מזוהה ונמצא במעקב הרדאר."}
+    return {"exists": False, "message": "לא מצאנו את העסק ברדאר, צור קשר להוספה."}
+
 @app.get("/api/regions/{region_name}", response_model=List[schemas.RestaurantSchema])
 def get_restaurants_by_region(region_name: str, db: Session = Depends(get_db)):
     restaurants = db.query(models.Restaurant).filter(models.Restaurant.region == region_name).order_by(models.Restaurant.bayesian_average.desc()).all()
