@@ -173,15 +173,25 @@ def run_cron_cycle_sync():
     wolt = WoltTracker()
     ai = RankingEngine()
     
-    # Seeds for strictly verified Shawarma stands across Israel
-    seed_targets = [
-        {"query": "שווארמה הקוסם תל אביב", "city": "תל אביב"},
-        {"query": "שווארמה מפגש רמבם תל אביב", "city": "תל אביב"},
-        {"query": "שווארמה חזן חיפה", "city": "חיפה"},
-        {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
-        {"query": "שווארמה שמש רמת גן", "city": "רמת גן"},
-        {"query": "שווארמה 11 דאלית אל כרמל", "city": "דאלית אל-כרמל"}
-    ]
+    import json
+    import os
+    
+    seeds_path = os.path.join(os.path.dirname(__file__), "auto_seeds.json")
+    seed_targets = []
+    if os.path.exists(seeds_path):
+        try:
+            with open(seeds_path, "r", encoding="utf-8") as f:
+                seed_targets = json.load(f)
+            print(f"Loaded {len(seed_targets)} verified seeds from {seeds_path}")
+        except Exception as e:
+            print(f"Error loading auto_seeds: {e}")
+            
+    if not seed_targets:
+        print("No dynamic seeds found. Falling back to core safe list.")
+        seed_targets = [
+            {"query": "שווארמה הקוסם תל אביב", "city": "תל אביב"},
+            {"query": "שווארמה חזן חיפה", "city": "חיפה"}
+        ]
     
     for target in seed_targets:
         # Create a new event loop just for this thread execution
