@@ -125,18 +125,31 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
         restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
         restaurant.total_reviews = len(all_reviews)
         
-        # Calculate Global Average for Bayesian (mocking global as 50 here for simplicity, or we can calculate real global)
-        global_avg = 50.0 
-        # C = 5 (confidence threshold for shawarma stands since we pull 5 per run)
+        # Calculate Global Average for Bayesian 
+        global_avg = 35.0 # Low baseline so unknown places stay at the bottom
+        # C = 30 (confidence threshold for shawarma stands)
         restaurant.bayesian_average = ai.calculate_bayesian_average(
             total_reviews=restaurant.total_reviews,
             average_score=restaurant.last_score,
-            confidence_threshold=5,
+            confidence_threshold=30,
             global_average=global_avg
         )
         
         db.commit()
         print(f"Updated {restaurant.name} -> New Bayesian Score: {restaurant.bayesian_average:.2f}")
+
+def run_single_scrape_sync(query: str, city: str = "ישראל"):
+    print(f"Triggering manual scrape for {query}...")
+    db: Session = next(get_db())
+    scraper = GoogleBusinessScraper()
+    social = SocialMediaScanner()
+    wolt = WoltTracker()
+    ai = RankingEngine()
+    
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(process_restaurant(scraper, social, wolt, ai, db, query, city))
+    loop.close()
 
 def run_cron_cycle_sync():
     print("Starting background worker cycle...")
@@ -153,11 +166,10 @@ def run_cron_cycle_sync():
         {"query": "שווארמה חזן חיפה", "city": "חיפה"},
         {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
         {"query": "שווארמה שמש רמת גן", "city": "רמת גן"},
-        {"query": "שווארמה בכור את שושי אור יהודה", "city": "אור יהודה"},
-        {"query": "שווארמה שאולי חדרה", "city": "חדרה"},
         {"query": "שווארמה אליעזר באר שבע", "city": "באר שבע"},
         {"query": "שווארמה סבאח באר שבע", "city": "באר שבע"},
-        {"query": "שווארמה עומרי נצרת", "city": "נצרת"}
+        {"query": "שווארמה עומרי נצרת", "city": "נצרת"},
+        {"query": "שווארמה 11 פתח תקווה", "city": "פתח תקווה"}
     ]
     
     for target in seed_targets:

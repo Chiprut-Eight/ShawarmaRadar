@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 import models, schemas
 from database import engine, get_db
-from worker import run_cron_cycle
+from worker import run_cron_cycle, run_single_scrape_sync
 
 # Create db tables
 models.Base.metadata.create_all(bind=engine)
@@ -121,7 +121,7 @@ def get_regional_rankings(region_id: str, db: Session = Depends(get_db)):
     return regional_restaurants
 
 @app.get("/api/restaurants/search")
-def search_restaurant(q: str = "", db: Session = Depends(get_db)):
+def search_restaurant(q: str = "", background_tasks: BackgroundTasks = BackgroundTasks(), db: Session = Depends(get_db)):
     """ Returns whether a restaurant exists in the DB based on search term """
     if not q or len(q.strip()) < 2:
         return {"exists": False, "message": "אנא הזן שם ארוך יותר"}
@@ -130,7 +130,10 @@ def search_restaurant(q: str = "", db: Session = Depends(get_db)):
     exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{q.strip()}%")).first()
     if exists:
         return {"exists": True, "message": f"כן! העסק '{exists.name}' מזוהה ונמצא במעקב הרדאר."}
-    return {"exists": False, "message": "לא מצאנו את העסק ברדאר, צור קשר להוספה."}
+    
+    # Trigger background scrape
+    background_tasks.add_task(run_single_scrape_sync, q.strip(), "ישראל")
+    return {"exists": False, "message": f"העסק '{q.strip()}' לא נמצא במערכת, אך כעת שלחנו סוכנים לסרוק אותו! הרדאר יתעדכן בתוך דקות."}
 
 @app.get("/api/regions/{region_name}", response_model=List[schemas.RestaurantSchema])
 def get_restaurants_by_region(region_name: str, db: Session = Depends(get_db)):
