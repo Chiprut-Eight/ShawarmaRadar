@@ -17,6 +17,8 @@ class Restaurant(Base):
     last_score = Column(Float, default=0.0)
     bayesian_average = Column(Float, default=0.0)
     total_reviews = Column(Integer, default=0)
+    google_rating = Column(Float, nullable=True)
+    google_ratings_total = Column(Integer, default=0)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

@@ -35,8 +35,8 @@ class SocialMediaScanner:
         
         try:
             # Note: The exact actor ID depends on user's Apify setup.
-            # Using a well-known placeholder identifier for TikTok scraping
-            run = self.client.actor("clockwork/tiktok-scraper").call(run_input=run_input)
+            # Fixed: exact actor ID from user's Apify store screenshot
+            run = self.client.actor("clockworks/tiktok-scraper").call(run_input=run_input)
             
             results = []
             for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
@@ -78,4 +78,33 @@ class SocialMediaScanner:
             return results
         except Exception as e:
             print(f"Apify Instagram Error: {e}")
+            return []
+
+    def scan_facebook_posts(self, query: str):
+        """
+        Scans Facebook for recent posts mentioning the shawarma place.
+        """
+        if not self.client:
+            return []
+            
+        print(f"Starting Apify Facebook scrape for: {query}")
+        
+        run_input = {
+            "startUrls": [{"url": f"https://www.facebook.com/search/posts/?q={query}"}],
+            "resultsLimit": 5
+        }
+        
+        try:
+            run = self.client.actor("apify/facebook-posts-scraper").call(run_input=run_input)
+            
+            results = []
+            for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
+                results.append({
+                    "text": item.get("text", ""),
+                    "likes": item.get("likes", 0),
+                    "url": item.get("url")
+                })
+            return results
+        except Exception as e:
+            print(f"Apify Facebook Error: {e}")
             return []

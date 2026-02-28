@@ -65,26 +65,51 @@ class RankingEngine:
         decay_factor = math.exp(-(age_hours - 24) / 168) # 168 hours = 1 week
         return max(0.1, decay_factor)
 
-    def calculate_bayesian_average(self, total_reviews: int, average_score: float, 
-                                 confidence_threshold: int = 50, global_average: float = 0.0) -> float:
+    def calculate_final_radar_score(self, google_rating: float, google_ratings_total: int, recent_reviews: list) -> float:
         """
-        Calculates the Bayesian Average to prevent places with very few reviews 
-        from scoring unnaturally high.
-        
-        C = confidence_threshold (number of reviews required for statistical significance)
-        m = global_average (average score across all restaurants)
-        v = total_reviews (number of reviews for this restaurant)
-        R = average_score (average score for this restaurant)
-        
-        Formula: (v / (v + C)) * R + (C / (v + C)) * m
+        Calculates the final Radar score (0-100).
+        Anchors heavily to the official long-term Google rating, dampens it if there are few ratings
+        (Bayesian logic), and then applies a modifier based on the recent chatter sentiment.
         """
-        if total_reviews == 0:
-            return 0.0
+        if not google_rating:
+            google_rating = 0.0
+        if not google_ratings_total:
+            google_ratings_total = 0
             
-        weight_restaurant = total_reviews / (total_reviews + confidence_threshold)
-        weight_global = confidence_threshold / (total_reviews + confidence_threshold)
+        # Bayesian average on the Google 1-5 rating itself.
+        # This prevents a place with 1 review of "5.0" from defeating a place with 1500 reviews of "4.7".
+        confidence_threshold = 50
+        global_avg_rating = 3.5 # represents 70/100 as the baseline for unknown places
         
-        return (weight_restaurant * average_score) + (weight_global * global_average)
+        bayesian_rating = ( (google_ratings_total / (google_ratings_total + confidence_threshold)) * google_rating ) + \
+                          ( (confidence_threshold / (google_ratings_total + confidence_threshold)) * global_avg_rating )
+                          
+        # Convert bayesian 1-5 to a base score of 0-100
+        # Wait, 5.0 -> 100, 3.5 -> 70.
+        base_score = (bayesian_rating / 5.0) * 100
+        
+        if not recent_reviews:
+            return round(base_score, 2)
+            
+        # Calculate recent NLP effect (-1.0 to 1.0)
+        total_weight = 0.0
+        weighted_sentiment = 0.0
+        
+        for review in recent_reviews:
+            weight = getattr(review, 'weight', 1.0)
+            total_weight += weight
+            weighted_sentiment += getattr(review, 'sentiment_score', 0.0) * weight
+            
+        if total_weight > 0:
+            avg_sentiment = weighted_sentiment / total_weight
+            # A perfect 1.0 sentiment adds up to 10 points. 
+            # A perfectly negative -1.0 sentiment subtracts up to -10 points.
+            chatter_modifier = avg_sentiment * 10.0
+        else:
+            chatter_modifier = 0.0
+            
+        final_score = base_score + chatter_modifier
+        return min(100.0, max(0.0, final_score))
         
     def calculate_net_sentiment_score(self, reviews: list) -> float:
         """

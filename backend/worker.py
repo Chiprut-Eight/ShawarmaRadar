@@ -20,7 +20,11 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
         return
         
     # 2. Fetch Reviews from all sources
-    google_reviews = scraper.fetch_recent_reviews(place_id) or []
+    google_data = scraper.fetch_recent_reviews(place_id)
+    google_reviews = google_data.get("reviews", [])
+    google_rating = google_data.get("rating")
+    google_ratings_total = google_data.get("user_ratings_total", 0)
+    
     for gr in google_reviews:
         gr["source"] = "google"
         
@@ -38,6 +42,12 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
             if insta_data:
                 for item in insta_data:
                     social_reviews.append({"text": item.get("text", ""), "source": "instagram", "time": None})
+                    
+            fb_data = social.scan_facebook_posts(search_query)
+            if fb_data:
+                for item in fb_data:
+                    social_reviews.append({"text": item.get("text", ""), "source": "facebook", "time": None})
+                    
         except Exception as e:
             print(f"Warning: Social scraping failed - {e}")
             
@@ -63,11 +73,18 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
             city=default_city,
             region=region,
             platform_id=place_id,
-            address=address
+            address=address,
+            google_rating=google_rating,
+            google_ratings_total=google_ratings_total
         )
         db.add(restaurant)
         db.commit()
         db.refresh(restaurant)
+    else:
+        # Update ratings if changed
+        restaurant.google_rating = google_rating
+        restaurant.google_ratings_total = google_ratings_total
+        db.commit()
 
     # 4. Process Reviews 
     new_reviews_count = 0
@@ -121,22 +138,19 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
     
     if all_reviews:
-        # Calculate Net Sentiment (0 to 100 percentage)
+        # Calculate Net Sentiment (just for tracking NLP portion separately)
         restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
         restaurant.total_reviews = len(all_reviews)
         
-        # Calculate Global Average for Bayesian 
-        global_avg = 35.0 # Low baseline so unknown places stay at the bottom
-        # C = 30 (confidence threshold for shawarma stands)
-        restaurant.bayesian_average = ai.calculate_bayesian_average(
-            total_reviews=restaurant.total_reviews,
-            average_score=restaurant.last_score,
-            confidence_threshold=30,
-            global_average=global_avg
+        # New Scoring System: Base on long-term Google rating, modified by recent NLP chatters
+        restaurant.bayesian_average = ai.calculate_final_radar_score(
+            google_rating=restaurant.google_rating,
+            google_ratings_total=restaurant.google_ratings_total,
+            recent_reviews=all_reviews
         )
         
         db.commit()
-        print(f"Updated {restaurant.name} -> New Bayesian Score: {restaurant.bayesian_average:.2f}")
+        print(f"Updated {restaurant.name} -> New Final Score: {restaurant.bayesian_average:.2f}")
 
 def run_single_scrape_sync(query: str, city: str = "ישראל"):
     print(f"Triggering manual scrape for {query}...")

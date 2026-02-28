@@ -36,12 +36,12 @@ class GoogleBusinessScraper(PoliteScraper):
         
     def fetch_recent_reviews(self, place_id: str):
         """
-        Fetches the most recent reviews for a given Google Place ID 
+        Fetches the most recent reviews and the overall rating for a given Google Place ID 
         using the real Google Places API.
         """
         if not self.api_key:
             print("Error: GOOGLE_PLACES_API_KEY is not set.")
-            return []
+            return {"reviews": [], "rating": None, "user_ratings_total": 0}
             
         params = {
             "place_id": place_id,
@@ -57,11 +57,13 @@ class GoogleBusinessScraper(PoliteScraper):
             if data.get("status") == "OK":
                 result = data.get("result", {})
                 reviews = result.get("reviews", [])
-                print(f"Successfully fetched {len(reviews)} reviews for Place ID {place_id}")
-                return reviews
+                rating = result.get("rating")
+                user_ratings_total = result.get("user_ratings_total", 0)
+                print(f"Successfully fetched {len(reviews)} reviews for Place ID {place_id}. Rating: {rating} ({user_ratings_total})")
+                return {"reviews": reviews, "rating": rating, "user_ratings_total": user_ratings_total}
             else:
                 print(f"Google API Error: {data.get('status')} - {data.get('error_message', 'Unknown Error')}")
         else:
             print(f"Failed to fetch Google Reviews. Status Code: {response.status_code if response else 'No Response'}")
             
-        return []
+        return {"reviews": [], "rating": None, "user_ratings_total": 0}
