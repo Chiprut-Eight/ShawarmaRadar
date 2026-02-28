@@ -125,12 +125,14 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
     db.commit()
     
     # 5. Get Wolt Rating (Optional)
+    wolt_rating = 0.0
     try:
         slug = wolt.search_venue(search_query)
         if slug:
             load = wolt.check_delivery_load(slug)
             if load and load.get("rating"):
-                print(f"Wolt rating found: {load.get('rating')}")
+                wolt_rating = float(load.get('rating').get('score', 0.0)) if isinstance(load.get('rating'), dict) else float(load.get('rating'))
+                print(f"Wolt rating found: {wolt_rating}")
     except Exception as e:
         pass
     
@@ -146,7 +148,9 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
         restaurant.bayesian_average = ai.calculate_final_radar_score(
             google_rating=restaurant.google_rating,
             google_ratings_total=restaurant.google_ratings_total,
-            recent_reviews=all_reviews
+            recent_reviews=all_reviews,
+            wolt_rating=wolt_rating,
+            social_volume=len(social_reviews)
         )
         
         db.commit()

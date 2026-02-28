@@ -8,22 +8,14 @@ load_dotenv()
 API_KEY = os.getenv('GOOGLE_PLACES_API_KEY')
 
 CITIES = [
-    "תל אביב",
-    "חיפה",
-    "ירושלים",
-    "באר שבע",
-    "ראשון לציון",
-    "פתח תקווה",
-    "אשדוד",
-    "נתניה",
-    "חולון",
-    "בני ברק",
-    "רמת גן",
-    "בת ים",
-    "אשקלון",
-    "הרצליה",
-    "כפר סבא",
-    "חדרה"
+    # Major Cities
+    "תל אביב", "חיפה", "ירושלים", "באר שבע", "ראשון לציון", "פתח תקווה", 
+    "אשדוד", "נתניה", "חולון", "בני ברק", "רמת גן", "בת ים", "אשקלון", 
+    "הרצליה", "כפר סבא", "חדרה",
+    # Arab Towns and Villages
+    "נצרת", "דאלית אל-כרמל", "כפר קאסם", "אום אל-פחם", "רהט", "טייבה", 
+    "טירה", "סח'נין", "שפרעם", "עוספיא", "טמרה", "קלנסווה", "כפר כנא",
+    "יפיע", "מע'אר", "עראבה", "כפר מנדא", "מג'ד אל-כרום", "אבו גוש"
 ]
 
 def generate_seeds():
@@ -38,38 +30,49 @@ def generate_seeds():
         print(f"Searching for shawarma in {city}...")
         url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=שווארמה ב{city}&language=iw&key={API_KEY}"
         
-        try:
-            res = requests.get(url)
-            data = res.json()
-            results = data.get("results", [])
-            
-            for place in results:
-                # Basic quality filtering
-                status = place.get("business_status", "")
-                if status != "OPERATIONAL":
-                    continue
+        while url:
+            try:
+                res = requests.get(url)
+                data = res.json()
+                results = data.get("results", [])
+                
+                for place in results:
+                    # Basic quality filtering
+                    status = place.get("business_status", "")
+                    if status != "OPERATIONAL":
+                        continue
+                        
+                    rating = place.get("rating", 0.0)
+                    reviews = place.get("user_ratings_total", 0)
+                    if rating < 3.5 or reviews < 50:
+                        continue
                     
-                rating = place.get("rating", 0.0)
-                reviews = place.get("user_ratings_total", 0)
-                if rating < 3.5 or reviews < 50:
-                    continue
+                    name = place.get("name", "")
+                    place_id = place.get("place_id")
+                    
+                    # Deduplicate
+                    if place_id in seen_places:
+                        continue
+                    seen_places.add(place_id)
+                    
+                    seeds.append({
+                        "query": f"{name} {city}",
+                        "city": city
+                    })
+                    
+                # Pagination
+                next_page_token = data.get("next_page_token")
+                if next_page_token:
+                    url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken={next_page_token}&key={API_KEY}"
+                    time.sleep(2.0) # Google requires short delay between pagination loops
+                else:
+                    url = None
+                    
+            except Exception as e:
+                print(f"Error fetching for {city}: {e}")
+                url = None
                 
-                name = place.get("name", "")
-                place_id = place.get("place_id")
-                
-                # Deduplicate
-                if place_id in seen_places:
-                    continue
-                seen_places.add(place_id)
-                
-                seeds.append({
-                    "query": f"{name} {city}",
-                    "city": city
-                })
-        except Exception as e:
-            print(f"Error fetching for {city}: {e}")
-            
-        # Polite delay to respect API limits
+        # Delay between cities
         time.sleep(1.5)
 
     # Save to JSON
