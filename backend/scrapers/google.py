@@ -28,9 +28,29 @@ class GoogleBusinessScraper(PoliteScraper):
             data = response.json()
             results = data.get("results", [])
             if results:
-                place_id = results[0]["place_id"]
-                address = results[0].get("formatted_address", "")
-                print(f"Found lively Place ID for {query}: {place_id} at {address}")
+                place = results[0]
+                result_name = place.get("name", "")
+                
+                # Safety Check: Does the returned name match our query in any meaningful way?
+                # This prevents Google's fuzzy fallback from returning "Shawarma Shabi" when looking for "Shawarma Omri"
+                generic_words = {"שווארמה", "shawarma", "israel", "ישראל", "-", "מסעדה", "ב", "של"}
+                query_words = set(query.split())
+                meaningful_query_words = {w for w in query_words if w.lower() not in generic_words}
+                
+                match_found = False
+                result_name_lower = result_name.lower()
+                for w in meaningful_query_words:
+                    if w in result_name_lower:
+                        match_found = True
+                        break
+                        
+                if not match_found and meaningful_query_words:
+                    print(f"Safety Trigger: Rejecting '{result_name}' as it doesn't contain core keywords from '{query}'")
+                    return None, None
+                    
+                place_id = place["place_id"]
+                address = place.get("formatted_address", "")
+                print(f"Found lively Place ID for {query}: {place_id} ({result_name}) at {address}")
                 return place_id, address
         return None, None
         
