@@ -18,7 +18,7 @@ def cleanup_legacy_data():
     from database import SessionLocal
     db = SessionLocal()
     try:
-        targets = ["%במבינו%", "%סעיד%"]
+        targets = ["%במבינו%", "%סעיד%", "%בורגר%", "%סטיישן%"]
         for target in targets:
             rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
             for r in rests:
@@ -126,12 +126,25 @@ def search_restaurant(q: str = "", db: Session = Depends(get_db)):
     if not q or len(q.strip()) < 2:
         return {"exists": False, "message": "אנא הזן שם ארוך יותר"}
     
+    query_str = q.strip()
+    
     # Simple LIKE search
-    exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{q.strip()}%")).first()
+    exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{query_str}%")).first()
     if exists:
         return {"exists": True, "message": f"כן! העסק '{exists.name}' מזוהה ונמצא במעקב הרדאר."}
+        
+    # Check if it's in the queue (auto_seeds.json)
+    try:
+        import json
+        with open("auto_seeds.json", "r", encoding="utf-8") as f:
+            seeds = json.load(f)
+            for s in seeds:
+                if query_str in s.get("query", ""):
+                    return {"exists": True, "message": f"מעולה! העסק נמצא בתור לסריקה על ידי המכ\"ם בסבב הקרוב."}
+    except Exception as e:
+        print("Error checking seeds:", e)
     
-    whatsapp_url = f"https://wa.me/972523445081?text=היי,%20העסק%20שלי%20({q.strip()})%20לא%20נמצא%20ברדאר"
+    whatsapp_url = f"https://wa.me/972523445081?text=היי,%20העסק%20שלי%20({query_str})%20לא%20נמצא%20ברדאר"
     return {
         "exists": False, 
         "message": "לא נמצא בסורק, אם זו טעות - צור איתנו קשר",

@@ -50,6 +50,13 @@ def generate_seeds():
                     name = place.get("name", "")
                     place_id = place.get("place_id")
                     
+                    # Negative Title Filter to catch false-positives (Burgers, Sushi, etc)
+                    negative_words = ["בורגר", "burger", "פיצה", "pizza", "סושי", "sushi", "סטיישן", "station", "קפה", "cafe", "גלידה"]
+                    if any(nw in name.lower() for nw in negative_words):
+                        # Make sure it's not a legitimate mixed place, but usually "Burger" means it's a burger joint.
+                        if "שווארמה" not in name and "שוארמה" not in name:
+                            continue
+                    
                     # Deduplicate
                     if place_id in seen_places:
                         continue
