@@ -90,7 +90,7 @@ class SocialMediaScanner:
         print(f"Starting Apify Facebook scrape for: {query}")
         
         run_input = {
-            "startUrls": [{"url": f"https://www.facebook.com/search/posts/?q={query}"}],
+            "startUrls": [{"url": f"https://www.facebook.com/groups/shawarma.israel/search/?q={query}"}],
             "resultsLimit": 5
         }
         

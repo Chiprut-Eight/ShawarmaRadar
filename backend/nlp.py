@@ -60,9 +60,9 @@ class RankingEngine:
             weight = 3.0 - (2.0 * (age_hours / 24.0))
             return max(1.0, weight)
         
-        # Older than 24h, weight gradually decays to 0.1
-        # Example exponential decay
-        decay_factor = math.exp(-(age_hours - 24) / 168) # 168 hours = 1 week
+        # Older than 24h, weight gradually decays to 0.1 over 6 months
+        # 180 days = 4320 hours
+        decay_factor = math.exp(-(age_hours - 24) / 4320)
         return max(0.1, decay_factor)
 
     def calculate_final_radar_score(self, google_rating: float, google_ratings_total: int, recent_reviews: list, wolt_rating: float = 0.0, social_volume: int = 0) -> float:

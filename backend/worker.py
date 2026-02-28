@@ -205,6 +205,21 @@ def run_cron_cycle_sync():
         loop.close()
         
     print("Cycle complete.")
+    
+    # 6. Dispatch WhatsApp Notification to Developer
+    try:
+        import requests
+        phone = "+972523445081"
+        apikey = os.getenv("CALLMEBOT_API_KEY")
+        if apikey:
+            msg = f"ShawarmaRadar: הסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה! הנתונים סונכרנו."
+            url = f"https://api.callmebot.com/whatsapp.php?phone={phone}&text={msg}&apikey={apikey}"
+            requests.get(url)
+            print("WhatsApp notification sent to developer.")
+        else:
+            print("WhatsApp API Key not found. Skipping notification.")
+    except Exception as e:
+        print(f"Failed to send WhatsApp notification: {e}")
 
 async def run_cron_cycle():
     # Helper to prevent blocking main event loop since Apify client is sync
