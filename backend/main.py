@@ -131,7 +131,12 @@ def search_restaurant(q: str = "", db: Session = Depends(get_db)):
     if exists:
         return {"exists": True, "message": f"כן! העסק '{exists.name}' מזוהה ונמצא במעקב הרדאר."}
     
-    return {"exists": False, "message": "לא מצאנו את העסק ברדאר! לבינתיים רק מנהלי הרדאר מורשים להוסיף עסקים למעקב."}
+    whatsapp_url = f"https://wa.me/972523445081?text=היי,%20העסק%20שלי%20({q.strip()})%20לא%20נמצא%20ברדאר"
+    return {
+        "exists": False, 
+        "message": "לא נמצא בסורק, אם זו טעות - צור איתנו קשר",
+        "whatsapp_link": whatsapp_url
+    }
 
 @app.get("/api/regions/{region_name}", response_model=List[schemas.RestaurantSchema])
 def get_restaurants_by_region(region_name: str, db: Session = Depends(get_db)):

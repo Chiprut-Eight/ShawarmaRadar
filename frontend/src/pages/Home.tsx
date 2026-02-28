@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResult, setSearchResult] = useState<string | null>(null);
+  const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, whatsapp?: string} | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
   // PWA Prompt
@@ -102,9 +102,13 @@ const Home: React.FC = () => {
     try {
       const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}`);
       const data = await res.json();
-      setSearchResult(data.message);
+      setSearchResult({
+        message: data.message,
+        isFound: data.exists,
+        whatsapp: data.whatsapp_link
+      });
     } catch (e) {
-      setSearchResult("שגיאה בחיבור לשרת הרדאר.");
+      setSearchResult({ message: "שגיאה בחיבור לשרת הרדאר.", isFound: false });
     } finally {
       setIsSearching(false);
     }
@@ -167,7 +171,7 @@ const Home: React.FC = () => {
 
       {loading ? null : (
         <div className="signals-panel">
-          <h2 className="signals-section-title">פעילות רחוב חיה</h2>
+          <h2 className="signals-section-title">עוד שווארמיות שאתם אוהבים</h2>
           
           {/* Runners Up Data Signals */}
           {runnersUp.map((place, idx) => (
@@ -220,14 +224,27 @@ const Home: React.FC = () => {
           </button>
         </div>
         {searchResult && (
-          <div style={{color: searchResult.includes('כן') ? '#facc15' : '#ef4444', marginBottom: '1rem', fontWeight: 'bold'}}>
-            {searchResult}
+          <div style={{marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px'}}>
+            <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
+              {searchResult.message}
+            </div>
+            {searchResult.whatsapp && (
+               <a 
+                 href={searchResult.whatsapp}
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="whatsapp-btn"
+                 style={{marginTop: '5px'}}
+               >
+                 <MessageCircle size={20} /> צור קשר להוספה לרדאר
+               </a>
+            )}
           </div>
         )}
         
         <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
           <h3>רוצים לשמוע איך ניתן לפרסם אצלנו?</h3>
-          <p>הגע ללקוחות רעבים ברגע המדויק שהם בודקים את המכ"ם.</p>
+          <p>תגיעו ללקוחות רעבים ברגע המדויק שהם בודקים את המכ"ם.</p>
           <a 
             href="https://wa.me/972523445081?text=היי,%20ספר%20לי%20איך%20ניתן%20לפרסם%20את%20העסק%20שלי%20ב-ShawarmaRadar" 
             target="_blank" 
@@ -256,15 +273,15 @@ const Home: React.FC = () => {
       {activeInfo === 'ai' && (
         <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3><Activity color="#4ade80" /> איך המכ"ם מחשב ציון רחוב נוכחי?</h3>
+            <h3><Activity color="#4ade80" /> איך המכ"ם מחשב את ציון השווארמה?</h3>
             <p>
-              בניגוד לגוגל מפות, שמציג ממוצע כוכבים היסטורי של שנים אחורה (ולכן עסקים לעולם לא יורדים בדירוג גם אם אכזבו השבוע), הרדאר שלנו פועל ב<strong>זמן אמת</strong>.
+              המשקל הגדול ביותר בציון מורכב מ<strong>ההיסטוריה ארוכת השנים אצל גוגל</strong>. אנחנו דוגמים את המוניטין של העסק מול אלפי הלקוחות שביקרו בו לאורך השנים כדי לקבוע מיקום התחלתי, תוך "הגנה בייסיאנית" למניעת קפיצה של מקומות חדשים שקיבלו שתי ביקורות טובות.
             </p>
             <p>
-              מנוע איסוף הנתונים סורק 24/7 את הרשת (גוגל, אינסטגרם, פוסטים וטיקטוק) ומושך משם <strong>רק את הדיבור מהתקופה האחרונה</strong> על השווארמה.
+              <strong>ומה הופך את הרדאר ל"חי"?</strong> כאן נכנס לפעולה מנוע הבינה המלאכותית שלנו. הוא סורק מסביב לשעון את הרשתות החברתיות (טיקטוק, אינסטגרם פייסבוק, וביקורות אחרונות) וקורא את <strong>הסנטימנט העכשווי</strong>. 
             </p>
             <p>
-              בינה מלאכותית (AI) מנתחת את האווירה המילולית בטקסט (כעס? התלהבות? אכזבה מהבשר?) ומייצרת "ציון מומנטום" נקי החדור לשיח הרחוב העכשווי. בגלל זה המקומות יכולים לקפוץ ולצנוח מדי יום!
+              המערכת מבינה סיטואציות כמו התלהבות מטורפת השבוע או תלונות טריות מקמפיין שלילי. הדיבור הזה משוקלל כ"בונוס" או כ"קנס" לדירוג הבסיסי ההיסטורי של גוגל, וכך הרדאר מרים מקומות ש'חמים' הרגע, ומוריד מקומות שאכזבו הבוקר.
             </p>
             <div style={{marginTop: '1.5rem', clear: 'both'}}>
               <button className="close-btn" onClick={() => setActiveInfo(null)}>הבנתי, תודה</button>
