@@ -206,20 +206,30 @@ def run_cron_cycle_sync():
         
     print("Cycle complete.")
     
-    # 6. Dispatch WhatsApp Notification to Developer
+    # 6. Dispatch Telegram Notification to Developer
     try:
         import requests
-        phone = "+972523445081"
-        apikey = os.getenv("CALLMEBOT_API_KEY")
-        if apikey:
-            msg = f"ShawarmaRadar: הסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה! הנתונים סונכרנו."
-            url = f"https://api.callmebot.com/whatsapp.php?phone={phone}&text={msg}&apikey={apikey}"
-            requests.get(url)
-            print("WhatsApp notification sent to developer.")
+        bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+        chat_id = os.getenv("TELEGRAM_CHAT_ID")
+        
+        if bot_token and chat_id:
+            msg = f"🔔 *ShawarmaRadar Update*\nהסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה! הנתונים סונכרנו למסד הנתונים."
+            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+            
+            payload = {
+                "chat_id": chat_id,
+                "text": msg,
+                "parse_mode": "Markdown"
+            }
+            res = requests.post(url, json=payload)
+            if res.status_code == 200:
+                print("Telegram notification sent to developer.")
+            else:
+                print(f"Telegram API failed: {res.text}")
         else:
-            print("WhatsApp API Key not found. Skipping notification.")
+            print("Telegram credentials not found in ENV. Skipping notification.")
     except Exception as e:
-        print(f"Failed to send WhatsApp notification: {e}")
+        print(f"Failed to send Telegram notification: {e}")
 
 async def run_cron_cycle():
     # Helper to prevent blocking main event loop since Apify client is sync
