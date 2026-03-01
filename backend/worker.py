@@ -7,6 +7,7 @@ from nlp import RankingEngine
 from database import engine, get_db
 import models
 from regions import get_region_by_city
+from scrapers.wolt import WoltTracker, TenBisTracker
 
 async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, tenbis: TenBisTracker, ai: RankingEngine, db: Session, search_query: str, default_city: str):
     print(f"\n--- Processing {search_query} ---")
