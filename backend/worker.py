@@ -171,6 +171,8 @@ def run_cron_cycle_sync():
     
     import json
     import os
+    import time
+    import gc
     
     seeds_path = os.path.join(os.path.dirname(__file__), "auto_seeds.json")
     seed_targets = []
@@ -213,10 +215,14 @@ def run_cron_cycle_sync():
         asyncio.set_event_loop(loop)
         try:
             loop.run_until_complete(process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"]))
+            # Important: Sleep to respect OpenAI free tier rate limits (mostly 3 RPM or burst limits)
+            # and to allow Render memory to stabilize.
+            time.sleep(12) 
         except Exception as e:
             print(f"Failed processing {target['query']}: {e}")
         finally:
             loop.close()
+            gc.collect() # Force memory cleanup to prevent Render OOM
         
     print("Cycle complete.")
     
