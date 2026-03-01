@@ -22,7 +22,7 @@ def cleanup_legacy_data():
             "%במבינו%", "%סעיד%", "%בורגר%", "%סטיישן%",
             "%רופטופ%", "%לבנטיני%", "%רינגלבלום%", "%ג׳ורג׳י%", "%סוהו%", 
             "%שיפוד%", "%מנגל%", "%ציפורה%", "%שאפל%", "%פלאפל%", "%לנדוור%",
-            "%סטייק%", "%בשרים%"
+            "%סטייק%", "%בשרים%", "%פיטמאסטר%", "%Pitmaster%", "%pitmaster%"
         ]
         for target in targets:
             rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
