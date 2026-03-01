@@ -29,6 +29,13 @@ def cleanup_legacy_data():
             for r in rests:
                 db.query(models.Review).filter(models.Review.restaurant_id == r.id).delete()
                 db.delete(r)
+                
+        # Specific cleanup for the accidental Tel Aviv entry of HaPina HaLevana
+        pina = db.query(models.Restaurant).filter(models.Restaurant.name.like("%הפינה הלבנה%"), models.Restaurant.city == "תל אביב").first()
+        if pina:
+            db.query(models.Review).filter(models.Review.restaurant_id == pina.id).delete()
+            db.delete(pina)
+            
         db.commit()
         print("Legacy data cleaned up from Database.")
     except Exception as e:
