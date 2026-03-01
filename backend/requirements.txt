@@ -8,3 +8,4 @@ python-dotenv
 openai
 requests
 apify-client
+psycopg2-binary

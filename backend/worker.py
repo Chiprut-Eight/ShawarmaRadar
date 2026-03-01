@@ -190,6 +190,24 @@ def run_cron_cycle_sync():
         ]
     
     for target in seed_targets:
+        # Check if we already updated this restaurant recently (Skip to resume progress quickly)
+        display_name = target["query"].replace(f" {target['city']}", "").strip()
+        existing = db.query(models.Restaurant).filter(
+            models.Restaurant.name == display_name,
+            models.Restaurant.city == target["city"]
+        ).first()
+        
+        if existing and existing.updated_at:
+            now = datetime.now(timezone.utc)
+            updated = existing.updated_at
+            if updated.tzinfo is None:
+                updated = updated.replace(tzinfo=timezone.utc)
+            
+            hours_since = (now - updated).total_seconds() / 3600
+            if hours_since < 12:
+                print(f"Skipping {target['query']} - Already updated {hours_since:.1f} hours ago.")
+                continue
+
         # Create a new event loop just for this thread execution
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
