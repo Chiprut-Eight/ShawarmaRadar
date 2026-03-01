@@ -61,57 +61,77 @@ const RegionalDashboard: React.FC = () => {
 
   return (
     <div className="regional-container">
-      <h2 className="region-title">
-        <MapPin className="region-icon" />
+      <h2 className="region-title" style={{textAlign: 'center', marginBottom: '20px'}}>
+        <MapPin className="region-icon" style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: '8px'}} />
         {currentRegionName} - מפקדת תצפית
       </h2>
 
-      <div className="grid-layout">
-        <div className="local-king-panel card">
-          <h3>Local King</h3>
-          {loading ? (
-             <div className="sys-message">
-               <span>[SYSTEM]</span> SCANNING SECTOR {id?.toUpperCase()}...
-             </div>
-          ) : localKing ? (
-            <div className="regional-king-info">
-              <h2>{localKing.name} - {localKing.city}</h2>
-              {localKing.address && <p style={{fontSize: '0.9em', color: '#ccc', margin: '4px 0'}}>{localKing.address}</p>}
-              <p>Score: {localKing.bayesian_average.toFixed(1)}</p>
-              <p className="reports-count">{t('based_on_reports', { count: localKing.total_reviews })}</p>
+      {/* Local King Radar Section */}
+      <div className="king-radar-container">
+        <h2 className="king-radar-title">מלך האזור עכשיו</h2>
+        
+        {loading ? (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <div>סורק רחוב...</div>
+          </div>
+        ) : localKing ? (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <div style={{zIndex: 2, marginBottom: '10px'}}><TensionMeter value={regionTension} /></div>
+            <div className="king-radar-name">{localKing.name}</div>
+            {localKing.address ? (
+               <div className="king-radar-address">{localKing.city} • {localKing.address}</div>
+            ) : (
+               <div className="king-radar-address">{localKing.city}</div>
+            )}
+            <div className="king-radar-score">{localKing.bayesian_average.toFixed(1)}%</div>
+          </div>
+        ) : (
+          <div className="radar-display">
+            <div className="radar-sweep"></div>
+            <div>אין מספיק נתונים לאזור זה</div>
+          </div>
+        )}
+      </div>
+
+      {loading ? null : (
+        <div className="signals-panel" style={{marginTop: '30px'}}>
+          <h2 className="signals-section-title">המובילות באזור {currentRegionName}</h2>
+          
+          {restaurants.slice(1).map((place, idx) => (
+            <div className="signal-card" key={place.id}>
+              <div className="signal-icon-box">
+                #{idx + 2}
+              </div>
+              
+              <div className="signal-content">
+                <div className="signal-title-row">
+                  <h3>{place.name}</h3>
+                  <span className="live-tag">LIVE</span>
+                </div>
+                <p className="signal-sub">
+                  {place.city} {place.address ? `• ${place.address}` : ''}
+                </p>
+              </div>
+
+              <div className="signal-graph">
+                <svg viewBox="0 0 100 30" className="sparkline green">
+                  <polyline points="0,20 20,20 30,10 40,25 50,15 60,5 70,15 80,10 90,20 100,10" />
+                </svg>
+              </div>
+
+              <div className="signal-score">
+                 {place.bayesian_average.toFixed(1)}%
+              </div>
             </div>
-          ) : (
-            <div className="sys-message">
-              <span>[SYSTEM]</span> NO TARGET ACQUIRED IN SECTOR {id?.toUpperCase()}
-            </div>
+          ))}
+          
+          {!localKing && restaurants.length <= 1 && (
+             <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>אין נתונים נוספים להצגה באזור זה.</div>
           )}
         </div>
-
-        <div className="tension-panel card">
-          <h3>Sector Tension</h3>
-          <TensionMeter value={regionTension} />
-        </div>
-        
-        <div className="feed-panel card">
-          <h3>Top Rankings Feed</h3>
-          <div className="scrolling-intel">
-            {restaurants.slice(1).map((place, idx) => (
-              <div key={place.id} className="secondary-ranking-card card">
-                <h3>#{idx + 2} {place.name}</h3>
-                {place.address && <p style={{fontSize: '0.8em', color: '#999', margin: '2px 0'}}>{place.address}</p>}
-                <p>
-                  <MapPin size={16} style={{ verticalAlign: 'middle', marginRight: '5px' }} />
-                  {place.city}
-                </p>
-                <p>Score: {place.bayesian_average.toFixed(1)}</p>
-              </div>
-            ))}
-            {restaurants.length <= 1 && !loading && (
-              <p className="sys-message">[SYSTEM] No additional intel.</p>
-            )}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

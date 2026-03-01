@@ -1,110 +1,59 @@
-import os
-from apify_client import ApifyClient
-from dotenv import load_dotenv
+import urllib.parse
+from scrapers.base import PoliteScraper
+from bs4 import BeautifulSoup
 
-load_dotenv()
-
-class SocialMediaScanner:
+class SocialMediaScanner(PoliteScraper):
     def __init__(self):
-        # We use Apify Client instead of our PoliteScraper here
-        # since Apify handles proxies and headless browser execution
-        token = os.getenv("APIFY_API_TOKEN")
-        if token:
-            self.client = ApifyClient(token)
-        else:
-            self.client = None
-            print("Warning: APIFY_API_TOKEN not found.")
-        
-    def scan_tiktok_hashtags(self, hashtags: list):
-        """
-        Scans TikTok for viral videos containing specific hashtags
-        using a popular Apify Actor (e.g., clockwork/tiktok-scraper)
-        """
-        if not self.client:
-            return []
-            
-        print(f"Starting Apify TikTok scrape for: {hashtags}")
-        
-        # We start the actor and wait for it to finish.
-        # This can be time consuming, so in production this should be a background Celery/RQ job.
-        run_input = {
-            "hashtags": hashtags,
-            "resultsPerPage": 10,
-            "shouldDownloadVideos": False
+        # We use DuckDuckGo HTML version for free, anonymous web scraping
+        super().__init__(base_url="https://html.duckduckgo.com", delay_seconds=2.0)
+        # Adding a browser-like user agent is critical
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
         }
+
+    def _scrape_ddg(self, query: str):
+        """Helper to scrape DuckDuckGo for text snippets related to a query"""
+        encoded_query = urllib.parse.quote(query)
+        # We don't use self.get directly because we want to pass headers
+        import time
+        import httpx
         
-        try:
-            # Note: The exact actor ID depends on user's Apify setup.
-            # Fixed: exact actor ID from user's Apify store screenshot
-            run = self.client.actor("clockworks/tiktok-scraper").call(run_input=run_input)
+        # Polite wait
+        elapsed = time.time() - self.last_request_time
+        if elapsed < self.delay_seconds:
+            time.sleep(self.delay_seconds - elapsed)
             
-            results = []
-            for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
-                results.append({
-                    "text": item.get("text"),
-                    "views": item.get("playCount"),
-                    "url": item.get("webVideoUrl")
-                })
-            return results
+        url = f"{self.base_url}/html/?q={encoded_query}"
+        results = []
+        try:
+            res = httpx.get(url, headers=self.headers, timeout=10.0)
+            self.last_request_time = time.time()
+            if res.status_code == 200:
+                soup = BeautifulSoup(res.text, "html.parser")
+                for a in soup.find_all('a', class_='result__snippet'):
+                    text = a.get_text(strip=True)
+                    if text:
+                        results.append({"text": text, "url": ""})
         except Exception as e:
-            print(f"Apify TikTok Error: {e}")
-            return []
+            print(f"Web Scrape Error for {query}: {e}")
+        return results
+
+    def scan_tiktok_hashtags(self, hashtags: list):
+        # We search the web for the hashtag
+        if not hashtags: return []
+        tag = hashtags[0]
+        print(f"Scanning web snippets for TikTok: {tag}")
+        return self._scrape_ddg(f"site:tiktok.com {tag}")
 
     def scan_instagram_tags(self, tags: list):
-        """
-        Scans Instagram for tagged posts.
-        """
-        if not self.client:
-            return []
-            
-        print(f"Starting Apify Instagram scrape for: {tags}")
-        
-        run_input = {
-            "hashtags": tags,
-            "resultsLimit": 10
-        }
-        
-        try:
-            # Using standard apify/instagram-scraper
-            run = self.client.actor("apify/instagram-hashtag-scraper").call(run_input=run_input)
-            
-            results = []
-            for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
-                results.append({
-                    "text": item.get("caption"),
-                    "likes": item.get("likesCount"),
-                    "url": item.get("url")
-                })
-            return results
-        except Exception as e:
-            print(f"Apify Instagram Error: {e}")
-            return []
+        if not tags: return []
+        tag = tags[0]
+        print(f"Scanning web snippets for Instagram: {tag}")
+        return self._scrape_ddg(f"site:instagram.com {tag}")
 
     def scan_facebook_posts(self, query: str):
-        """
-        Scans Facebook for recent posts mentioning the shawarma place.
-        """
-        if not self.client:
-            return []
-            
-        print(f"Starting Apify Facebook scrape for: {query}")
-        
-        run_input = {
-            "startUrls": [{"url": f"https://www.facebook.com/groups/shawarma.israel/search/?q={query}"}],
-            "resultsLimit": 5
-        }
-        
-        try:
-            run = self.client.actor("apify/facebook-posts-scraper").call(run_input=run_input)
-            
-            results = []
-            for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
-                results.append({
-                    "text": item.get("text", ""),
-                    "likes": item.get("likes", 0),
-                    "url": item.get("url")
-                })
-            return results
-        except Exception as e:
-            print(f"Apify Facebook Error: {e}")
-            return []
+        print(f"Scanning web snippets for Facebook: {query}")
+        # Focus on the famous group or facebook in general
+        return self._scrape_ddg(f"site:facebook.com \"{query}\"")
+

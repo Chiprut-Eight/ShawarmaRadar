@@ -7,10 +7,8 @@ from nlp import RankingEngine
 from database import engine, get_db
 import models
 from regions import get_region_by_city
-from scrapers.social import SocialMediaScanner
-from scrapers.wolt import WoltTracker
 
-async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMediaScanner, wolt: WoltTracker, ai: RankingEngine, db: Session, search_query: str, default_city: str):
+async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, tenbis: TenBisTracker, ai: RankingEngine, db: Session, search_query: str, default_city: str):
     print(f"\n--- Processing {search_query} ---")
     
     # 1. Search for Place ID
@@ -28,34 +26,12 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
     for gr in google_reviews:
         gr["source"] = "google"
         
-    social_reviews = []
-    if social and social.client:
-        base_hashtag = search_query.replace(" ", "")
-        print(f"Pulling Tiktok/Insta for #{base_hashtag}...")
-        try:
-            tiktok_data = social.scan_tiktok_hashtags([base_hashtag])
-            if tiktok_data:
-                for item in tiktok_data:
-                    social_reviews.append({"text": item.get("text", ""), "source": "tiktok", "time": None})
-            
-            insta_data = social.scan_instagram_tags([base_hashtag])
-            if insta_data:
-                for item in insta_data:
-                    social_reviews.append({"text": item.get("text", ""), "source": "instagram", "time": None})
-                    
-            fb_data = social.scan_facebook_posts(search_query)
-            if fb_data:
-                for item in fb_data:
-                    social_reviews.append({"text": item.get("text", ""), "source": "facebook", "time": None})
-                    
-        except Exception as e:
-            print(f"Warning: Social scraping failed - {e}")
-            
-    # Combine reviews
-    reviews_data = google_reviews + social_reviews
+    # We rely on Google's rich textual reviews to drive the real-time NLP analysis.
+    reviews_data = google_reviews
+    buzz_volume = len(reviews_data) * 2 # Weighting Google's immediate reviews as buzz proxy
     
     if not reviews_data:
-        print(f"Skipping {search_query} due to lack of data.")
+        print(f"Skipping {search_query} due to lack of text reviews data.")
         return
         
     # 3. Get or Create Restaurant in DB
@@ -124,8 +100,10 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
         
     db.commit()
     
-    # 5. Get Wolt Rating (Optional)
+    # 5. Get Delivery Ratings (Wolt & 10Bis) for Live Tension
     wolt_rating = 0.0
+    tenbis_rating = 0.0
+    
     try:
         slug = wolt.search_venue(search_query)
         if slug:
@@ -133,10 +111,19 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
             if load and load.get("rating"):
                 wolt_rating = float(load.get('rating').get('score', 0.0)) if isinstance(load.get('rating'), dict) else float(load.get('rating'))
                 print(f"Wolt rating found: {wolt_rating}")
-    except Exception as e:
+    except Exception:
+        pass
+        
+    try:
+        if tenbis:
+            tb_data = tenbis.search_restaurant(search_query)
+            if tb_data and tb_data.get('reviewsScore'):
+                tenbis_rating = float(tb_data.get('reviewsScore'))
+                print(f"10bis rating found: {tenbis_rating}")
+    except Exception:
         pass
     
-    # 5. Recalculate Scores
+    # 6. Recalculate Scores
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
     
     if all_reviews:
@@ -144,13 +131,17 @@ async def process_restaurant(scraper: GoogleBusinessScraper, social: SocialMedia
         restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
         restaurant.total_reviews = len(all_reviews)
         
-        # New Scoring System: Base on long-term Google rating, modified by recent NLP chatters
+        # Average the delivery app scores if available
+        active_delivery_ratings = [r for r in (wolt_rating, tenbis_rating) if r > 0]
+        avg_delivery = sum(active_delivery_ratings) / len(active_delivery_ratings) if active_delivery_ratings else 0.0
+        
+        # New Scoring System: Base on long-term Google rating, modified by recent NLP chatters and delivery APIs
         restaurant.bayesian_average = ai.calculate_final_radar_score(
             google_rating=restaurant.google_rating,
             google_ratings_total=restaurant.google_ratings_total,
             recent_reviews=all_reviews,
-            wolt_rating=wolt_rating,
-            social_volume=len(social_reviews)
+            wolt_rating=avg_delivery, 
+            social_volume=buzz_volume
         )
         
         db.commit()
@@ -160,21 +151,21 @@ def run_single_scrape_sync(query: str, city: str = "ישראל"):
     print(f"Triggering manual scrape for {query}...")
     db: Session = next(get_db())
     scraper = GoogleBusinessScraper()
-    social = SocialMediaScanner()
     wolt = WoltTracker()
+    tenbis = TenBisTracker()
     ai = RankingEngine()
     
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(process_restaurant(scraper, social, wolt, ai, db, query, city))
+    loop.run_until_complete(process_restaurant(scraper, wolt, tenbis, ai, db, query, city))
     loop.close()
 
 def run_cron_cycle_sync():
     print("Starting background worker cycle...")
     db: Session = next(get_db())
     scraper = GoogleBusinessScraper()
-    social = SocialMediaScanner()
     wolt = WoltTracker()
+    tenbis = TenBisTracker()
     ai = RankingEngine()
     
     import json
@@ -201,8 +192,12 @@ def run_cron_cycle_sync():
         # Create a new event loop just for this thread execution
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(process_restaurant(scraper, social, wolt, ai, db, target["query"], target["city"]))
-        loop.close()
+        try:
+            loop.run_until_complete(process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"]))
+        except Exception as e:
+            print(f"Failed processing {target['query']}: {e}")
+        finally:
+            loop.close()
         
     print("Cycle complete.")
     

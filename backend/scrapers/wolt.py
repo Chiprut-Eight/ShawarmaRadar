@@ -46,3 +46,29 @@ class WoltTracker(PoliteScraper):
                 
         print(f"Failed to fetch Wolt delivery load for venue: {venue_slug}")
         return None
+
+class TenBisTracker(PoliteScraper):
+    def __init__(self):
+        super().__init__(base_url="https://www.10bis.co.il", delay_seconds=2.0)
+        
+    def search_restaurant(self, query: str):
+        """
+        Searches the 10bis NextApi for a restaurant and returns basic meta and review scores directly.
+        Returns a dict with 'restaurantName', 'reviewsScore' etc.
+        """
+        encoded_query = urllib.parse.quote(query)
+        # Using the standard search endpoint that 10bis UI uses internally
+        endpoint = f"/NextApi/SearchRestaurants?deliveryMethod=pickup&FilterByPassCard=false&FilterByShowTbisInfo=false&SortBy=rating&searchPhrase={encoded_query}"
+        
+        response = self.get(endpoint)
+        
+        if response and response.status_code == 200:
+            try:
+                data = response.json()
+                results = data.get('Data', {}).get('restaurantsList', [])
+                if results:
+                    return results[0]  # The highest rated exact match in 10bis
+            except Exception as e:
+                print(f"10bis parsing error: {e}")
+                
+        return None

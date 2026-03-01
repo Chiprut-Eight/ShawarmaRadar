@@ -18,7 +18,12 @@ def cleanup_legacy_data():
     from database import SessionLocal
     db = SessionLocal()
     try:
-        targets = ["%במבינו%", "%סעיד%", "%בורגר%", "%סטיישן%"]
+        targets = [
+            "%במבינו%", "%סעיד%", "%בורגר%", "%סטיישן%",
+            "%רופטופ%", "%לבנטיני%", "%רינגלבלום%", "%ג׳ורג׳י%", "%סוהו%", 
+            "%שיפוד%", "%מנגל%", "%ציפורה%", "%שאפל%", "%פלאפל%", "%לנדוור%",
+            "%סטייק%", "%בשרים%"
+        ]
         for target in targets:
             rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
             for r in rests:
