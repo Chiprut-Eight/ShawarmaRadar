@@ -130,13 +130,13 @@ const Home: React.FC = () => {
     <div className="home-container" dir="rtl">
       {/* Branding Header */}
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '20px'}}>
-        <img src="/logo.jpeg" alt="ShawarmaRadar Logo" style={{width: 48, height: 48, borderRadius: '50%', border: '2px solid #facc15'}} />
+        <img src="/logo.jpeg" alt="ShawarmaRadar Logo" style={{width: 80, height: 'auto', borderRadius: '8px', border: '1px solid #facc15'}} />
       </div>
 
       {/* King Radar Section (Top) */}
       <div className="king-radar-container" style={{position: 'relative'}}>
-        <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '20px', left: '20px', zIndex: 10}}>
-          <Info size={16} />
+        <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '10px', left: '10px', zIndex: 10, width: '36px', height: '36px'}}>
+          <Info size={22} />
         </button>
         
         <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>

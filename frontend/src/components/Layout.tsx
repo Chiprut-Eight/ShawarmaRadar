@@ -38,7 +38,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="dropdown">
             <button className={`nav-btn ${location.pathname.includes('/region') ? 'active' : ''}`}>
               <Map size={18} />
-              <span className="hide-mobile">אזורים</span>
+              <span className="hide-mobile">סנן לפי אזור</span>
             </button>
             <div className="dropdown-content">
               {regions.map((r) => (
