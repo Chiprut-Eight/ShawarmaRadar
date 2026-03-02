@@ -36,7 +36,8 @@ def cleanup_legacy_data():
             "%חירק%", "%קפרון%", "%ג'ק%", "%זאת%", "%פבלה%", "%שופן%",
             "%מקסיקנה%", "%מערב ראשל%", "%הפרלמנט%", "%דוניאזאד%", "%Dunyazad%",
             "%אלגרבי%", "%Algharbi%", "%סינטה%", "%על הים%", "%אטיאס%", "%אמילי%",
-            "%יומנגס%", "%פסקדו%", "%בוכרי%", "%ג'וד%", "%הגראז%", "%באגט ניר%", "%רוטצ%", "%בהדונס%"
+            "%יומנגס%", "%פסקדו%", "%בוכרי%", "%ג'וד%", "%הגראז%", "%באגט ניר%", "%רוטצ%", "%בהדונס%",
+            "%אבו יוסף%", "%יעקב קבב%", "%מתחת לעץ%", "%אווז הזהב%", "%שיפודי נתנאל%", "%באגט%"
         ]
         for target in targets:
             rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
@@ -58,6 +59,12 @@ def cleanup_legacy_data():
         db.close()
 
 async def background_worker():
+    try:
+        print("Background: Running legacy data cleanup asynchronously...")
+        await asyncio.to_thread(cleanup_legacy_data)
+    except Exception as e:
+        print(f"Background cleanup error: {e}")
+        
     while True:
         try:
             print("Background: Starting worker cycle...")
@@ -69,9 +76,6 @@ async def background_worker():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Clean up any lingering data
-    cleanup_legacy_data()
-    
     # Start the background task when the app starts
     task = asyncio.create_task(background_worker())
     yield
