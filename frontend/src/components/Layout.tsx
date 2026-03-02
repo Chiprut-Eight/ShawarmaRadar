@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       
       <header className="header">
         <div className="header-logo">
-          <img src="/logo.jpeg" alt="Logo" style={{height: '48px', width: 'auto', borderRadius: '6px', objectFit: 'contain'}} />
+          <img src="/logo.png" alt="Logo" style={{height: '48px', width: 'auto', borderRadius: '6px', objectFit: 'contain'}} />
           <h1>{t('app_name')}</h1>
         </div>
         
