@@ -22,11 +22,7 @@ def cleanup_legacy_data():
             "%במבינו%", "%סעיד%", "%בורגר%", "%סטיישן%",
             "%רופטופ%", "%לבנטיני%", "%רינגלבלום%", "%ג׳ורג׳י%", "%סוהו%", 
             "%שיפוד%", "%מנגל%", "%ציפורה%", "%שאפל%", "%פלאפל%", "%לנדוור%",
-            "%סטייק%", "%בשרים%", "%פיטמאסטר%", "%Pitmaster%", "%pitmaster%",
-            "%אנטריקוטי%", "%אנטריקוט%", "%וילה מארה%", "%המנגליסטים%", "%הסביח%",
-            "%הסומך%", "%חומוס%", "%בית הפול%", "%סבתא עזיזה%", "%ויצמן%", 
-            "%Maresa%", "%מרסה בר%", "%שניצל%", "%SCHNITZEL%", "%הניצחון של חני%", 
-            "%אופרה%", "%מזרחי%"
+            "%סטייק%", "%בשרים%", "%פיטמאסטר%", "%Pitmaster%", "%pitmaster%"
         ]
         for target in targets:
             rests = db.query(models.Restaurant).filter(models.Restaurant.name.like(target)).all()
@@ -78,8 +74,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "HEAD"])
 def health_check():
+    return {"status": "ok"}
     return {"status": "ok"}
 
 # WebSocket Connection Manager
