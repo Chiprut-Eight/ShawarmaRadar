@@ -127,6 +127,10 @@
     display: none;
   }
   
+  .header-logo img {
+    height: 48px !important;
+  }
+  
   .main-content {
     padding: 1rem;
   }

@@ -25,8 +25,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="radar-scan"></div>
       
       <header className="header">
-        <div className="header-logo">
-          <img src="/logo.png" alt="ShawarmaRadar Logo" style={{height: '56px', width: 'auto', borderRadius: '4px', objectFit: 'contain'}} />
+        <div className="header-logo" style={{ flexShrink: 0 }}>
+          <img src="/logo.png" alt="ShawarmaRadar Logo" style={{height: '80px', width: 'auto', borderRadius: '4px', display: 'block'}} />
         </div>
         
         <nav className="header-nav">
