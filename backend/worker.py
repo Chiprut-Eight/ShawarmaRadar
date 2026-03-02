@@ -199,16 +199,17 @@ def run_cron_cycle_sync():
             models.Restaurant.city == target["city"]
         ).first()
         
-        if existing and existing.updated_at:
-            now = datetime.now(timezone.utc)
-            updated = existing.updated_at
-            if updated.tzinfo is None:
-                updated = updated.replace(tzinfo=timezone.utc)
-            
-            hours_since = (now - updated).total_seconds() / 3600
-            if hours_since < 12:
-                print(f"Skipping {target['query']} - Already updated {hours_since:.1f} hours ago.")
-                continue
+        if existing:
+            last_checked = existing.updated_at or existing.created_at
+            if last_checked:
+                now = datetime.now(timezone.utc)
+                if last_checked.tzinfo is None:
+                    last_checked = last_checked.replace(tzinfo=timezone.utc)
+                
+                hours_since = (now - last_checked).total_seconds() / 3600
+                if hours_since < 12:
+                    print(f"Skipping {target['query']} - Already updated {hours_since:.1f} hours ago.")
+                    continue
 
         # Create a new event loop just for this thread execution
         loop = asyncio.new_event_loop()
