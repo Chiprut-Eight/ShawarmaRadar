@@ -24,8 +24,8 @@ const TensionMeter: React.FC<TensionMeterProps> = ({ value }) => {
         ></div>
       </div>
       <div className="meter-markers">
-        <span>0% (Calm)</span>
-        <span>100% (Warzone)</span>
+        <span>0%</span>
+        <span>100%</span>
       </div>
     </div>
   );
