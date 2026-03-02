@@ -26,8 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       
       <header className="header">
         <div className="header-logo">
-          <img src="/logo.png" alt="Logo" style={{height: '48px', width: 'auto', borderRadius: '6px', objectFit: 'contain'}} />
-          <h1>{t('app_name')}</h1>
+          <img src="/logo.png" alt="ShawarmaRadar Logo" style={{height: '56px', width: 'auto', borderRadius: '4px', objectFit: 'contain'}} />
         </div>
         
         <nav className="header-nav">
