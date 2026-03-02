@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import TensionMeter from '../components/TensionMeter';
 import { MapPin } from 'lucide-react';
 import './RegionalDashboard.css';
 
@@ -57,7 +56,6 @@ const RegionalDashboard: React.FC = () => {
   }, [id]);
 
   const localKing = restaurants.length > 0 ? restaurants[0] : null;
-  const regionTension = localKing ? localKing.bayesian_average : 0;
 
   return (
     <div className="regional-container">
@@ -78,7 +76,6 @@ const RegionalDashboard: React.FC = () => {
         ) : localKing ? (
           <div className="radar-display">
             <div className="radar-sweep"></div>
-            <div style={{zIndex: 2, marginBottom: '10px'}}><TensionMeter value={regionTension} /></div>
             <div className="king-radar-name">{localKing.name}</div>
             {localKing.address ? (
                <div className="king-radar-address">{localKing.city} • {localKing.address}</div>
