@@ -128,10 +128,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container" dir="rtl">
-      {/* Branding Header */}
-      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '20px'}}>
-        <img src="/logo.jpeg" alt="ShawarmaRadar Logo" style={{width: 80, height: 'auto', borderRadius: '8px', border: '1px solid #facc15'}} />
-      </div>
+      {/* Branding Header Removed (Moved to Layout Navbar) */}
 
       {/* King Radar Section (Top) */}
       <div className="king-radar-container" style={{position: 'relative'}}>

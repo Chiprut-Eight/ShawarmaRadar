@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Radar, Globe, Map } from 'lucide-react';
+import { Globe, Map } from 'lucide-react';
 import './Layout.css';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       
       <header className="header">
         <div className="header-logo">
-          <Radar className="logo-icon" size={32} />
+          <img src="/logo.jpeg" alt="Logo" style={{width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #facc15'}} />
           <h1>{t('app_name')}</h1>
         </div>
         

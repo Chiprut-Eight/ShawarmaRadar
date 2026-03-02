@@ -61,9 +61,9 @@ const RegionalDashboard: React.FC = () => {
 
   return (
     <div className="regional-container">
-      <h2 className="region-title" style={{textAlign: 'center', marginBottom: '20px'}}>
+      <h2 className="region-title" style={{textAlign: 'center', marginBottom: '20px', fontSize: '2em', fontWeight: 'bold'}}>
         <MapPin className="region-icon" style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: '8px'}} />
-        {currentRegionName} - מפקדת תצפית
+        {currentRegionName}
       </h2>
 
       {/* Local King Radar Section */}
