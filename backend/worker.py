@@ -29,7 +29,7 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
         
     # We rely on Google's rich textual reviews to drive the real-time NLP analysis.
     reviews_data = google_reviews
-    buzz_volume = len(reviews_data) * 2 # Weighting Google's immediate reviews as buzz proxy
+    buzz_volume = len(reviews_data) * 4 # Adjusted multiplier to compensate for Google's strict 5-review API cap
     
     if not reviews_data:
         print(f"Skipping {search_query} due to lack of text reviews data.")
@@ -144,6 +144,9 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
             wolt_rating=avg_delivery, 
             social_volume=buzz_volume
         )
+        
+        # FORCE update timestamp so the Smart Resume loop correctly registers the scan time, even if the score hasn't changed.
+        restaurant.updated_at = datetime.now(timezone.utc)
         
         db.commit()
         print(f"Updated {restaurant.name} -> New Final Score: {restaurant.bayesian_average:.2f}")
