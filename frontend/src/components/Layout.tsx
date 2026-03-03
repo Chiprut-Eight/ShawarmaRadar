@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Globe, Map, Share2, Download, Info as InfoIcon, Activity } from 'lucide-react';
+import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle } from 'lucide-react';
 import './Layout.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
@@ -10,6 +12,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  
+  // Business Search
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, whatsapp?: string} | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
@@ -48,6 +55,25 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
   };
 
+  const handleSearchBusiness = async () => {
+    if (!searchQuery.trim()) return;
+    setIsSearching(true);
+    setSearchResult(null);
+    try {
+      const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}`);
+      const data = await res.json();
+      setSearchResult({
+        message: data.message,
+        isFound: data.exists,
+        whatsapp: data.whatsapp_link
+      });
+    } catch (e) {
+      setSearchResult({ message: "שגיאה בחיבור לשרת הרדאר.", isFound: false });
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   const toggleLanguage = () => {
     i18n.changeLanguage(i18n.language === 'he' ? 'en' : 'he');
   };
@@ -70,9 +96,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         
         <nav className="header-nav">
-          <button className="nav-btn info-nav-btn" onClick={() => setActiveInfo('ai')} style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-            <Activity size={22} color="#4ade80" />
-            <span className="hide-mobile" style={{color: '#4ade80'}}>איך המכ"ם מחשב את ציון השווארמה?</span>
+          <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המכ&quot;ם מחשב?" style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
+            <Activity size={22} />
           </button>
           <Link to="/" className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`}>
             <Globe size={18} />
@@ -98,6 +123,54 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <main className="main-content">
         {children}
+
+        {/* Global Business Advertisement Section */}
+        <div className="business-section" dir="rtl" style={{marginTop: '3rem', maxWidth: '800px', marginInline: 'auto'}}>
+          <h3>האם העסק שלך ברדאר?</h3>
+          <p>חפש את הרשומה שלך ובדוק אם המכ"ם שלנו סורק אותך (גם אם אינך בטופ):</p>
+          <div className="search-box">
+            <input 
+              type="text" 
+              placeholder="שם שווארמיה / עסק..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button onClick={handleSearchBusiness} disabled={isSearching}>
+              {isSearching ? 'סורק...' : 'חפש'}
+            </button>
+          </div>
+          {searchResult && (
+            <div style={{marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px'}}>
+              <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
+                {searchResult.message}
+              </div>
+              {searchResult.whatsapp && (
+                <a 
+                  href={searchResult.whatsapp}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="whatsapp-btn"
+                  style={{marginTop: '5px'}}
+                >
+                  <MessageCircle size={20} /> צור קשר להוספה לרדאר
+                </a>
+              )}
+            </div>
+          )}
+          
+          <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
+            <h3>רוצים לשמוע איך ניתן לפרסם אצלנו?</h3>
+            <p>תגיעו ללקוחות רעבים ברגע המדויק שהם בודקים את המכ"ם.</p>
+            <a 
+              href="https://wa.me/972523445081?text=היי,%20ספר%20לי%20איך%20ניתן%20לפרסם%20את%20העסק%20שלי%20ב-ShawarmaRadar" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="whatsapp-btn"
+            >
+              <MessageCircle size={20} /> שלח הודעת ווצאפ עכשיו
+            </a>
+          </div>
+        </div>
       </main>
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
