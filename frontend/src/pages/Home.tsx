@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
-import { Crown, Info, Share2, Info as InfoIcon, Activity, MessageCircle, Download, Globe } from 'lucide-react';
+import { Crown, MessageCircle } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -25,25 +25,10 @@ const Home: React.FC = () => {
   // Real-time clock for the header
   const [time, setTime] = useState(new Date());
   
-  // Modals state
-  const [activeInfo, setActiveInfo] = useState<string | null>(null);
-  
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, whatsapp?: string} | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-
-  // PWA Prompt
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, []);
 
   const fetchData = async () => {
     try {
@@ -70,22 +55,6 @@ const Home: React.FC = () => {
       clearInterval(clockInterval);
     };
   }, []);
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'ShawarmaRadar',
-          text: 'בדוק את מפת הדירוג החיה של השווארמיות בישראל!',
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.error('Error sharing:', err);
-      }
-    } else {
-      alert('העתק את הקישור ושתף מכל דפדפן!');
-    }
-  };
 
   const formatDate = (date: Date) => {
     return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
@@ -114,27 +83,10 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-      }
-    } else {
-      alert('להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו "Add to Home Screen". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו "Add to Home screen".');
-    }
-  };
-
   return (
     <div className="home-container" dir="rtl">
-      {/* Branding Header Removed (Moved to Layout Navbar) */}
-
       {/* King Radar Section (Top) */}
       <div className="king-radar-container" style={{position: 'relative'}}>
-        <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המערכת מחשבת?" style={{position: 'absolute', top: '10px', left: '10px', zIndex: 10, width: '36px', height: '36px'}}>
-          <Info size={22} />
-        </button>
         
         <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
         <div className="king-radar-time">
@@ -253,63 +205,6 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Section */}
-      <div className="radar-footer">
-        <button className="footer-btn" onClick={() => setActiveInfo('about')}>
-          <InfoIcon size={18} /> אודות
-        </button>
-        <button className="footer-btn" onClick={handleShare}>
-          <Share2 size={18} /> שתף מכ"ם
-        </button>
-        <button className="footer-btn" onClick={handleInstallClick}>
-          <Download size={18} /> שמור במסך הבית
-        </button>
-      </div>
-
-      {/* Modals overlay */}
-      {activeInfo === 'ai' && (
-        <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3><Activity color="#4ade80" /> איך המכ"ם מחשב את ציון השווארמה?</h3>
-            <p>הציון מורכב ממספר גורמים:</p>
-            <p>
-              <strong>ההיסטוריה ארוכת השנים אצל גוגל.</strong> אנחנו דוגמים את המוניטין של העסק מול אלפי הלקוחות שביקרו בו לאורך השנים כדי לקבוע מיקום התחלתי, המערכת שלנו יודעת להבדיל בין קפיצה של מקומות חדשים שקיבלו שתי ביקורות טובות מול מקומות ותיקים שקיבלו מאות ביקורות מגוונות.
-            </p>
-            <p>
-              <strong>ומה הופך את הרדאר ל"חי"?</strong> במקום להסתמך רק על היסטוריה, המנוע הייחודי שלנו משוקלל בזמן אמת עם שני גורמים קריטיים נוספים:<br/>
-              1. <strong>מדד ה"ביקוש והלחץ" (Tension):</strong> הבוט סורק את אפליקציות המשלוחים (Wolt ותן-ביס) ובודק את העומס, זמני המשלוח, והדירוג החי של המקום.<br/>
-              2. <strong>סנטימנט עכשווי (NLP):</strong> המערכת קוראת את הביקורות האחרונות והשיח ברשת, מנתחת את שפת הרחוב (כמו "אש", "פח", "נדיר") ומבינה אם יש כרגע התלהבות שיא או אכזבה טריה.
-            </p>
-            <p>
-              האלמנטים החיים הללו משוקללים כמעין "בונוס" או "קנס" לדירוג הבסיסי של גוגל. כך הרדאר שלנו מרים מקומות ש'לוהטים' הרגע, ומוריד מקומות שאכזבו הבוקר - הכל כדי שתדעו איפה לאכול ממש עכשיו.
-            </p>
-            <p style={{fontWeight: 'bold'}}>בתאבון :)</p>
-            <div style={{marginTop: '1.5rem', clear: 'both'}}>
-              <button className="close-btn" onClick={() => setActiveInfo(null)}>הבנתי, תודה</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {activeInfo === 'about' && (
-        <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3><Globe color="#3b82f6" /> אודות ShawarmaRadar</h3>
-            <p>
-              שאוורמה רדאר (ShawarmaRadar) הוא פרויקט איסוף נתונים ולמידת מכונה ששם לו למטרה לייצר שקיפות מלאה לגבי ביקורות על שווארמיות בישראל.
-            </p>
-            <p>
-              המערכת סורקת באופן עצמאי הררי מידע פומבי (פוסטים בקהילות, תיוגים באינסטגרם, פידבק טרי בגוגל), מסננת רעשי רקע שיווקיים, ומזקקת את "חום הרחוב" הטהור אל תוך מכ"ם אחד וברור.
-            </p>
-            <p style={{color: '#888', fontSize: '0.8rem', marginTop: '1rem'}}>
-              מפותח באהבה ובתיאבון. גרסת מערכת: 1.2.0 (Live Deployment)
-            </p>
-            <div style={{marginTop: '1.5rem', clear: 'both'}}>
-              <button className="close-btn" onClick={() => setActiveInfo(null)}>סגור</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
