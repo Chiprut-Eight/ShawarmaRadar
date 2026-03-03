@@ -188,7 +188,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Download size={18} /> {t('footer_save')}
           </button>
         </div>
-        <p style={{fontSize: '0.8rem', color: '#666'}}>{t('footer_copyright')}</p>
+        <p style={{fontSize: '0.8rem', color: '#666', fontWeight: 'bold'}}>{t('footer_copyright')}</p>
       </footer>
 
       {/* Modals overlay */}

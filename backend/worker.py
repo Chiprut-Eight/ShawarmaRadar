@@ -29,7 +29,6 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
         
     # We rely on Google's rich textual reviews to drive the real-time NLP analysis.
     reviews_data = google_reviews
-    buzz_volume = len(reviews_data) * 4 # Adjusted multiplier to compensate for Google's strict 5-review API cap
     
     if not reviews_data:
         print(f"Skipping {search_query} due to lack of text reviews data.")
@@ -122,8 +121,8 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
             if tb_data and tb_data.get('reviewsScore'):
                 tenbis_rating = float(tb_data.get('reviewsScore'))
                 print(f"10bis rating found: {tenbis_rating}")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"10bis rating fetch failed: {e}")
     
     # 6. Recalculate Scores
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
@@ -143,7 +142,7 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
             google_ratings_total=restaurant.google_ratings_total,
             recent_reviews=all_reviews,
             wolt_rating=avg_delivery, 
-            social_volume=buzz_volume
+            social_volume=len(all_reviews)  # Use actual DB review count for meaningful buzz differentiation
         )
         
         # FORCE update timestamp so the Smart Resume loop correctly registers the scan time, even if the score hasn't changed.

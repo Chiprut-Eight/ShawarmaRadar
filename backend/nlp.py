@@ -90,14 +90,17 @@ class RankingEngine:
         volume_points = min(30.0, (social_volume / 20.0) * 30.0)
         
         # 3. NLP Sentiment Score (15 Points Maximum)
+        # Weights are calculated LIVE from published_at to ensure proper recency decay
         nlp_points = 7.5 # Default neutral (half of 15) if no reviews
         if recent_reviews:
             total_weight = 0.0
             weighted_sentiment = 0.0
             for r in recent_reviews:
-                w = getattr(r, 'weight', 1.0)
-                total_weight += w
-                weighted_sentiment += getattr(r, 'sentiment_score', 0.0) * w
+                # Calculate fresh recency weight from the review's publish date
+                published_at = getattr(r, 'published_at', None)
+                live_weight = self.calculate_recency_weight(published_at) if published_at else 1.0
+                total_weight += live_weight
+                weighted_sentiment += getattr(r, 'sentiment_score', 0.0) * live_weight
                 
             if total_weight > 0:
                 avg_sentiment = weighted_sentiment / total_weight # Ranges -1 to 1
