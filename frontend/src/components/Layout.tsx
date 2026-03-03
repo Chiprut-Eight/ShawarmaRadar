@@ -96,7 +96,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         
         <nav className="header-nav">
-          <button className="info-btn" onClick={() => setActiveInfo('ai')} title="איך המכ&quot;ם מחשב?" style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
+          <button className="info-btn" onClick={() => setActiveInfo('ai')} title={t('nav_info_btn')} style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
             <Activity size={22} />
           </button>
           <Link to="/" className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`}>
@@ -125,18 +125,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {children}
 
         {/* Global Business Advertisement Section */}
-        <div className="business-section" dir="rtl" style={{marginTop: '3rem', maxWidth: '800px', marginInline: 'auto'}}>
-          <h3>האם העסק שלך ברדאר?</h3>
-          <p>חפש את הרשומה שלך ובדוק אם המכ"ם שלנו סורק אותך (גם אם אינך בטופ):</p>
+        <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '3rem', maxWidth: '800px', marginInline: 'auto'}}>
+          <h3>{t('business_section_title')}</h3>
+          <p>{t('business_section_desc')}</p>
           <div className="search-box">
             <input 
               type="text" 
-              placeholder="שם שווארמיה / עסק..." 
+              placeholder={t('business_search_placeholder')} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button onClick={handleSearchBusiness} disabled={isSearching}>
-              {isSearching ? 'סורק...' : 'חפש'}
+              {isSearching ? t('business_scanning_btn') : t('business_search_btn')}
             </button>
           </div>
           {searchResult && (
@@ -152,22 +152,22 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   className="whatsapp-btn"
                   style={{marginTop: '5px'}}
                 >
-                  <MessageCircle size={20} /> צור קשר להוספה לרדאר
+                  <MessageCircle size={20} /> {t('business_contact_btn')}
                 </a>
               )}
             </div>
           )}
           
           <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
-            <h3>רוצים לשמוע איך ניתן לפרסם אצלנו?</h3>
-            <p>תגיעו ללקוחות רעבים ברגע המדויק שהם בודקים את המכ"ם.</p>
+            <h3>{t('ads_section_title')}</h3>
+            <p>{t('ads_section_desc')}</p>
             <a 
               href="https://wa.me/972523445081?text=היי,%20ספר%20לי%20איך%20ניתן%20לפרסם%20את%20העסק%20שלי%20ב-ShawarmaRadar" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="whatsapp-btn"
             >
-              <MessageCircle size={20} /> שלח הודעת ווצאפ עכשיו
+              <MessageCircle size={20} /> {t('ads_contact_btn')}
             </a>
           </div>
         </div>
@@ -176,13 +176,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button className="nav-btn" onClick={() => setActiveInfo('about')} style={{background: '#1a1a1a'}}>
-            <InfoIcon size={18} /> אודות
+            <InfoIcon size={18} /> {t('footer_about')}
           </button>
           <button className="nav-btn" onClick={handleShare} style={{background: '#1a1a1a'}}>
-            <Share2 size={18} /> שתף מכ"ם
+            <Share2 size={18} /> {t('footer_share')}
           </button>
           <button className="nav-btn" onClick={handleInstallClick} style={{background: '#1a1a1a'}}>
-            <Download size={18} /> שמור במסך הבית
+            <Download size={18} /> {t('footer_save')}
           </button>
         </div>
         <p style={{fontSize: '0.8rem', color: '#666'}}>ShawarmaRadar &copy; 2026 - Confidential Military Operations</p>
@@ -191,26 +191,26 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {/* Modals overlay */}
       {activeInfo === 'ai' && (
         <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()} dir="rtl">
-            <h3><Activity color="#4ade80" /> איך המכ"ם מחשב את ציון השווארמה?</h3>
-            <p>הציון מורכב ממספר גורמים:</p>
+          <div className="modal-content" onClick={e => e.stopPropagation()} dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{ textAlign: i18n.language === 'he' ? 'right' : 'left' }}>
+            <h3><Activity color="#4ade80" /> {t('ai_modal_title')}</h3>
+            <p>{t('ai_modal_subtitle')}</p>
             <p>
-              <strong>ההיסטוריה ארוכת השנים אצל גוגל</strong> - אנחנו דוגמים את המוניטין של העסק מול אלפי הלקוחות שביקרו בו לאורך השנים כדי לקבוע מיקום התחלתי, המערכת שלנו יודעת להבדיל בין עליה של מקומות חדשים שקיבלו שתי ביקורות טובות מול מקומות ותיקים שקיבלו מאות ביקורות מגוונות.
+              <strong>{t('ai_modal_history_title')}</strong>{t('ai_modal_history_desc')}
             </p>
             <p>
-              <strong>מה הופך את הרדאר ל"חי"?</strong> במקום להסתמך רק על היסטוריה, המנוע הייחודי שלנו משוקלל בזמן אמת עם שני גורמים נוספים:
+              <strong>{t('ai_modal_live_title')}</strong>{t('ai_modal_live_desc')}
             </p>
             <ul>
-              <li style={{marginBottom: '10px'}}>- <strong>מדד ה"ביקוש והלחץ":</strong> אנחנו סורקים את אפליקציות המשלוחים ובודקים את העומס, זמני המשלוח, והדירוג של המקום.</li>
-              <li>- <strong>סנטימנט עכשווי:</strong> המערכת קוראת את הביקורות האחרונות והשיח ברשת, מנתחת את השפה ומבינה אם יש כרגע התלהבות שיא או אכזבה.</li>
+              <li style={{marginBottom: '10px'}}><strong>{t('ai_modal_tension_title')}</strong> {t('ai_modal_tension_desc')}</li>
+              <li><strong>{t('ai_modal_nlp_title')}</strong> {t('ai_modal_nlp_desc')}</li>
             </ul>
             <p>
-              האלמנטים החיים הללו משוקללים כמעין "בונוס" או "קנס" לדירוג. כך הרדאר שלנו מרים מקומות ש'לוהטים' הרגע, ומוריד מקומות שאכזבו לאחרונה - הכל כדי שתדעו איפה לאכול ממש עכשיו.
+              {t('ai_modal_summary')}
             </p>
-            <p style={{fontWeight: 'bold', marginTop: '1rem'}}>בתאבון :)</p>
+            <p style={{fontWeight: 'bold', marginTop: '1rem'}}>{t('ai_modal_footer')}</p>
             
             <div style={{marginTop: '2rem', clear: 'both'}}>
-              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{background: '#facc15', color: 'black'}}>הבנתי, תודה</button>
+              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{background: '#facc15', color: 'black'}}>{t('btn_understood')}</button>
             </div>
           </div>
         </div>
@@ -218,15 +218,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {activeInfo === 'about' && (
         <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()} dir="rtl">
-            <h3><Globe color="#3b82f6" /> אודות ShawarmaRadar</h3>
+          <div className="modal-content" onClick={e => e.stopPropagation()} dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{ textAlign: i18n.language === 'he' ? 'right' : 'left' }}>
+            <h3><Globe color="#3b82f6" /> {t('about_modal_title')}</h3>
             <p>
-              שווארמה רדאר (ShawarmaRadar) הוא פרויקט איסוף נתונים ולמידת מכונה ששם לו למטרה לייצר שקיפות מלאה לגבי ביקורות על שווארמיות בישראל. המערכת סורקת באופן עצמאי הררי מידע פומבי ומזקקת אותו אל תוך מכ"ם אחד וברור.
+              {t('about_modal_desc1')}
             </p>
-            <p>מפותח באהבה ובתיאבון.</p>
+            <p>{t('about_modal_desc2')}</p>
             
             <div style={{marginTop: '2rem'}}>
-              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{border: '1px solid #444'}}>סגור</button>
+              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{border: '1px solid #444'}}>{t('btn_close')}</button>
             </div>
           </div>
         </div>
