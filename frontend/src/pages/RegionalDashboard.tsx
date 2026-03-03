@@ -66,12 +66,12 @@ const RegionalDashboard: React.FC = () => {
 
       {/* Local King Radar Section */}
       <div className="king-radar-container">
-        <h2 className="king-radar-title">מלך האזור עכשיו</h2>
+        <h2 className="king-radar-title">{t('region_king_title')}</h2>
         
         {loading ? (
           <div className="radar-display">
             <div className="radar-sweep"></div>
-            <div>סורק רחוב...</div>
+            <div>{t('home_scanning')}</div>
           </div>
         ) : localKing ? (
           <div className="radar-display">
@@ -87,14 +87,14 @@ const RegionalDashboard: React.FC = () => {
         ) : (
           <div className="radar-display">
             <div className="radar-sweep"></div>
-            <div>אין מספיק נתונים לאזור זה</div>
+            <div>{t('region_no_data')}</div>
           </div>
         )}
       </div>
 
       {loading ? null : (
         <div className="signals-panel" style={{marginTop: '30px'}}>
-          <h2 className="signals-section-title">המובילות באזור {currentRegionName}</h2>
+          <h2 className="signals-section-title">{t('region_leaders')} {currentRegionName}</h2>
           
           {restaurants.slice(1).map((place, idx) => (
             <div className="signal-card" key={place.id}>
@@ -125,7 +125,7 @@ const RegionalDashboard: React.FC = () => {
           ))}
           
           {!localKing && restaurants.length <= 1 && (
-             <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>אין נתונים נוספים להצגה באזור זה.</div>
+             <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>{t('region_no_more_data')}</div>
           )}
         </div>
       )}

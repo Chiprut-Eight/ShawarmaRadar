@@ -32,14 +32,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       try {
         await navigator.share({
           title: 'ShawarmaRadar',
-          text: 'בדוק את מפת הדירוג החיה של השווארמיות בישראל!',
+          text: t('share_text'),
           url: window.location.href,
         });
       } catch (err) {
         console.error('Error sharing:', err);
       }
     } else {
-      alert('העתק את הקישור ושתף מכל דפדפן!');
+      alert(t('share_fallback'));
     }
   };
 
@@ -51,7 +51,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         setDeferredPrompt(null);
       }
     } else {
-      alert('להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו "Add to Home Screen". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו "Add to Home screen".');
+      alert(t('install_prompt'));
     }
   };
 
@@ -68,7 +68,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         whatsapp: data.whatsapp_link
       });
     } catch (e) {
-      setSearchResult({ message: "שגיאה בחיבור לשרת הרדאר.", isFound: false });
+      setSearchResult({ message: t('search_error'), isFound: false });
     } finally {
       setIsSearching(false);
     }
@@ -106,7 +106,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="dropdown">
             <button className={`nav-btn ${location.pathname.includes('/region') ? 'active' : ''}`}>
               <Map size={18} />
-              <span className="hide-mobile">סנן לפי אזור</span>
+              <span className="hide-mobile">{t('nav_filter_region')}</span>
             </button>
             <div className="dropdown-content">
               {regions.map((r) => (
@@ -162,7 +162,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <h3>{t('ads_section_title')}</h3>
             <p>{t('ads_section_desc')}</p>
             <a 
-              href="https://wa.me/972523445081?text=היי,%20ספר%20לי%20איך%20ניתן%20לפרסם%20את%20העסק%20שלי%20ב-ShawarmaRadar" 
+              href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="whatsapp-btn"
@@ -188,7 +188,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Download size={18} /> {t('footer_save')}
           </button>
         </div>
-        <p style={{fontSize: '0.8rem', color: '#666'}}>ShawarmaRadar &copy; 2026 - Confidential Military Operations</p>
+        <p style={{fontSize: '0.8rem', color: '#666'}}>{t('footer_copyright')}</p>
       </footer>
 
       {/* Modals overlay */}

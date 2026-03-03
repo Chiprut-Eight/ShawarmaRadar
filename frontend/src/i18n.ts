@@ -59,7 +59,24 @@ const resources = {
       "ads_contact_btn": "שלח הודעת ווצאפ עכשיו",
       "footer_about": "אודות",
       "footer_share": "שתף מכ\"ם",
-      "footer_save": "שמור במסך הבית"
+      "footer_save": "שמור במסך הבית",
+
+      "home_king_title": "מלך השווארמה עכשיו",
+      "home_scanning": "סורק רחוב...",
+      "home_runners_title": "עוד שווארמיות שאתם אוהבים",
+
+      "region_king_title": "מלך האזור עכשיו",
+      "region_no_data": "אין מספיק נתונים לאזור זה",
+      "region_leaders": "המובילות באזור",
+      "region_no_more_data": "אין נתונים נוספים להצגה באזור זה.",
+
+      "nav_filter_region": "סנן לפי אזור",
+      "share_text": "בדוק את מפת הדירוג החיה של השווארמיות בישראל!",
+      "share_fallback": "העתק את הקישור ושתף מכל דפדפן!",
+      "install_prompt": "להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו \"Add to Home Screen\". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו \"Add to Home screen\".",
+      "search_error": "שגיאה בחיבור לשרת הרדאר.",
+      "footer_copyright": "ShawarmaRadar © 2026 - מבצעים צבאיים חסויים",
+      "whatsapp_ad_prefill": "היי, ספר לי איך ניתן לפרסם את העסק שלי ב-ShawarmaRadar"
     }
   },
   en: {
@@ -118,7 +135,24 @@ const resources = {
       "ads_contact_btn": "Send a WhatsApp message now",
       "footer_about": "About",
       "footer_share": "Share Radar",
-      "footer_save": "Save to Home Screen"
+      "footer_save": "Save to Home Screen",
+
+      "home_king_title": "Shawarma King Right Now",
+      "home_scanning": "Scanning the streets...",
+      "home_runners_title": "More shawarma joints you love",
+
+      "region_king_title": "Regional King Right Now",
+      "region_no_data": "Not enough data for this area",
+      "region_leaders": "Top ranked in",
+      "region_no_more_data": "No additional data available for this area.",
+
+      "nav_filter_region": "Filter by Region",
+      "share_text": "Check out the live shawarma rating map of Israel!",
+      "share_fallback": "Copy the link and share from any browser!",
+      "install_prompt": "To install on iOS: Tap the share button at the bottom and select \"Add to Home Screen\". On Android: Tap the 3 dots in the browser and select \"Add to Home screen\".",
+      "search_error": "Error connecting to the radar server.",
+      "footer_copyright": "ShawarmaRadar © 2026 - Confidential Military Operations",
+      "whatsapp_ad_prefill": "Hi, tell me how I can advertise my business on ShawarmaRadar"
     }
   }
 };

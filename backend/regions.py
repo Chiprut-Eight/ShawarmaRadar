@@ -1,3 +1,6 @@
+import re
+import unicodedata
+
 # Comprehensive region mapping for Israel
 # Note: This list maps variations of city names in Hebrew and English to the 5 designated regions
 
@@ -74,9 +77,28 @@ def get_region_by_city(city_name: str) -> str:
     """
     Normalizes city name and returns the region it belongs to.
     Returns None if the city is not found in the mapping.
+    
+    Normalization handles:
+    - Leading/trailing whitespace
+    - Unicode directional markers (LRM, RLM, LRE, RLE, PDF, etc.)
+    - Hebrew geresh (׳) and gershayim (״), curly quotes
+    - Multiple consecutive spaces collapsed to single space
     """
     if not city_name:
         return None
-        
-    normalized_city = city_name.strip().lower()
-    return REGIONS.get(normalized_city)
+    
+    normalized = city_name.strip()
+    
+    # Remove Unicode directional/formatting control characters (categories Cf)
+    normalized = ''.join(ch for ch in normalized if unicodedata.category(ch) != 'Cf')
+    
+    # Remove Hebrew geresh ׳, gershayim ״, and curly quotes '' ""
+    normalized = re.sub(r'[׳״\u2018\u2019\u201C\u201D]', '', normalized)
+    
+    # Collapse multiple spaces into one
+    normalized = re.sub(r'\s+', ' ', normalized).strip()
+    
+    # Lowercase for English key matching (no-op for Hebrew)
+    normalized = normalized.lower()
+    
+    return REGIONS.get(normalized)

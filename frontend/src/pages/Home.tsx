@@ -65,7 +65,7 @@ const Home: React.FC = () => {
       {/* King Radar Section (Top) */}
       <div className="king-radar-container" style={{position: 'relative'}}>
         
-        <h2 className="king-radar-title">מלך השווארמה עכשיו</h2>
+        <h2 className="king-radar-title">{t('home_king_title')}</h2>
         <div className="king-radar-time">
           {formatTime(time)} • {formatDate(time)}
         </div>
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
         {loading ? (
           <div className="radar-display">
             <div className="radar-sweep"></div>
-            <div>סורק רחוב...</div>
+            <div>{t('home_scanning')}</div>
           </div>
         ) : nationalKing ? (
           <div className="radar-display">
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
 
       {loading ? null : (
         <div className="signals-panel">
-          <h2 className="signals-section-title">עוד שווארמיות שאתם אוהבים</h2>
+          <h2 className="signals-section-title">{t('home_runners_title')}</h2>
           
           {/* Runners Up Data Signals */}
           {runnersUp.map((place, idx) => (
