@@ -17,7 +17,7 @@ interface Restaurant {
 }
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [nationalKing, setNationalKing] = useState<Restaurant | null>(null);
   const [runnersUp, setRunnersUp] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="home-container" dir="rtl">
+    <div className="home-container" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       {/* King Radar Section (Top) */}
       <div className="king-radar-container" style={{position: 'relative'}}>
         

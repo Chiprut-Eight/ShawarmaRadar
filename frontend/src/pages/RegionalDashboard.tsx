@@ -19,7 +19,7 @@ interface Restaurant {
 
 const RegionalDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,7 +58,7 @@ const RegionalDashboard: React.FC = () => {
   const localKing = restaurants.length > 0 ? restaurants[0] : null;
 
   return (
-    <div className="regional-container">
+    <div className="regional-container" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       <h2 className="region-title" style={{textAlign: 'center', marginBottom: '20px', fontSize: '2em', fontWeight: 'bold'}}>
         <MapPin className="region-icon" style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: '8px'}} />
         {currentRegionName}
