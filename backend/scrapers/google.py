@@ -15,7 +15,7 @@ class GoogleBusinessScraper(PoliteScraper):
         Uses Text Search API to find a fresh Place ID for a given restaurant name.
         """
         if not self.api_key:
-            return None
+            return None, None
             
         params = {
             "query": f"{query} israel",

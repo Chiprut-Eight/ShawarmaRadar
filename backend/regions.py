@@ -58,10 +58,9 @@ REGIONS = {
     "יבנה": "shfela", "yavne": "shfela",
     "מודיעין": "shfela", "modi'in": "shfela", "מודיעין-מכבים-רעות": "shfela",
     "באר יעקב": "shfela", "beer yaakov": "shfela",
-    "אשדוד": "shfela", "ashdod": "shfela", # Moving Ashdod to shfela/south border - typically south but sometimes considered shfela. Let's keep Ashdod/Ashkelon in south as requested by prompt.
     
     # הדרום (South)
-    "אשדוד": "south", "ashdod": "south", # Prompt specified Ashdod in south
+    "אשדוד": "south", "ashdod": "south",
     "אשקלון": "south", "ashkelon": "south",
     "באר שבע": "south", "beer sheva": "south", "be'er sheva": "south",
     "אילת": "south", "eilat": "south",

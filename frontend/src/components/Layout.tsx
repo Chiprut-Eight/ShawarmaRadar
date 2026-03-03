@@ -60,7 +60,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setIsSearching(true);
     setSearchResult(null);
     try {
-      const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}`);
+      const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}&lang=${i18n.language}`);
       const data = await res.json();
       setSearchResult({
         message: data.message,

@@ -117,7 +117,6 @@ app.add_middleware(
 @app.api_route("/api/health", methods=["GET", "HEAD"])
 def health_check():
     return {"status": "ok"}
-    return {"status": "ok"}
 
 # WebSocket Connection Manager
 class ConnectionManager:
@@ -174,17 +173,37 @@ def get_regional_rankings(region_id: str, db: Session = Depends(get_db)):
     return regional_restaurants
 
 @app.get("/api/restaurants/search")
-def search_restaurant(q: str = "", db: Session = Depends(get_db)):
+def search_restaurant(q: str = "", lang: str = "he", db: Session = Depends(get_db)):
     """ Returns whether a restaurant exists in the DB based on search term """
+    
+    # Localized messages
+    messages = {
+        "he": {
+            "too_short": "אנא הזן שם ארוך יותר",
+            "found": "כן! העסק '{name}' מזוהה ונמצא במעקב הרדאר.",
+            "queued": "מעולה! העסק נמצא בתור לסריקה על ידי המכ\"ם בסבב הקרוב.",
+            "not_found": "לא נמצא בסורק, אם זו טעות - צור איתנו קשר",
+            "whatsapp_text": "היי, העסק שלי ({query}) לא נמצא ברדאר"
+        },
+        "en": {
+            "too_short": "Please enter a longer name",
+            "found": "Yes! '{name}' is identified and tracked by the radar.",
+            "queued": "Great! The business is queued for the next radar scan cycle.",
+            "not_found": "Not found in the scanner. If this is a mistake — contact us",
+            "whatsapp_text": "Hi, my business ({query}) was not found on the radar"
+        }
+    }
+    msg = messages.get(lang, messages["he"])
+    
     if not q or len(q.strip()) < 2:
-        return {"exists": False, "message": "אנא הזן שם ארוך יותר"}
+        return {"exists": False, "message": msg["too_short"]}
     
     query_str = q.strip()
     
     # Simple LIKE search
     exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{query_str}%")).first()
     if exists:
-        return {"exists": True, "message": f"כן! העסק '{exists.name}' מזוהה ונמצא במעקב הרדאר."}
+        return {"exists": True, "message": msg["found"].format(name=exists.name)}
         
     # Check if it's in the queue (auto_seeds.json)
     try:
@@ -193,14 +212,15 @@ def search_restaurant(q: str = "", db: Session = Depends(get_db)):
             seeds = json.load(f)
             for s in seeds:
                 if query_str in s.get("query", ""):
-                    return {"exists": True, "message": f"מעולה! העסק נמצא בתור לסריקה על ידי המכ\"ם בסבב הקרוב."}
+                    return {"exists": True, "message": msg["queued"]}
     except Exception as e:
         print("Error checking seeds:", e)
     
-    whatsapp_url = f"https://wa.me/972523445081?text=היי,%20העסק%20שלי%20({query_str})%20לא%20נמצא%20ברדאר"
+    whatsapp_text = msg["whatsapp_text"].format(query=query_str)
+    whatsapp_url = f"https://wa.me/972523445081?text={whatsapp_text}"
     return {
         "exists": False, 
-        "message": "לא נמצא בסורק, אם זו טעות - צור איתנו קשר",
+        "message": msg["not_found"],
         "whatsapp_link": whatsapp_url
     }
 

@@ -109,11 +109,12 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
         slug = wolt.search_venue(search_query)
         if slug:
             load = wolt.check_delivery_load(slug)
-            if load and load.get("rating"):
-                wolt_rating = float(load.get('rating').get('score', 0.0)) if isinstance(load.get('rating'), dict) else float(load.get('rating'))
+            if load and load.get("rating") is not None:
+                raw_rating = load.get("rating")
+                wolt_rating = float(raw_rating) if not isinstance(raw_rating, dict) else float(raw_rating.get('score', 0.0))
                 print(f"Wolt rating found: {wolt_rating}")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Wolt rating fetch failed: {e}")
         
     try:
         if tenbis:
