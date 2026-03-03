@@ -175,6 +175,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button className="nav-btn" onClick={() => setActiveInfo('ai')} style={{background: '#1a1a1a'}}>
+            <Activity size={18} /> {t('nav_info_btn')}
+          </button>
           <button className="nav-btn" onClick={() => setActiveInfo('about')} style={{background: '#1a1a1a'}}>
             <InfoIcon size={18} /> {t('footer_about')}
           </button>
