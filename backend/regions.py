@@ -94,6 +94,9 @@ def get_region_by_city(city_name: str) -> str:
     # Remove Hebrew geresh ׳, gershayim ״, and curly quotes '' ""
     normalized = re.sub(r'[׳״\u2018\u2019\u201C\u201D]', '', normalized)
     
+    # Replace hyphens and straight quotes with spaces to unify "תל-אביב" into "תל אביב"
+    normalized = normalized.replace('-', ' ').replace('"', ' ').replace("'", ' ')
+    
     # Collapse multiple spaces into one
     normalized = re.sub(r'\s+', ' ', normalized).strip()
     
