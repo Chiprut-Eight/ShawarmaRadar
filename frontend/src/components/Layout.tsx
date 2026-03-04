@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle } from 'lucide-react';
+import AdBanner from './AdBanner';
 import './Layout.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -17,6 +18,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, whatsapp?: string} | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Demo banners - replace with real advertiser data later
+  const demoBanners = [
+    {
+      altText: t('banner_demo_text'),
+      linkUrl: '#',
+    },
+  ];
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
@@ -124,8 +133,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <main className="main-content">
         {children}
 
+        {/* Banner 1 - Above Business Section */}
+        <AdBanner banners={demoBanners} rotationInterval={5000} />
+
         {/* Global Business Advertisement Section */}
-        <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '3rem', maxWidth: '800px', marginInline: 'auto'}}>
+        <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto'}}>
           <h3>{t('business_section_title')}</h3>
           <p>{t('business_section_desc')}</p>
           <div className="search-box">
@@ -171,6 +183,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </a>
           </div>
         </div>
+
+        {/* Banner 2 - Below Business Section */}
+        <AdBanner banners={demoBanners} rotationInterval={7000} />
       </main>
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>

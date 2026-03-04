@@ -76,7 +76,9 @@ const resources = {
       "install_prompt": "להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו \"Add to Home Screen\". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו \"Add to Home screen\".",
       "search_error": "שגיאה בחיבור לשרת הרדאר.",
       "footer_copyright": "ShawarmaRadar © 2026 - נבנה על ידי גל צ'יפרוט ובינה מלאכותית",
-      "whatsapp_ad_prefill": "היי, ספר לי איך ניתן לפרסם את העסק שלי ב-ShawarmaRadar"
+      "whatsapp_ad_prefill": "היי, ספר לי איך ניתן לפרסם את העסק שלי ב-ShawarmaRadar",
+      "banner_demo_text": "עסקים המציעים שווארמה - דברו איתנו ותופיעו כאן",
+      "banner_cta": "דרגו אותנו והוסיפו ביקורת"
     }
   },
   en: {
@@ -152,7 +154,9 @@ const resources = {
       "install_prompt": "To install on iOS: Tap the share button at the bottom and select \"Add to Home Screen\". On Android: Tap the 3 dots in the browser and select \"Add to Home screen\".",
       "search_error": "Error connecting to the radar server.",
       "footer_copyright": "ShawarmaRadar © 2026 - Built by Gal Chiprut & AI",
-      "whatsapp_ad_prefill": "Hi, tell me how I can advertise my business on ShawarmaRadar"
+      "whatsapp_ad_prefill": "Hi, tell me how I can advertise my business on ShawarmaRadar",
+      "banner_demo_text": "Shawarma businesses - talk to us and appear here",
+      "banner_cta": "Rate us and add a review"
     }
   }
 };
