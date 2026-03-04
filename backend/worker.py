@@ -194,6 +194,7 @@ def run_cron_cycle_sync():
             {"query": "שווארמה חזן חיפה", "city": "חיפה"}
         ]
     
+    failure_count = 0
     for target in seed_targets:
         # Check if we already updated this restaurant recently (Skip to resume progress quickly)
         display_name = target["query"].replace(f" {target['city']}", "").strip()
@@ -223,37 +224,65 @@ def run_cron_cycle_sync():
             # and to allow Render memory to stabilize.
             time.sleep(12) 
         except Exception as e:
-            print(f"Failed processing {target['query']}: {e}")
+            failure_count += 1
+            error_msg = str(e)
+            print(f"Failed processing {target['query']}: {error_msg}")
+            # Send immediate Telegram alert about this specific failure
+            try:
+                import requests
+                bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+                chat_id = os.getenv("TELEGRAM_CHAT_ID")
+                if bot_token and chat_id:
+                    alert = (
+                        f"⚠️ *ShawarmaRadar - כשל בסריקה*\n"
+                        f"🏪 עסק: `{target['query']}`\n"
+                        f"📍 עיר: {target['city']}\n"
+                        f"🚨 שגיאה: `{error_msg}`"
+                    )
+                    requests.post(
+                        f"https://api.telegram.org/bot{bot_token}/sendMessage",
+                        json={"chat_id": chat_id, "text": alert, "parse_mode": "Markdown"}
+                    )
+            except Exception:
+                pass
         finally:
             loop.close()
             gc.collect() # Force memory cleanup to prevent Render OOM
         
     print("Cycle complete.")
     
+    # Shared Telegram Sender Helper
+    def send_telegram(message: str):
+        try:
+            import requests
+            bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+            chat_id = os.getenv("TELEGRAM_CHAT_ID")
+            if bot_token and chat_id:
+                url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+                payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown"}
+                res = requests.post(url, json=payload)
+                if res.status_code != 200:
+                    print(f"Telegram API failed: {res.text}")
+        except Exception as e:
+            print(f"Failed to send Telegram notification: {e}")
+    
     # 6. Dispatch Telegram Notification to Developer
-    try:
-        import requests
-        bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-        chat_id = os.getenv("TELEGRAM_CHAT_ID")
-        
-        if bot_token and chat_id:
-            msg = f"🔔 *ShawarmaRadar Update*\nהסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה! הנתונים סונכרנו למסד הנתונים."
-            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-            
-            payload = {
-                "chat_id": chat_id,
-                "text": msg,
-                "parse_mode": "Markdown"
-            }
-            res = requests.post(url, json=payload)
-            if res.status_code == 200:
-                print("Telegram notification sent to developer.")
-            else:
-                print(f"Telegram API failed: {res.text}")
-        else:
-            print("Telegram credentials not found in ENV. Skipping notification.")
-    except Exception as e:
-        print(f"Failed to send Telegram notification: {e}")
+    success_count = len(seed_targets) - failure_count
+    if failure_count > 0:
+        summary_msg = (
+            f"🔔 *ShawarmaRadar - סיבוב סריקה הסתיים*\n"
+            f"✅ הושלמו בהצלחה: {success_count} עסקים\n"
+            f"❌ כשלו: {failure_count} עסקים\n"
+            f"הנתונים שנסרקו בהצלחה סונכרנו למסד הנתונים."
+        )
+    else:
+        summary_msg = (
+            f"✅ *ShawarmaRadar - סיבוב סריקה הסתיים*\n"
+            f"הסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה!\n"
+            f"הנתונים סונכרנו למסד הנתונים."
+        )
+    send_telegram(summary_msg)
+    print("Telegram notification sent to developer.")
 
 async def run_cron_cycle():
     # Helper to prevent blocking main event loop since Apify client is sync
