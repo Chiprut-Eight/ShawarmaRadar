@@ -70,7 +70,6 @@ def cleanup_legacy_data():
                 db.query(models.Review).filter(models.Review.restaurant_id == r.id).delete()
                 db.delete(r)
                 
-        # Specific cleanup for the accidental Tel Aviv entry of HaPina HaLevana
         pina = db.query(models.Restaurant).filter(models.Restaurant.name.like("%הפינה הלבנה%"), models.Restaurant.city == "תל אביב").first()
         if pina:
             db.query(models.Review).filter(models.Review.restaurant_id == pina.id).delete()
@@ -91,6 +90,9 @@ async def background_scheduler():
     except Exception as e:
         print(f"Background cleanup error: {e}")
         
+    # Wait 60s after server startup before initial background scan so the app is instantly responsive
+    await asyncio.sleep(60)
+    
     while True:
         try:
             print("Background: Starting 24h Scheduled Daily Scan...")

@@ -1,9 +1,6 @@
 import re
 import unicodedata
 
-# Comprehensive region mapping for Israel
-# Note: This list maps variations of city names in Hebrew and English to the 5 designated regions
-
 REGIONS = {
     # הצפון (North)
     "חיפה": "north", "haifa": "north",
@@ -19,14 +16,14 @@ REGIONS = {
     "בית שאן": "north", "beit she'an": "north",
     "עוספיא": "north", "usfiya": "north", "דלית אל כרמל": "north", "דאלית אל כרמל": "north", "daliyat al-karmel": "north",
     "שפרעם": "north", "שפר עמר": "north", "shefa-'amr": "north",
-    "טמרה": "north", "tamra": "north", "סכנין": "north", "sakhnin": "north",
+    "טמרה": "north", "tamra": "north", "סכנין": "north", "sakhnin": "north", "סח'נין": "north", "סחנין": "north",
     "כפר יאסיף": "north", "kfar yasif": "north", "ירכא": "north", "yarka": "north", "פקיעין": "north", "peki'in": "north",
-    "מג'דל שמס": "north", "majd al-shams": "north",
-    
-
+    "מג'דל שמס": "north", "majd al-shams": "north", "אום אל פחם": "north", "אום אל-פחם": "north", "umm al-fahm": "north",
+    "כפר כנא": "north", "מע'אר": "north", "מג'אר": "north", "מעאר": "north", "עראבה": "north", "כפר מנדא": "north", "מג'ד אל כרום": "north",
     
     # מרכז (Center)
     "תל אביב": "center", "תל אביב-יפו": "center", "tel aviv": "center", "tel aviv-yafo": "center", "tlv": "center",
+    "ירושלים": "center", "jerusalem": "center", "מבשרת ציון": "center", "אבו גוש": "center",
     "רמת גן": "center", "ramat gan": "center",
     "גבעתיים": "center", "givatayim": "center",
     "חולון": "center", "holon": "center",
@@ -35,7 +32,8 @@ REGIONS = {
     "בני ברק": "center", "bnei brak": "center",
     "קרית אונו": "center", "kiryat ono": "center",
     "אור יהודה": "center", "or yehuda": "center",
-    "ראש העין": "center", "rosh haayin": "center",
+    "יהוד": "center", "יהוד מונוסון": "center", "יהוד-מונוסון": "center",
+    "ראש העין": "center", "rosh haayin": "center", "גבעת שמואל": "center",
     
     # השרון (Sharon)
     "נתניה": "sharon", "netanya": "sharon",
@@ -46,6 +44,8 @@ REGIONS = {
     "רמת השרון": "sharon", "ramat hasharon": "sharon",
     "טייבה": "sharon", "tayibe": "sharon",
     "טירה": "sharon", "tira": "sharon",
+    "כפר קאסם": "sharon", "kfar qasim": "sharon",
+    "קלנסווה": "sharon", "qalansawe": "sharon",
     "חדרה": "sharon", "hadera": "sharon",
     "כפר יונה": "sharon", "kfar yona": "sharon",
     
@@ -58,11 +58,13 @@ REGIONS = {
     "יבנה": "shfela", "yavne": "shfela",
     "מודיעין": "shfela", "modi'in": "shfela", "מודיעין-מכבים-רעות": "shfela",
     "באר יעקב": "shfela", "beer yaakov": "shfela",
+    "גדרה": "shfela", "מזכרת בתיה": "shfela",
     
     # הדרום (South)
     "אשדוד": "south", "ashdod": "south",
     "אשקלון": "south", "ashkelon": "south",
     "באר שבע": "south", "beer sheva": "south", "be'er sheva": "south",
+    "רהט": "south", "rahat": "south",
     "אילת": "south", "eilat": "south",
     "נתיבות": "south", "netivot": "south",
     "שדרות": "south", "sderot": "south",
@@ -73,34 +75,13 @@ REGIONS = {
 }
 
 def get_region_by_city(city_name: str) -> str:
-    """
-    Normalizes city name and returns the region it belongs to.
-    Returns None if the city is not found in the mapping.
-    
-    Normalization handles:
-    - Leading/trailing whitespace
-    - Unicode directional markers (LRM, RLM, LRE, RLE, PDF, etc.)
-    - Hebrew geresh (׳) and gershayim (״), curly quotes
-    - Multiple consecutive spaces collapsed to single space
-    """
     if not city_name:
         return None
     
     normalized = city_name.strip()
-    
-    # Remove Unicode directional/formatting control characters (categories Cf)
     normalized = ''.join(ch for ch in normalized if unicodedata.category(ch) != 'Cf')
-    
-    # Remove Hebrew geresh ׳, gershayim ״, and curly quotes '' ""
-    normalized = re.sub(r'[׳״\u2018\u2019\u201C\u201D]', '', normalized)
-    
-    # Replace hyphens and straight quotes with spaces to unify "תל-אביב" into "תל אביב"
-    normalized = normalized.replace('-', ' ').replace('"', ' ').replace("'", ' ')
-    
-    # Collapse multiple spaces into one
-    normalized = re.sub(r'\s+', ' ', normalized).strip()
-    
-    # Lowercase for English key matching (no-op for Hebrew)
-    normalized = normalized.lower()
+    normalized = re.sub(r'[\'\"׳״\u2018\u2019\u201C\u201D]', '', normalized)
+    normalized = normalized.replace('-', ' ')
+    normalized = re.sub(r'\s+', ' ', normalized).strip().lower()
     
     return REGIONS.get(normalized)
