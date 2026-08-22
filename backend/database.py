@@ -3,8 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Uses Render's Postgres DB in production, falls back to local SQLite for tests
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./shawarma_radar.db")
+db_dir = os.path.dirname(os.path.abspath(__file__))
+default_sqlite = f"sqlite:///{os.path.join(db_dir, 'shawarma_radar.db')}"
+
+DATABASE_URL = os.getenv("DATABASE_URL", default_sqlite)
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 

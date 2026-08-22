@@ -1,55 +1,101 @@
 import asyncio
-from sqlalchemy.orm import Session
+import os
+import time
+import json
+import requests
 from datetime import datetime, timezone
+from sqlalchemy.orm import Session
 
 from scrapers.google import GoogleBusinessScraper
+from scrapers.wolt import WoltTracker, TenBisTracker
 from nlp import RankingEngine
-from database import engine, get_db
+from database import get_db, SessionLocal
 import models
 from regions import get_region_by_city
-from scrapers.wolt import WoltTracker, TenBisTracker
 
-async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, tenbis: TenBisTracker, ai: RankingEngine, db: Session, search_query: str, default_city: str):
-    print(f"\n--- Processing {search_query} ---")
-    
-    # 1. Search for Place ID
-    place_id, address = scraper.search_place(search_query)
-    if not place_id:
-        print(f"Could not find Place ID for {search_query}")
+def send_telegram_alert(message: str):
+    """ Helper to send Telegram notifications """
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    if not bot_token or not chat_id:
         return
-        
-    # 2. Fetch Reviews from all sources
-    google_data = scraper.fetch_recent_reviews(place_id)
-    google_reviews = google_data.get("reviews", [])
+    try:
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        requests.post(
+            url,
+            json={"chat_id": chat_id, "text": message, "parse_mode": "Markdown"},
+            timeout=8.0
+        )
+    except Exception as e:
+        print(f"Failed to send Telegram alert: {e}")
+
+def process_restaurant(
+    scraper: GoogleBusinessScraper,
+    wolt: WoltTracker,
+    tenbis: TenBisTracker,
+    ai: RankingEngine,
+    db: Session,
+    search_query: str,
+    default_city: str
+):
+    print(f"\n--- [Daily Scan] Processing: {search_query} ({default_city}) ---")
+    
+    # 1. Clean Display Name
+    display_name = search_query.replace(f" {default_city}", "").strip()
+    
+    # 2. Free Google Scraper
+    google_data = scraper.fetch_place_data(search_query)
     google_rating = google_data.get("rating")
     google_ratings_total = google_data.get("user_ratings_total", 0)
+    google_address = google_data.get("address")
+    google_reviews = google_data.get("reviews", [])
+
+    # 3. Wolt Free API
+    wolt_rating = 0.0
+    wolt_address = None
+    try:
+        slug = wolt.search_venue(display_name, default_city)
+        if slug:
+            load_data = wolt.check_delivery_load(slug)
+            if load_data:
+                if load_data.get("rating") is not None:
+                    wolt_rating = float(load_data["rating"])
+                wolt_address = load_data.get("address")
+    except Exception as e:
+        print(f"Wolt lookup error: {e}")
+
+    # 4. 10Bis Free API
+    tenbis_rating = 0.0
+    tenbis_address = None
+    try:
+        tb_data = tenbis.search_restaurant(display_name)
+        if tb_data:
+            tenbis_rating = tb_data.get("rating", 0.0)
+            tenbis_address = tb_data.get("address")
+    except Exception as e:
+        print(f"10bis lookup error: {e}")
+
+    # Pick best address
+    best_address = google_address or wolt_address or tenbis_address or ""
     
-    for gr in google_reviews:
-        gr["source"] = "google"
-        
-    # We rely on Google's rich textual reviews to drive the real-time NLP analysis.
-    reviews_data = google_reviews
-    
-    if not reviews_data:
-        print(f"Skipping {search_query} due to lack of text reviews data.")
-        return
-        
-    # 3. Get or Create Restaurant in DB
-    restaurant = db.query(models.Restaurant).filter(models.Restaurant.platform_id == place_id).first()
-    
+    # Unique platform ID / key based on normalized name and city
+    platform_key = f"{display_name}_{default_city}".replace(" ", "_")
+
+    # 5. Get or Create Restaurant in DB
+    restaurant = db.query(models.Restaurant).filter(
+        (models.Restaurant.platform_id == platform_key) | 
+        ((models.Restaurant.name == display_name) & (models.Restaurant.city == default_city))
+    ).first()
+
+    region = get_region_by_city(default_city) or "center"
+
     if not restaurant:
-        # Determine Region
-        region = get_region_by_city(default_city) or "center" # fallback
-        
-        # Using search_query as name for now, or extract from Google API (which we don't have deeply parsed right now)
-        display_name = search_query.replace(f" {default_city}", "").strip()
-        
         restaurant = models.Restaurant(
             name=display_name,
             city=default_city,
             region=region,
-            platform_id=place_id,
-            address=address,
+            platform_id=platform_key,
+            address=best_address,
             google_rating=google_rating,
             google_ratings_total=google_ratings_total
         )
@@ -57,16 +103,18 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
         db.commit()
         db.refresh(restaurant)
     else:
-        # Update ratings if changed
-        restaurant.google_rating = google_rating
-        restaurant.google_ratings_total = google_ratings_total
+        if google_rating:
+            restaurant.google_rating = google_rating
+        if google_ratings_total:
+            restaurant.google_ratings_total = google_ratings_total
+        if best_address and not restaurant.address:
+            restaurant.address = best_address
+        restaurant.region = region
         db.commit()
 
-    # 4. Process Reviews 
-    new_reviews_count = 0
-    for rev_data in reviews_data:
+    # 6. Process Reviews with Local Hebrew Sentiment
+    for rev_data in google_reviews:
         content = rev_data.get("text", "")
-        source_name = rev_data.get("source", "google")
         if not content:
             continue
             
@@ -78,104 +126,55 @@ async def process_restaurant(scraper: GoogleBusinessScraper, wolt: WoltTracker, 
         if existing:
             continue
             
-        # Analyze new review
         sentiment = ai.analyze_sentiment(content)
-        
-        # We need a proper datetime from Google's 'time' (timestamp)
-        timestamp = rev_data.get("time")
-        published_at = datetime.fromtimestamp(timestamp, tz=timezone.utc) if timestamp else datetime.now(timezone.utc)
-        
+        published_at = datetime.now(timezone.utc)
         weight = ai.calculate_recency_weight(published_at)
         
         review = models.Review(
             restaurant_id=restaurant.id,
-            source=source_name,
+            source="google",
             content=content,
             sentiment_score=sentiment,
             weight=weight,
             published_at=published_at
         )
         db.add(review)
-        new_reviews_count += 1
         
     db.commit()
-    
-    # 5. Get Delivery Ratings (Wolt & 10Bis) for Live Tension
-    wolt_rating = 0.0
-    tenbis_rating = 0.0
-    
-    try:
-        slug = wolt.search_venue(search_query)
-        if slug:
-            load = wolt.check_delivery_load(slug)
-            if load and load.get("rating") is not None:
-                raw_rating = load.get("rating")
-                wolt_rating = float(raw_rating) if not isinstance(raw_rating, dict) else float(raw_rating.get('score', 0.0))
-                print(f"Wolt rating found: {wolt_rating}")
-    except Exception as e:
-        print(f"Wolt rating fetch failed: {e}")
-        
-    try:
-        if tenbis:
-            tb_data = tenbis.search_restaurant(search_query)
-            if tb_data and tb_data.get('reviewsScore'):
-                tenbis_rating = float(tb_data.get('reviewsScore'))
-                print(f"10bis rating found: {tenbis_rating}")
-    except Exception as e:
-        print(f"10bis rating fetch failed: {e}")
-    
-    # 6. Recalculate Scores
+
+    # 7. Recalculate Final Radar Score
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
     
-    if all_reviews:
-        # Calculate Net Sentiment (just for tracking NLP portion separately)
-        restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
-        restaurant.total_reviews = len(all_reviews)
-        
-        # Average the delivery app scores if available
-        active_delivery_ratings = [r for r in (wolt_rating, tenbis_rating) if r > 0]
-        avg_delivery = sum(active_delivery_ratings) / len(active_delivery_ratings) if active_delivery_ratings else 0.0
-        
-        # New Scoring System: Base on long-term Google rating, modified by recent NLP chatters and delivery APIs
-        restaurant.bayesian_average = ai.calculate_final_radar_score(
-            google_rating=restaurant.google_rating,
-            google_ratings_total=restaurant.google_ratings_total,
-            recent_reviews=all_reviews,
-            wolt_rating=avg_delivery, 
-            social_volume=len(all_reviews)  # Use actual DB review count for meaningful buzz differentiation
-        )
-        
-        # FORCE update timestamp so the Smart Resume loop correctly registers the scan time, even if the score hasn't changed.
-        restaurant.updated_at = datetime.now(timezone.utc)
-        
-        db.commit()
-        print(f"Updated {restaurant.name} -> New Final Score: {restaurant.bayesian_average:.2f}")
+    restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
+    restaurant.total_reviews = len(all_reviews)
+    
+    restaurant.bayesian_average = ai.calculate_final_radar_score(
+        google_rating=restaurant.google_rating or 3.5,
+        google_ratings_total=restaurant.google_ratings_total or 0,
+        recent_reviews=all_reviews,
+        wolt_rating=wolt_rating,
+        tenbis_rating=tenbis_rating,
+        social_volume=len(all_reviews)
+    )
+    
+    restaurant.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    print(f"-> Updated {restaurant.name} ({restaurant.city}) | Radar Score: {restaurant.bayesian_average}%")
 
-def run_single_scrape_sync(query: str, city: str = "ישראל"):
-    print(f"Triggering manual scrape for {query}...")
-    db: Session = next(get_db())
+def run_daily_scan_sync():
+    """
+    Executes the 100% Free Daily Scan across all seeds.
+    Sends a rich summary to Telegram at completion.
+    """
+    print("==================================================")
+    print("[ShawarmaRadar] Starting Daily Scan Cycle...")
+    print("==================================================")
+    
+    db: Session = SessionLocal()
     scraper = GoogleBusinessScraper()
     wolt = WoltTracker()
     tenbis = TenBisTracker()
     ai = RankingEngine()
-    
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(process_restaurant(scraper, wolt, tenbis, ai, db, query, city))
-    loop.close()
-
-def run_cron_cycle_sync():
-    print("Starting background worker cycle...")
-    db: Session = next(get_db())
-    scraper = GoogleBusinessScraper()
-    wolt = WoltTracker()
-    tenbis = TenBisTracker()
-    ai = RankingEngine()
-    
-    import json
-    import os
-    import time
-    import gc
     
     seeds_path = os.path.join(os.path.dirname(__file__), "auto_seeds.json")
     seed_targets = []
@@ -183,111 +182,75 @@ def run_cron_cycle_sync():
         try:
             with open(seeds_path, "r", encoding="utf-8") as f:
                 seed_targets = json.load(f)
-            print(f"Loaded {len(seed_targets)} verified seeds from {seeds_path}")
+            print(f"Loaded {len(seed_targets)} targets from {seeds_path}")
         except Exception as e:
-            print(f"Error loading auto_seeds: {e}")
+            print(f"Error loading seeds: {e}")
             
     if not seed_targets:
-        print("No dynamic seeds found. Falling back to core safe list.")
         seed_targets = [
             {"query": "שווארמה הקוסם תל אביב", "city": "תל אביב"},
-            {"query": "שווארמה חזן חיפה", "city": "חיפה"}
+            {"query": "שווארמה חזן חיפה", "city": "חיפה"},
+            {"query": "שווארמה שמש רמת גן", "city": "רמת גן"},
+            {"query": "שווארמה אמיל חיפה", "city": "חיפה"},
+            {"query": "שווארמה בנדורה תל אביב", "city": "תל אביב"}
         ]
-    
-    failure_count = 0
-    for target in seed_targets:
-        # Check if we already updated this restaurant recently (Skip to resume progress quickly)
-        display_name = target["query"].replace(f" {target['city']}", "").strip()
-        existing = db.query(models.Restaurant).filter(
-            models.Restaurant.name == display_name,
-            models.Restaurant.city == target["city"]
-        ).first()
         
-        if existing:
-            last_checked = existing.updated_at or existing.created_at
-            if last_checked:
-                now = datetime.now(timezone.utc)
-                if last_checked.tzinfo is None:
-                    last_checked = last_checked.replace(tzinfo=timezone.utc)
-                
-                hours_since = (now - last_checked).total_seconds() / 3600
-                if hours_since < 12:
-                    print(f"Skipping {target['query']} - Already updated {hours_since:.1f} hours ago.")
-                    continue
-
-        # Create a new event loop just for this thread execution
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
+    success_count = 0
+    failure_count = 0
+    start_time = time.time()
+    
+    for target in seed_targets:
         try:
-            loop.run_until_complete(process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"]))
-            # Important: Sleep to respect OpenAI free tier rate limits (mostly 3 RPM or burst limits)
-            # and to allow Render memory to stabilize.
-            time.sleep(12) 
+            process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"])
+            success_count += 1
+            time.sleep(1.0) # Polite delay
         except Exception as e:
             failure_count += 1
-            error_msg = str(e)
-            print(f"Failed processing {target['query']}: {error_msg}")
-            # Send immediate Telegram alert about this specific failure
-            try:
-                import requests
-                bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-                chat_id = os.getenv("TELEGRAM_CHAT_ID")
-                if bot_token and chat_id:
-                    alert = (
-                        f"⚠️ *ShawarmaRadar - כשל בסריקה*\n"
-                        f"🏪 עסק: `{target['query']}`\n"
-                        f"📍 עיר: {target['city']}\n"
-                        f"🚨 שגיאה: `{error_msg}`"
-                    )
-                    requests.post(
-                        f"https://api.telegram.org/bot{bot_token}/sendMessage",
-                        json={"chat_id": chat_id, "text": alert, "parse_mode": "Markdown"}
-                    )
-            except Exception:
-                pass
-        finally:
-            loop.close()
-            gc.collect() # Force memory cleanup to prevent Render OOM
-        
-    print("Cycle complete.")
-    
-    # Shared Telegram Sender Helper
-    def send_telegram(message: str):
-        try:
-            import requests
-            bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-            chat_id = os.getenv("TELEGRAM_CHAT_ID")
-            if bot_token and chat_id:
-                url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-                payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown"}
-                res = requests.post(url, json=payload)
-                if res.status_code != 200:
-                    print(f"Telegram API failed: {res.text}")
-        except Exception as e:
-            print(f"Failed to send Telegram notification: {e}")
-    
-    # 6. Dispatch Telegram Notification to Developer
-    success_count = len(seed_targets) - failure_count
-    if failure_count > 0:
-        summary_msg = (
-            f"🔔 *ShawarmaRadar - סיבוב סריקה הסתיים*\n"
-            f"✅ הושלמו בהצלחה: {success_count} עסקים\n"
-            f"❌ כשלו: {failure_count} עסקים\n"
-            f"הנתונים שנסרקו בהצלחה סונכרנו למסד הנתונים."
-        )
-    else:
-        summary_msg = (
-            f"✅ *ShawarmaRadar - סיבוב סריקה הסתיים*\n"
-            f"הסורק השלים סיבוב מלא על {len(seed_targets)} עסקים בהצלחה!\n"
-            f"הנתונים סונכרנו למסד הנתונים."
-        )
-    send_telegram(summary_msg)
-    print("Telegram notification sent to developer.")
+            print(f"Error processing {target.get('query')}: {e}")
 
-async def run_cron_cycle():
-    # Helper to prevent blocking main event loop since Apify client is sync
-    import asyncio
-    await asyncio.to_thread(run_cron_cycle_sync)
+    duration_mins = (time.time() - start_time) / 60.0
+    print(f"Daily Scan Completed in {duration_mins:.1f} minutes.")
+    
+    # 8. Query Top Rankings for Telegram Report
+    top_king = db.query(models.Restaurant).order_by(models.Restaurant.bayesian_average.desc()).first()
+    
+    regions = ["north", "center", "south", "sharon", "shfela"]
+    region_labels = {
+        "north": "צפון",
+        "center": "מרכז",
+        "south": "דרום",
+        "sharon": "שרון",
+        "shfela": "שפלה"
+    }
+    
+    regional_kings_text = ""
+    for r in regions:
+        r_king = db.query(models.Restaurant).filter(models.Restaurant.region == r).order_by(models.Restaurant.bayesian_average.desc()).first()
+        if r_king:
+            regional_kings_text += f"• *{region_labels[r]}*: {r_king.name} ({r_king.city}) — `{r_king.bayesian_average}%`\n"
+
+    king_info = f"{top_king.name} ({top_king.city}) — `{top_king.bayesian_average}%`" if top_king else "אין נתונים"
+
+    telegram_report = (
+        f"👑 *ShawarmaRadar — דו\"ח סריקה יומי*\n\n"
+        f"📊 *סיכום סריקה:*\n"
+        f"• נסרקו בהצלחה: {success_count} עסקים\n"
+        f"• שגיאות: {failure_count}\n"
+        f"• משך סריקה: {duration_mins:.1f} דקות\n\n"
+        f"🏆 *מלך השווארמה הארצי להיום:*\n"
+        f"👉 *{king_info}*\n\n"
+        f"📍 *מובילי האזורים:*\n"
+        f"{regional_kings_text}\n"
+        f"🌐 האתר מעודכן: [ShawarmaRadar Live](https://shawarma-frontend.onrender.com)"
+    )
+
+    send_telegram_alert(telegram_report)
+    print("Telegram report dispatched.")
+    db.close()
+
+async def run_daily_scan():
+    """ Async wrapper to run in background """
+    await asyncio.to_thread(run_daily_scan_sync)
 
 if __name__ == "__main__":
-    asyncio.run(run_cron_cycle())
+    run_daily_scan_sync()

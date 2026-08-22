@@ -3,16 +3,16 @@ import httpx
 from typing import Optional, Dict
 
 class PoliteScraper:
-    def __init__(self, base_url: str, delay_seconds: float = 2.0):
+    def __init__(self, base_url: str, delay_seconds: float = 1.0):
         self.base_url = base_url
         self.delay_seconds = delay_seconds
         self.last_request_time = 0.0
         
-        # Setup headers to look like a normal user agent
+        # Setup modern browser headers with Hebrew locale priority
         self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.5",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
         }
         
     def _wait_for_rate_limit(self):
@@ -24,14 +24,12 @@ class PoliteScraper:
     def get(self, endpoint: str, params: Optional[Dict] = None):
         self._wait_for_rate_limit()
         
-        url = f"{self.base_url}{endpoint}"
-        
-        # In the future: Add proxy rotation logic here (e.g. Apify or proxy pools) #
+        url = f"{self.base_url}{endpoint}" if endpoint.startswith("/") else f"{self.base_url}/{endpoint}"
         
         try:
             response = httpx.get(url, headers=self.headers, params=params, timeout=10.0)
             self.last_request_time = time.time()
             return response
         except httpx.RequestError as exc:
-            print(f"An error occurred while requesting {exc.request.url!r}.")
+            print(f"Request error while requesting {exc.request.url!r}.")
             return None

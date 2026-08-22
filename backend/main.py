@@ -8,13 +8,13 @@ from contextlib import asynccontextmanager
 
 import models, schemas
 from database import engine, get_db
-from worker import run_cron_cycle, run_single_scrape_sync
+from worker import run_daily_scan
 
 # Create db tables
 models.Base.metadata.create_all(bind=engine)
 
 def cleanup_legacy_data():
-    """ Delete old mock restaurants like Bambino and Said that were scarped previously """
+    """ Delete old non-shawarma mock restaurants that were scraped previously """
     from database import SessionLocal
     db = SessionLocal()
     try:
@@ -83,28 +83,28 @@ def cleanup_legacy_data():
     finally:
         db.close()
 
-async def background_worker():
+async def background_scheduler():
+    """ Background task running daily scan every 24 hours """
     try:
-        print("Background: Running legacy data cleanup asynchronously...")
+        print("Background: Running initial cleanup...")
         await asyncio.to_thread(cleanup_legacy_data)
     except Exception as e:
         print(f"Background cleanup error: {e}")
         
     while True:
         try:
-            print("Background: Starting worker cycle...")
-            await run_cron_cycle()
+            print("Background: Starting 24h Scheduled Daily Scan...")
+            await run_daily_scan()
         except Exception as e:
-            print(f"Background worker error: {e}")
-        # Wait 30 minutes before running again (simulating hourly/daily cron in an active web service)
-        await asyncio.sleep(1800)
+            print(f"Background daily scan error: {e}")
+            
+        # Wait 24 hours (86,400 seconds) until next daily scan
+        await asyncio.sleep(86400)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start the background task when the app starts
-    task = asyncio.create_task(background_worker())
+    task = asyncio.create_task(background_scheduler())
     yield
-    # Cancel the task when the app stops
     task.cancel()
 
 app = FastAPI(title="ShawarmaRadar API", lifespan=lifespan)
@@ -120,6 +120,12 @@ app.add_middleware(
 @app.api_route("/api/health", methods=["GET", "HEAD"])
 def health_check():
     return {"status": "ok"}
+
+@app.post("/api/admin/trigger-scan")
+async def trigger_scan(background_tasks: BackgroundTasks):
+    """ Allows triggering a manual scan cycle on demand """
+    background_tasks.add_task(run_daily_scan)
+    return {"status": "scan_started", "message": "Daily scan cycle triggered in background"}
 
 # WebSocket Connection Manager
 class ConnectionManager:
@@ -145,8 +151,6 @@ async def websocket_radar(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
-            # In a real app, this loop would listen to a Redis PubSub or Message Queue
-            # and push updates to the client
             await manager.broadcast(f"Client said: {data}")
     except WebSocketDisconnect:
         manager.disconnect(websocket)
@@ -154,7 +158,6 @@ async def websocket_radar(websocket: WebSocket):
 @app.get("/api/rankings/national")
 def get_national_king(db: Session = Depends(get_db)):
     """ Returns the top 1 'King' and the next top runners up nationally """
-    # Sort by bayesian_average descending
     top_restaurants = db.query(models.Restaurant).order_by(models.Restaurant.bayesian_average.desc()).limit(10).all()
     
     if not top_restaurants:
@@ -178,8 +181,6 @@ def get_regional_rankings(region_id: str, db: Session = Depends(get_db)):
 @app.get("/api/restaurants/search")
 def search_restaurant(q: str = "", lang: str = "he", db: Session = Depends(get_db)):
     """ Returns whether a restaurant exists in the DB based on search term """
-    
-    # Localized messages
     messages = {
         "he": {
             "too_short": "אנא הזן שם ארוך יותר",
@@ -203,12 +204,10 @@ def search_restaurant(q: str = "", lang: str = "he", db: Session = Depends(get_d
     
     query_str = q.strip()
     
-    # Simple LIKE search
     exists = db.query(models.Restaurant).filter(models.Restaurant.name.like(f"%{query_str}%")).first()
     if exists:
         return {"exists": True, "message": msg["found"].format(name=exists.name)}
         
-    # Check if it's in the queue (auto_seeds.json)
     try:
         import json
         with open("auto_seeds.json", "r", encoding="utf-8") as f:
