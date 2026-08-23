@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
 import { Crown } from 'lucide-react';
-import { getNationalRankings, type Restaurant } from '../services/firebase';
+import { getNationalRankings, getBundledNationalRankings, type Restaurant } from '../services/firebase';
 
 const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [nationalKing, setNationalKing] = useState<Restaurant | null>(null);
-  const [runnersUp, setRunnersUp] = useState<Restaurant[]>([]);
-  const [loading, setLoading] = useState(true);
+  const initial = getBundledNationalRankings();
+  const [nationalKing, setNationalKing] = useState<Restaurant | null>(initial.king);
+  const [runnersUp, setRunnersUp] = useState<Restaurant[]>(initial.runnersUp);
   
   // Real-time clock for the header
   const [time, setTime] = useState(new Date());
@@ -16,12 +16,12 @@ const Home: React.FC = () => {
   const fetchData = async () => {
     try {
       const rankData = await getNationalRankings();
-      setNationalKing(rankData.king);
-      setRunnersUp(rankData.runnersUp || []);
+      if (rankData.king) {
+        setNationalKing(rankData.king);
+        setRunnersUp(rankData.runnersUp || []);
+      }
     } catch (error) {
       console.error("Failed to fetch rankings:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -54,12 +54,7 @@ const Home: React.FC = () => {
           {formatTime(time)} • {formatDate(time)}
         </div>
         
-        {loading ? (
-          <div className="radar-display">
-            <div className="radar-sweep"></div>
-            <div>{t('home_scanning')}</div>
-          </div>
-        ) : nationalKing ? (
+        {nationalKing ? (
           <div className="radar-display">
             <div className="radar-sweep"></div>
             <Crown size={48} color="#facc15" style={{zIndex: 2}} />
@@ -79,9 +74,8 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      {loading ? null : (
-        <div className="signals-panel">
-          <h2 className="signals-section-title">{t('home_runners_title')}</h2>
+      <div className="signals-panel">
+        <h2 className="signals-section-title">{t('home_runners_title')}</h2>
           
           {/* Runners Up Data Signals */}
           {runnersUp.map((place, idx) => (
@@ -116,7 +110,6 @@ const Home: React.FC = () => {
              <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>{t('no_data')}</div>
           )}
         </div>
-      )}
     </div>
   );
 };

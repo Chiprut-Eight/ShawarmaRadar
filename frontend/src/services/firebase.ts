@@ -37,24 +37,8 @@ export interface Restaurant {
   google_ratings_total?: number;
 }
 
-// 1. National Rankings (King + Top 9 Runners up)
-export async function getNationalRankings(): Promise<{ king: Restaurant | null; runnersUp: Restaurant[] }> {
-  try {
-    const q = query(
-      collection(db, 'restaurants'),
-      orderBy('bayesian_average', 'desc'),
-      limit(10)
-    );
-    const snap = await getDocs(q);
-    if (!snap.empty) {
-      const items: Restaurant[] = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Restaurant));
-      return { king: items[0], runnersUp: items.slice(1) };
-    }
-  } catch (err) {
-    console.warn('Firestore fetch error, using bundled dataset:', err);
-  }
-
-  // Fallback from bundled JSON
+// 1. Synchronous Instant Bundled Data (0ms latency guaranteed)
+export function getBundledNationalRankings(): { king: Restaurant | null; runnersUp: Restaurant[] } {
   const sorted = [...(localRestaurants as Restaurant[])].sort((a, b) => b.bayesian_average - a.bayesian_average);
   return {
     king: sorted[0] || null,
@@ -62,7 +46,42 @@ export async function getNationalRankings(): Promise<{ king: Restaurant | null; 
   };
 }
 
-// 2. Regional Rankings (Top 10 in a region)
+export function getBundledRegionalRankings(regionId: string): Restaurant[] {
+  const filtered = (localRestaurants as Restaurant[])
+    .filter(r => r.region === regionId)
+    .sort((a, b) => b.bayesian_average - a.bayesian_average);
+  return filtered.slice(0, 10);
+}
+
+// Helper: Timeout promise
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))
+  ]);
+};
+
+// 2. Asynchronous Live Rankings (with fast 1.5s fallback)
+export async function getNationalRankings(): Promise<{ king: Restaurant | null; runnersUp: Restaurant[] }> {
+  try {
+    const q = query(
+      collection(db, 'restaurants'),
+      orderBy('bayesian_average', 'desc'),
+      limit(10)
+    );
+    const snap = await withTimeout(getDocs(q), 1500);
+    if (!snap.empty) {
+      const items: Restaurant[] = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Restaurant));
+      return { king: items[0], runnersUp: items.slice(1) };
+    }
+  } catch (err) {
+    // Graceful silent fallback to bundled data
+  }
+
+  return getBundledNationalRankings();
+}
+
+// 3. Asynchronous Regional Rankings (with fast 1.5s fallback)
 export async function getRegionalRankings(regionId: string): Promise<Restaurant[]> {
   try {
     const q = query(
@@ -71,22 +90,18 @@ export async function getRegionalRankings(regionId: string): Promise<Restaurant[
       orderBy('bayesian_average', 'desc'),
       limit(10)
     );
-    const snap = await getDocs(q);
+    const snap = await withTimeout(getDocs(q), 1500);
     if (!snap.empty) {
       return snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Restaurant));
     }
   } catch (err) {
-    console.warn(`Firestore regional fetch error for ${regionId}, using bundled dataset:`, err);
+    // Graceful silent fallback to bundled data
   }
 
-  // Fallback from bundled JSON
-  const filtered = (localRestaurants as Restaurant[])
-    .filter(r => r.region === regionId)
-    .sort((a, b) => b.bayesian_average - a.bayesian_average);
-  return filtered.slice(0, 10);
+  return getBundledRegionalRankings(regionId);
 }
 
-// 3. Search Restaurant
+// 4. Search Restaurant
 export function searchRestaurantLocal(queryStr: string): { exists: boolean; name?: string } {
   if (!queryStr || queryStr.trim().length < 2) return { exists: false };
   const clean = queryStr.trim().toLowerCase();

@@ -3,14 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MapPin } from 'lucide-react';
 import './RegionalDashboard.css';
-import { getRegionalRankings, type Restaurant } from '../services/firebase';
+import { getRegionalRankings, getBundledRegionalRankings, type Restaurant } from '../services/firebase';
 
 const RegionalDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t, i18n } = useTranslation();
   
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>(() => getBundledRegionalRankings(id || 'center'));
 
   const regionNameMap: Record<string, string> = {
     north: t('region_north'),
@@ -26,11 +25,11 @@ const RegionalDashboard: React.FC = () => {
     if (!id) return;
     try {
       const data = await getRegionalRankings(id);
-      setRestaurants(data);
+      if (data && data.length > 0) {
+        setRestaurants(data);
+      }
     } catch (error) {
       console.error("Failed to fetch regional rankings:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -53,12 +52,7 @@ const RegionalDashboard: React.FC = () => {
       <div className="king-radar-container">
         <h2 className="king-radar-title">{t('region_king_title')}</h2>
         
-        {loading ? (
-          <div className="radar-display">
-            <div className="radar-sweep"></div>
-            <div>{t('home_scanning')}</div>
-          </div>
-        ) : localKing ? (
+        {localKing ? (
           <div className="radar-display">
             <div className="radar-sweep"></div>
             <div className="king-radar-name">{localKing.name}</div>
@@ -77,9 +71,8 @@ const RegionalDashboard: React.FC = () => {
         )}
       </div>
 
-      {loading ? null : (
-        <div className="signals-panel" style={{marginTop: '30px'}}>
-          <h2 className="signals-section-title">{t('region_leaders')} {currentRegionName}</h2>
+      <div className="signals-panel" style={{marginTop: '30px'}}>
+        <h2 className="signals-section-title">{t('region_leaders')} {currentRegionName}</h2>
           
           {restaurants.slice(1).map((place, idx) => (
             <div className="signal-card" key={place.id}>
@@ -113,7 +106,6 @@ const RegionalDashboard: React.FC = () => {
              <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>{t('region_no_more_data')}</div>
           )}
         </div>
-      )}
     </div>
   );
 };
