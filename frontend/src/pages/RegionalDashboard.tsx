@@ -62,7 +62,7 @@ const RegionalDashboard: React.FC = () => {
           <div className="radar-display">
             <div className="radar-sweep"></div>
             <div className="king-radar-name">{localKing.name}</div>
-            {localKing.address ? (
+            {localKing.address && localKing.address !== localKing.city ? (
                <div className="king-radar-address">{localKing.city} • {localKing.address}</div>
             ) : (
                <div className="king-radar-address">{localKing.city}</div>
@@ -93,7 +93,7 @@ const RegionalDashboard: React.FC = () => {
                   <span className="live-tag">LIVE</span>
                 </div>
                 <p className="signal-sub">
-                  {place.city} {place.address ? `• ${place.address}` : ''}
+                  {place.city} {place.address && place.address !== place.city ? `• ${place.address}` : ''}
                 </p>
               </div>
 

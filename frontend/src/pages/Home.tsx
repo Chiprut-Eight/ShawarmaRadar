@@ -64,7 +64,7 @@ const Home: React.FC = () => {
             <div className="radar-sweep"></div>
             <Crown size={48} color="#facc15" style={{zIndex: 2}} />
             <div className="king-radar-name">{nationalKing.name}</div>
-            {nationalKing.address ? (
+            {nationalKing.address && nationalKing.address !== nationalKing.city ? (
                <div className="king-radar-address">{nationalKing.city} • {nationalKing.address}</div>
             ) : (
                <div className="king-radar-address">{nationalKing.city}</div>
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
                   <span className="live-tag">LIVE</span>
                 </div>
                 <p className="signal-sub">
-                  {place.city} {place.address ? `• ${place.address}` : ''}
+                  {place.city} {place.address && place.address !== place.city ? `• ${place.address}` : ''}
                 </p>
               </div>
 
