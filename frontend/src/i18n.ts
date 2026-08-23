@@ -75,6 +75,7 @@ const resources = {
       "share_fallback": "העתק את הקישור ושתף מכל דפדפן!",
       "install_prompt": "להתקנת האפליקציה ב-iOS / אייפון: יש ללחוץ על כפתור השיתוף בתחתית המסך ובחרו \"Add to Home Screen\". באנדרואיד: לחצו על 3 הנקודות בדפדפן ובחרו \"Add to Home screen\".",
       "search_error": "שגיאה בחיבור לשרת הרדאר.",
+      "footer_disclaimer": "המכ\"ם מבוסס בינה מלאכותית ועלול להכיל טעויות - נשמח ללמוד ולהשתפר - כיתבו לנו אם מצאתם טעות.",
       "footer_copyright": "ShawarmaRadar © 2026 - נבנה על ידי גל צ'יפרוט ובינה מלאכותית",
       "whatsapp_ad_prefill": "היי, ספר לי איך ניתן לפרסם את העסק שלי ב-ShawarmaRadar",
       "banner_demo_text": "עסקים המציעים שווארמה - דברו איתנו ותופיעו כאן",
@@ -84,6 +85,7 @@ const resources = {
   en: {
     translation: {
       "app_name": "ShawarmaRadar",
+      "footer_disclaimer": "The radar is AI-powered and may contain errors. We are always learning and improving — write to us if you find any mistake.",
       "toggle_lang": "עברית",
       "national_king": "National King",
       "region_north": "North",

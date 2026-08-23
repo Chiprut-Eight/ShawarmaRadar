@@ -218,7 +218,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Download size={18} /> {t('footer_save')}
           </button>
         </div>
-        <p style={{fontSize: '0.8rem', color: '#666', fontWeight: 'bold'}}>{t('footer_copyright')}</p>
+        <p style={{fontSize: '0.85rem', color: '#9ca3af', textAlign: 'center', maxWidth: '650px', lineHeight: '1.4', margin: '0 10px'}}>
+          {t('footer_disclaimer')}
+        </p>
+        <p style={{fontSize: '0.8rem', color: '#666', fontWeight: 'bold', margin: '0'}}>{t('footer_copyright')}</p>
       </footer>
 
       {/* Modals overlay */}
@@ -245,6 +248,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div style={{marginTop: '2rem', clear: 'both'}}>
               <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{background: '#facc15', color: 'black'}}>{t('btn_understood')}</button>
             </div>
+            <p style={{fontSize: '0.8rem', color: '#9ca3af', marginTop: '1.2rem', lineHeight: '1.4', borderTop: '1px solid #333', paddingTop: '0.8rem'}}>
+              {t('footer_disclaimer')}
+            </p>
           </div>
         </div>
       )}
