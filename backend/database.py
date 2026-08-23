@@ -13,7 +13,15 @@ if DATABASE_URL.startswith("postgres://"):
 if "sqlite" in DATABASE_URL:
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
-    engine = create_engine(DATABASE_URL)
+    try:
+        test_engine = create_engine(DATABASE_URL, connect_args={"connect_timeout": 5})
+        with test_engine.connect() as conn:
+            pass
+        engine = test_engine
+    except Exception as e:
+        print(f"Warning: Remote Postgres connection failed ({e}). Gracefully falling back to local SQLite.")
+        DATABASE_URL = default_sqlite
+        engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
     
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
