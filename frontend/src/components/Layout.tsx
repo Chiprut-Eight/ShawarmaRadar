@@ -5,7 +5,7 @@ import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle
 import AdBanner from './AdBanner';
 import './Layout.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { searchRestaurantLocal } from '../services/firebase';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
@@ -69,13 +69,28 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setIsSearching(true);
     setSearchResult(null);
     try {
-      const res = await fetch(`${API_URL}/api/restaurants/search?q=${encodeURIComponent(searchQuery)}&lang=${i18n.language}`);
-      const data = await res.json();
-      setSearchResult({
-        message: data.message,
-        isFound: data.exists,
-        whatsapp: data.whatsapp_link
-      });
+      const result = searchRestaurantLocal(searchQuery);
+      if (result.exists) {
+        const foundMsg = i18n.language === 'he' 
+          ? `כן! העסק '${result.name}' מזוהה ונמצא במעקב הרדאר.` 
+          : `Yes! '${result.name}' is identified and tracked by the radar.`;
+        setSearchResult({
+          message: foundMsg,
+          isFound: true
+        });
+      } else {
+        const notFoundMsg = i18n.language === 'he'
+          ? "לא נמצא בסורק, אם זו טעות - צור איתנו קשר"
+          : "Not found in the scanner. If this is a mistake — contact us";
+        const whatsappText = i18n.language === 'he'
+          ? `היי, העסק שלי (${searchQuery.trim()}) לא נמצא ברדאר`
+          : `Hi, my business (${searchQuery.trim()}) was not found on the radar`;
+        setSearchResult({
+          message: notFoundMsg,
+          isFound: false,
+          whatsapp: `https://wa.me/972523445081?text=${encodeURIComponent(whatsappText)}`
+        });
+      }
     } catch (e) {
       setSearchResult({ message: t('search_error'), isFound: false });
     } finally {

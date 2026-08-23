@@ -2,19 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
 import { Crown } from 'lucide-react';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
-interface Restaurant {
-  id: number;
-  name: string;
-  city: string;
-  region: string;
-  bayesian_average: number;
-  last_score: number;
-  total_reviews: number;
-  address?: string;
-}
+import { getNationalRankings, type Restaurant } from '../services/firebase';
 
 const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -24,18 +12,14 @@ const Home: React.FC = () => {
   
   // Real-time clock for the header
   const [time, setTime] = useState(new Date());
-  
 
   const fetchData = async () => {
     try {
-      const rankRes = await fetch(`${API_URL}/api/rankings/national`);
-      if (rankRes.ok) {
-        const rankData = await rankRes.json();
-        setNationalKing(rankData.king);
-        setRunnersUp(rankData.runnersUp || []);
-      }
+      const rankData = await getNationalRankings();
+      setNationalKing(rankData.king);
+      setRunnersUp(rankData.runnersUp || []);
     } catch (error) {
-      console.error("Failed to fetch data", error);
+      console.error("Failed to fetch rankings:", error);
     } finally {
       setLoading(false);
     }
@@ -133,8 +117,6 @@ const Home: React.FC = () => {
           )}
         </div>
       )}
-
-
     </div>
   );
 };

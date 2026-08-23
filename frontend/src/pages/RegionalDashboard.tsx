@@ -3,19 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MapPin } from 'lucide-react';
 import './RegionalDashboard.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
-interface Restaurant {
-  id: number;
-  name: string;
-  city: string;
-  region: string;
-  bayesian_average: number;
-  last_score: number;
-  total_reviews: number;
-  address?: string;
-}
+import { getRegionalRankings, type Restaurant } from '../services/firebase';
 
 const RegionalDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,13 +25,10 @@ const RegionalDashboard: React.FC = () => {
   const fetchRegionalRankings = async () => {
     if (!id) return;
     try {
-      const response = await fetch(`${API_URL}/api/rankings/region/${id}`);
-      if (response.ok) {
-        const data = await response.json();
-        setRestaurants(data);
-      }
+      const data = await getRegionalRankings(id);
+      setRestaurants(data);
     } catch (error) {
-      console.error("Failed to fetch regional rankings", error);
+      console.error("Failed to fetch regional rankings:", error);
     } finally {
       setLoading(false);
     }
