@@ -1,0 +1,61 @@
+name: Daily Shawarma Radar Scan
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # רץ בכל לילה ב-2:00
+  workflow_dispatch: # מאפשר הרצה ידנית בלחיצת כפתור
+
+jobs:
+  scan-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install Backend Dependencies
+        run: pip install -r backend/requirements.txt
+        
+      - name: Run Daily Scan (Update SQLite)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd backend
+          python -c "import asyncio; from worker import run_daily_scan; asyncio.run(run_daily_scan())"
+          
+      - name: Export JSON Data
+        run: |
+          cd backend
+          python export_json.py
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+          
+      - name: Commit and Push Updated DB and JSON
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add backend/shawarma_radar.db frontend/src/data/restaurants_data.json
+          git commit -m "Auto-update database and JSON [skip ci]" || echo "No changes to commit"
+          git push
+          
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHAWARMARADAR_APP }}
+          channelId: live
+          projectId: shawarmaradar-app
