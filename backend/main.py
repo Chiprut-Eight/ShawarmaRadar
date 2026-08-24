@@ -46,7 +46,9 @@ def cleanup_legacy_data():
             "%מפגש חברים%", "%אלדו%", "%ניו דלי%", "%קלרה%", "%ג'פניקה%", "%לחם בשר%",
             "%מסעדת אחלה%", "%פונדק מטלון%", "%פיתה רחוב%", "%איזי גריל%", "%בית הפנקייק%", "%נונו מימי%",
             "%בבא חלה%", "%בישולים%", "%שניצל מדינה%", "%סביח%", "%גוזל וציונה%", "%האקדמיה לנקניק%",
+            "%סביח%", "%גוזל וציונה%", "%האקדמיה לנקניק%",
             "%שניצל נתי%", "%מסעדת הסאלוף%", "%סנדוויץ בר%", "%זה אשדוד%", "%BBB%", "%דל טורו%",
+            "%סמבוסק%", "%סמבוסק הכפר%", "%פיצה%", "%בורגר%", "%המבורגר%"
             "%טקסס סטייק האוס%", "%ג׳חנון%", "%מסעדת החוף%", "%רובן%", "%סקוצמן%", "%בית רצון%",
             "%Beit Razon%", "%ביסטרו אלי%", "%בוארון%", "%בתומי%", "%מסעדת רימונים%", "%עיראקי%",
             "%סבוי%", "%אוכל מוכן לשבת%", "%Mambo%", "%אושי אושי%", "%פנטום%", "%שר האופים%",
@@ -128,6 +130,16 @@ async def trigger_scan(background_tasks: BackgroundTasks):
     """ Allows triggering a manual scan cycle on demand """
     background_tasks.add_task(run_daily_scan)
     return {"status": "scan_started", "message": "Daily scan cycle triggered in background"}
+
+@app.get("/api/admin/test-telegram")
+async def test_telegram():
+    """ Test endpoint to verify Telegram integration works """
+    from worker import send_telegram_alert
+    try:
+        send_telegram_alert("🔔 *מערכת הרדאר:* חיבור הטלגרם נבדק ונמצא תקין! תכונות חדשות באוויר.")
+        return {"status": "ok", "message": "Telegram test message sent successfully"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 # WebSocket Connection Manager
 class ConnectionManager:

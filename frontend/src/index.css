@@ -68,6 +68,18 @@ button:hover {
   box-shadow: 0 0 10px var(--color-primary-green);
 }
 
+.modal-content {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: right;
+}
+
 .card {
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);

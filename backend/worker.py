@@ -75,9 +75,23 @@ def process_restaurant(
     except Exception as e:
         print(f"10bis lookup error: {e}")
 
-    # Pick best address
-    best_address = google_address or wolt_address or tenbis_address or ""
+    # Pick best address (Prioritize APIs over Google Search snippets)
+    best_address = wolt_address or tenbis_address or google_address or ""
     
+    # Filter non-shawarma places that slipped into the radar
+    blacklisted_terms = ["סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה"]
+    is_invalid = any(term in display_name for term in blacklisted_terms)
+    
+    # Also check if snippets explicitly mention it's a pizza place or something else and NOT shawarma
+    if not is_invalid and google_reviews:
+        snippet_text = " ".join([r.get("text", "") for r in google_reviews])
+        if any(term in snippet_text for term in blacklisted_terms) and "שווארמה" not in display_name:
+            is_invalid = True
+
+    if is_invalid:
+        print(f"Skipping {display_name} - Detected as non-shawarma (Blacklist match).")
+        return
+
     # Unique platform ID / key based on normalized name and city
     platform_key = f"{display_name}_{default_city}".replace(" ", "_")
 
