@@ -75,8 +75,17 @@ def process_restaurant(
     except Exception as e:
         print(f"10bis lookup error: {e}")
 
-    # Pick best address (Prioritize APIs over Google Search snippets)
-    best_address = wolt_address or tenbis_address or google_address or ""
+    # Ensure Wolt/TenBis addresses actually belong to the target city before trusting them over Google
+    valid_wolt = wolt_address and default_city in wolt_address
+    valid_tenbis = tenbis_address and default_city in tenbis_address
+    
+    best_address = ""
+    if valid_wolt:
+        best_address = wolt_address
+    elif valid_tenbis:
+        best_address = tenbis_address
+    elif google_address:
+        best_address = google_address
     
     # Filter non-shawarma places that slipped into the radar
     blacklisted_terms = ["סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה"]

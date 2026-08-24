@@ -171,10 +171,8 @@
   font-size: 1.05rem;
   font-weight: 600;
   color: #eee;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px; /* or a suitable value, or use flex-shrink */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .live-tag {

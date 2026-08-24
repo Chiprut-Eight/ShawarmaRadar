@@ -1,0 +1,47 @@
+[
+  {
+    "id": 3,
+    "name": "שווארמה שמש",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "שווארמה_שמש_רמת_גן",
+    "address": "ז'בוטינסקי 85",
+    "last_score": 50.0,
+    "bayesian_average": 74.6,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0,
+    "created_at": "2026-08-22 18:39:55",
+    "updated_at": "2026-08-23 17:17:03"
+  },
+  {
+    "id": 117,
+    "name": "שווארמה שמש נס ציונה ישפרו סנטר",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "שווארמה_שמש_נס_ציונה_ישפרו_סנטר_ראשון_לציון",
+    "address": "ז'בוטינסקי 85",
+    "last_score": 0.0,
+    "bayesian_average": 81.3,
+    "total_reviews": 0,
+    "google_rating": 4.4,
+    "google_ratings_total": 226,
+    "created_at": "2026-08-22 19:15:47",
+    "updated_at": "2026-08-23 17:17:03"
+  },
+  {
+    "id": 138,
+    "name": "שווארמה שמש | כשר",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "שווארמה_שמש_|_כשר_פתח_תקווה",
+    "address": "ז'בוטינסקי 85",
+    "last_score": 0.0,
+    "bayesian_average": 74.6,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 315,
+    "created_at": "2026-08-22 19:15:49",
+    "updated_at": "2026-08-23 17:17:03"
+  }
+]

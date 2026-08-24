@@ -1,0 +1,25 @@
+{
+  "bot_token": true,
+  "chat_id": true,
+  "error": null,
+  "response": {
+    "ok": true,
+    "result": {
+      "message_id": 418,
+      "from": {
+        "id": 8754732476,
+        "is_bot": true,
+        "first_name": "ShawarmaRadar Bot",
+        "username": "Shawarma_Radar_Alert_Bot"
+      },
+      "chat": {
+        "id": 397379562,
+        "first_name": "Buzz",
+        "username": "Chiprut40",
+        "type": "private"
+      },
+      "date": 1787590125,
+      "text": "Test from backend debugger"
+    }
+  }
+}
