@@ -2795,6 +2795,19 @@
     "google_ratings_total": 233
   },
   {
+    "id": 5,
+    "name": "שווארמה בון טעם",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "שווארמה_בון_טעם_תל_אביב",
+    "address": "",
+    "bayesian_average": 62.7,
+    "last_score": 61.8,
+    "total_reviews": 16,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 34,
     "name": "הטורקיה והכבש",
     "city": "תל אביב",
@@ -2804,19 +2817,6 @@
     "bayesian_average": 62.5,
     "last_score": 62.0,
     "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 5,
-    "name": "שווארמה בון טעם",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "שווארמה_בון_טעם_תל_אביב",
-    "address": "",
-    "bayesian_average": 62.3,
-    "last_score": 60.7,
-    "total_reviews": 14,
     "google_rating": null,
     "google_ratings_total": 0
   },
@@ -3035,9 +3035,9 @@
     "region": "center",
     "platform_id": "Israeli_food_telaviv_תל_אביב",
     "address": "רבי עקיבא 20,תלאביביפו",
-    "bayesian_average": 61.0,
-    "last_score": 52.0,
-    "total_reviews": 22,
+    "bayesian_average": 60.9,
+    "last_score": 51.6,
+    "total_reviews": 28,
     "google_rating": null,
     "google_ratings_total": 0
   },
