@@ -128,7 +128,7 @@ def process_restaurant(
             restaurant.google_rating = google_rating
         if google_ratings_total:
             restaurant.google_ratings_total = google_ratings_total
-        if best_address and not restaurant.address:
+        if best_address:
             restaurant.address = best_address
         restaurant.region = region
         db.commit()
