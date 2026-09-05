@@ -56,10 +56,13 @@ jobs:
           git commit -m "Auto-update database and JSON [skip ci]" || echo "No changes to commit"
           git push
           
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHAWARMARADAR_APP }}
-          channelId: live
-          projectId: shawarmaradar-app
+      - name: Setup Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy to Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase-key.json
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHAWARMARADAR_APP }}' > firebase-key.json
+          firebase deploy --only hosting --project shawarmaradar-app --non-interactive
+          rm firebase-key.json
