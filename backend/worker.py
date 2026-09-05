@@ -54,13 +54,11 @@ def process_restaurant(
     wolt_rating = 0.0
     wolt_address = None
     try:
-        slug = wolt.search_venue(display_name, default_city)
-        if slug:
-            load_data = wolt.check_delivery_load(slug)
-            if load_data:
-                if load_data.get("rating") is not None:
-                    wolt_rating = float(load_data["rating"])
-                wolt_address = load_data.get("address")
+        venue_data = wolt.search_venue(display_name, default_city)
+        if venue_data:
+            if venue_data.get("rating") is not None:
+                wolt_rating = float(venue_data["rating"])
+            wolt_address = venue_data.get("address")
     except Exception as e:
         print(f"Wolt lookup error: {e}")
 
@@ -80,12 +78,12 @@ def process_restaurant(
     valid_tenbis = tenbis_address and default_city in tenbis_address
     
     best_address = ""
-    if valid_wolt:
+    if google_address:
+        best_address = google_address
+    elif valid_wolt:
         best_address = wolt_address
     elif valid_tenbis:
         best_address = tenbis_address
-    elif google_address:
-        best_address = google_address
     
     # Filter non-shawarma places that slipped into the radar
     blacklisted_terms = ["סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה"]
