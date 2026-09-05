@@ -264,7 +264,7 @@ def run_daily_scan_sync():
         f"👉 *{king_info}*\n\n"
         f"📍 *מובילי האזורים:*\n"
         f"{regional_kings_text}\n"
-        f"🌐 האתר מעודכן: [ShawarmaRadar Live](https://shawarma-frontend.onrender.com)"
+        f"🌐 האתר מעודכן: [ShawarmaRadar Live](https://shawarmaradar-app.web.app)"
     )
 
     send_telegram_alert(telegram_report)
