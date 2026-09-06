@@ -3,8 +3,11 @@ import os
 import time
 import json
 import requests
+import sys
 from datetime import datetime, timezone
 from sqlalchemy.orm import Session
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 from scrapers.google import GoogleBusinessScraper
 from scrapers.wolt import WoltTracker, TenBisTracker
