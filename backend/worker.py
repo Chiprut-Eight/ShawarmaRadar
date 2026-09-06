@@ -36,7 +36,8 @@ def process_restaurant(
     ai: RankingEngine,
     db: Session,
     search_query: str,
-    default_city: str
+    default_city: str,
+    address_warnings: list
 ):
     print(f"\n--- [Daily Scan] Processing: {search_query} ({default_city}) ---")
     
@@ -84,6 +85,15 @@ def process_restaurant(
         best_address = wolt_address
     elif valid_tenbis:
         best_address = tenbis_address
+    
+    if best_address and default_city not in best_address:
+        warning_msg = f"Mismatch: '{display_name}' expected in '{default_city}', got '{best_address}'"
+        print(warning_msg)
+        address_warnings.append(warning_msg)
+    elif not best_address:
+        warning_msg = f"No address for '{display_name}' in '{default_city}'"
+        print(warning_msg)
+        address_warnings.append(warning_msg)
     
     # Filter non-shawarma places that slipped into the radar
     blacklisted_terms = ["סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה"]
@@ -218,11 +228,12 @@ def run_daily_scan_sync():
         
     success_count = 0
     failure_count = 0
+    address_warnings = []
     start_time = time.time()
     
     for target in seed_targets:
         try:
-            process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"])
+            process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"], address_warnings)
             success_count += 1
             time.sleep(1.0) # Polite delay
         except Exception as e:
@@ -252,12 +263,21 @@ def run_daily_scan_sync():
 
     king_info = f"{top_king.name} ({top_king.city}) — `{top_king.bayesian_average}%`" if top_king else "אין נתונים"
 
+    warnings_text = ""
+    if address_warnings:
+        warnings_text = f"\n⚠️ *אזהרות כתובות ({len(address_warnings)}):*\n"
+        for w in address_warnings[:15]:
+            warnings_text += f"- {w}\n"
+        if len(address_warnings) > 15:
+            warnings_text += f"... ועוד {len(address_warnings)-15} שגיאות."
+
     telegram_report = (
         f"👑 *ShawarmaRadar — דו\"ח סריקה יומי*\n\n"
         f"📊 *סיכום סריקה:*\n"
         f"• נסרקו בהצלחה: {success_count} עסקים\n"
         f"• שגיאות: {failure_count}\n"
-        f"• משך סריקה: {duration_mins:.1f} דקות\n\n"
+        f"• משך סריקה: {duration_mins:.1f} דקות\n"
+        f"{warnings_text}\n"
         f"🏆 *מלך השווארמה הארצי להיום:*\n"
         f"👉 *{king_info}*\n\n"
         f"📍 *מובילי האזורים:*\n"
