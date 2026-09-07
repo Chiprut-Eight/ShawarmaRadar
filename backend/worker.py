@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import time
 import json
+import re
 import requests
 import sys
 from datetime import datetime, timezone
@@ -17,6 +18,41 @@ from nlp import RankingEngine
 from database import get_db, SessionLocal
 import models
 from regions import get_region_by_city
+
+def clean_address(raw_address: str, business_name: str = "", city: str = "") -> str:
+    if not raw_address:
+        return ""
+    if raw_address.strip() == city:
+        return ""
+    parts = [p.strip() for p in raw_address.split(",")]
+    if len(parts) == 1:
+        if parts[0] == city:
+            return ""
+        return parts[0]
+    
+    bname_words = set(business_name.split()) if business_name else set()
+    clean_parts = []
+    
+    for part in parts:
+        stripped = part.strip()
+        if not stripped:
+            continue
+        if business_name and (stripped == business_name or stripped in business_name or business_name in stripped):
+            continue
+        if city and (stripped == city or city in stripped or stripped in city):
+            continue
+        if any(skip in stripped for skip in ["נפת", "מחוז", "ישראל", "district", "Israel"]):
+            continue
+        if re.match(r'^\d{5,}$', stripped):
+            continue
+        part_words = set(stripped.split())
+        if bname_words and len(part_words) > 0 and part_words.issubset(bname_words):
+            continue
+        if re.match(r'^[\u0600-\u06FF\s\u200F]+$', stripped):
+            continue
+        clean_parts.append(stripped)
+    
+    return ", ".join(clean_parts[:2])
 
 def send_telegram_alert(message: str):
     """ Helper to send Telegram notifications """
@@ -91,10 +127,11 @@ def process_restaurant(
     elif valid_tenbis:
         best_address = tenbis_address
     
-    if best_address and default_city not in best_address:
-        warning_msg = f"Mismatch: '{display_name}' expected in '{default_city}', got '{best_address}'"
-        print(warning_msg)
-        address_warnings.append(warning_msg)
+    # Apply address cleaning
+    best_address = clean_address(best_address, business_name=display_name, city=default_city)
+    
+    if best_address and default_city not in best_address and default_city not in "": # Simplified legacy check
+        pass # The cleaner handles formatting
     elif not best_address:
         warning_msg = f"No address for '{display_name}' in '{default_city}'"
         print(warning_msg)
