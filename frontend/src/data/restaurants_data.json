@@ -572,19 +572,6 @@
     "google_ratings_total": 571
   },
   {
-    "id": 197,
-    "name": "ג׳פניקה",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "ג׳פניקה_בת_ים",
-    "address": "דרך בן גוריון 134",
-    "bayesian_average": 77.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.4,
-    "google_ratings_total": 425
-  },
-  {
     "id": 100,
     "name": "רד מיט",
     "city": "באר שבע",
@@ -728,19 +715,6 @@
     "google_ratings_total": 365
   },
   {
-    "id": 195,
-    "name": "דדה",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "דדה_בת_ים",
-    "address": "בן גוריון 61",
-    "bayesian_average": 77.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 324
-  },
-  {
     "id": 196,
     "name": "BG Lounge Bar",
     "city": "בת ים",
@@ -869,6 +843,32 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 275
+  },
+  {
+    "id": 195,
+    "name": "דדה",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "דדה_בת_ים",
+    "address": "בן גוריון 61",
+    "bayesian_average": 76.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 324
+  },
+  {
+    "id": 197,
+    "name": "ג׳פניקה",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "ג׳פניקה_בת_ים",
+    "address": "דרך בן גוריון 134",
+    "bayesian_average": 76.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.4,
+    "google_ratings_total": 425
   },
   {
     "id": 207,
@@ -1456,6 +1456,19 @@
     "google_ratings_total": 291
   },
   {
+    "id": 109,
+    "name": "שווארמה שמעוני",
+    "city": "אשדוד",
+    "region": "shfela",
+    "platform_id": "שווארמה_שמעוני_ראשון_לציון",
+    "address": "לח״י 2",
+    "bayesian_average": 73.9,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 940
+  },
+  {
     "id": 286,
     "name": "שאוורמה מעזוז",
     "city": "טייבה",
@@ -1846,6 +1859,19 @@
     "google_ratings_total": 692
   },
   {
+    "id": 134,
+    "name": "פיתה בשר",
+    "city": "חולון",
+    "region": "center",
+    "platform_id": "פיתה_בשר_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 72.1,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.0,
+    "google_ratings_total": 457
+  },
+  {
     "id": 255,
     "name": "טעם אחר",
     "city": "עוספיא",
@@ -1974,19 +2000,6 @@
     "total_reviews": 0,
     "google_rating": 4.3,
     "google_ratings_total": 397
-  },
-  {
-    "id": 109,
-    "name": "שווארמה שמעוני",
-    "city": "אשדוד",
-    "region": "shfela",
-    "platform_id": "שווארמה_שמעוני_ראשון_לציון",
-    "address": "לח״י 2",
-    "bayesian_average": 71.5,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 940
   },
   {
     "id": 291,
@@ -2392,19 +2405,6 @@
     "google_ratings_total": 252
   },
   {
-    "id": 5,
-    "name": "שווארמה בון טעם",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "שווארמה_בון_טעם_תל_אביב",
-    "address": "הכל אודותבוןטעםבנג'ארה 30",
-    "bayesian_average": 69.8,
-    "last_score": 58.7,
-    "total_reviews": 31,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 46,
     "name": "בית השווארמה והגריל של משה",
     "city": "חיפה",
@@ -2442,6 +2442,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 234
+  },
+  {
+    "id": 44,
+    "name": "שווארמה בילי",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "שווארמה_בילי_חיפה",
+    "address": "שדרות הנשיא",
+    "bayesian_average": 69.7,
+    "last_score": 54.0,
+    "total_reviews": 10,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 59,
@@ -2520,6 +2533,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 208
+  },
+  {
+    "id": 5,
+    "name": "שווארמה בון טעם",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "שווארמה_בון_טעם_תל_אביב",
+    "address": "תפריט 08",
+    "bayesian_average": 69.5,
+    "last_score": 58.1,
+    "total_reviews": 33,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 123,
@@ -2702,19 +2728,6 @@
     "total_reviews": 0,
     "google_rating": null,
     "google_ratings_total": 0
-  },
-  {
-    "id": 134,
-    "name": "פיתה בשר",
-    "city": "חולון",
-    "region": "center",
-    "platform_id": "פיתה_בשר_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 69.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.0,
-    "google_ratings_total": 457
   },
   {
     "id": 227,
@@ -3001,19 +3014,6 @@
     "total_reviews": 0,
     "google_rating": 4.0,
     "google_ratings_total": 912
-  },
-  {
-    "id": 44,
-    "name": "שווארמה בילי",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "שווארמה_בילי_חיפה",
-    "address": "שדרות הנשיא",
-    "bayesian_average": 67.9,
-    "last_score": 54.0,
-    "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 248,
