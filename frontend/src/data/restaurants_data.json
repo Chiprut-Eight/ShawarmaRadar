@@ -299,6 +299,19 @@
     "google_ratings_total": 500
   },
   {
+    "id": 95,
+    "name": "השווארמה של רונן",
+    "city": "באר שבע",
+    "region": "south",
+    "platform_id": "השווארמה_של_רונן_באר_שבע",
+    "address": "משה שרת 24",
+    "bayesian_average": 79.0,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.5,
+    "google_ratings_total": 774
+  },
+  {
     "id": 164,
     "name": "מפגש הארזים - שווארמה וגריל ישראלי - כשר למהדרין",
     "city": "נתניה",
@@ -674,19 +687,6 @@
     "total_reviews": 0,
     "google_rating": 4.4,
     "google_ratings_total": 620
-  },
-  {
-    "id": 95,
-    "name": "השווארמה של רונן",
-    "city": "באר שבע",
-    "region": "south",
-    "platform_id": "השווארמה_של_רונן_באר_שבע",
-    "address": "שד טוביהו דוד 125",
-    "bayesian_average": 77.2,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.5,
-    "google_ratings_total": 774
   },
   {
     "id": 101,
@@ -2327,6 +2327,19 @@
     "google_ratings_total": 102
   },
   {
+    "id": 55,
+    "name": "שווארמה פייר",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "שווארמה_פייר_חיפה",
+    "address": "דרך יפו 44",
+    "bayesian_average": 70.4,
+    "last_score": 58.8,
+    "total_reviews": 10,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 26,
     "name": "בא לי שווארמה",
     "city": "תל אביב",
@@ -2411,19 +2424,6 @@
     "region": "north",
     "platform_id": "בית_השווארמה_והגריל_של_משה_חיפה",
     "address": "קרית אתא",
-    "bayesian_average": 69.8,
-    "last_score": 58.8,
-    "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 55,
-    "name": "שווארמה פייר",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "שווארמה_פייר_חיפה",
-    "address": "דרך יפו 44",
     "bayesian_average": 69.8,
     "last_score": 58.8,
     "total_reviews": 10,
@@ -2522,6 +2522,19 @@
     "google_ratings_total": 0
   },
   {
+    "id": 5,
+    "name": "שווארמה בון טעם",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "שווארמה_בון_טעם_תל_אביב",
+    "address": "הכל אודותבוןטעםבנג'ארה 30",
+    "bayesian_average": 69.6,
+    "last_score": 57.9,
+    "total_reviews": 34,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 299,
     "name": "סמיראמיס",
     "city": "שפרעם",
@@ -2533,19 +2546,6 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 208
-  },
-  {
-    "id": 5,
-    "name": "שווארמה בון טעם",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "שווארמה_בון_טעם_תל_אביב",
-    "address": "תפריט 08",
-    "bayesian_average": 69.5,
-    "last_score": 58.1,
-    "total_reviews": 33,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 123,
@@ -2762,19 +2762,6 @@
     "region": "center",
     "platform_id": "שיפודי_התקווה_רמת_גן",
     "address": "",
-    "bayesian_average": 69.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 355,
-    "name": "שיפודי חן",
-    "city": "רמת גן",
-    "region": "center",
-    "platform_id": "שיפודי_חן_רמת_גן",
-    "address": "מלכי צדק",
     "bayesian_average": 69.1,
     "last_score": 50.0,
     "total_reviews": 0,
@@ -3040,6 +3027,19 @@
     "total_reviews": 0,
     "google_rating": 4.0,
     "google_ratings_total": 742
+  },
+  {
+    "id": 355,
+    "name": "שיפודי חן",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "שיפודי_חן_רמת_גן",
+    "address": "מלכי צדק",
+    "bayesian_average": 67.9,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 204,
@@ -3479,7 +3479,7 @@
     "address": "ראה 127",
     "bayesian_average": 60.8,
     "last_score": 50.4,
-    "total_reviews": 103,
+    "total_reviews": 107,
     "google_rating": null,
     "google_ratings_total": 0
   },
