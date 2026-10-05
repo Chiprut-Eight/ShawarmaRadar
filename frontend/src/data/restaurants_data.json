@@ -299,19 +299,6 @@
     "google_ratings_total": 500
   },
   {
-    "id": 95,
-    "name": "השווארמה של רונן",
-    "city": "באר שבע",
-    "region": "south",
-    "platform_id": "השווארמה_של_רונן_באר_שבע",
-    "address": "משה שרת 24",
-    "bayesian_average": 79.0,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.5,
-    "google_ratings_total": 774
-  },
-  {
     "id": 164,
     "name": "מפגש הארזים - שווארמה וגריל ישראלי - כשר למהדרין",
     "city": "נתניה",
@@ -585,19 +572,6 @@
     "google_ratings_total": 571
   },
   {
-    "id": 197,
-    "name": "ג׳פניקה",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "ג׳פניקה_בת_ים",
-    "address": "דרך בן גוריון 134",
-    "bayesian_average": 77.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.4,
-    "google_ratings_total": 425
-  },
-  {
     "id": 100,
     "name": "רד מיט",
     "city": "באר שבע",
@@ -702,6 +676,19 @@
     "google_ratings_total": 620
   },
   {
+    "id": 95,
+    "name": "השווארמה של רונן",
+    "city": "באר שבע",
+    "region": "south",
+    "platform_id": "השווארמה_של_רונן_באר_שבע",
+    "address": "שד טוביהו דוד 125",
+    "bayesian_average": 77.2,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.5,
+    "google_ratings_total": 774
+  },
+  {
     "id": 101,
     "name": "שווארמה רסקו",
     "city": "באר שבע",
@@ -726,19 +713,6 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 365
-  },
-  {
-    "id": 195,
-    "name": "דדה",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "דדה_בת_ים",
-    "address": "בן גוריון 61",
-    "bayesian_average": 77.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 324
   },
   {
     "id": 196,
@@ -869,6 +843,32 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 275
+  },
+  {
+    "id": 195,
+    "name": "דדה",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "דדה_בת_ים",
+    "address": "בן גוריון 61",
+    "bayesian_average": 76.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 324
+  },
+  {
+    "id": 197,
+    "name": "ג׳פניקה",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "ג׳פניקה_בת_ים",
+    "address": "דרך בן גוריון 134",
+    "bayesian_average": 76.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.4,
+    "google_ratings_total": 425
   },
   {
     "id": 207,
@@ -1456,19 +1456,6 @@
     "google_ratings_total": 291
   },
   {
-    "id": 109,
-    "name": "שווארמה שמעוני",
-    "city": "אשדוד",
-    "region": "shfela",
-    "platform_id": "שווארמה_שמעוני_ראשון_לציון",
-    "address": "לח״י 2",
-    "bayesian_average": 73.9,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 940
-  },
-  {
     "id": 286,
     "name": "שאוורמה מעזוז",
     "city": "טייבה",
@@ -1989,6 +1976,19 @@
     "google_ratings_total": 397
   },
   {
+    "id": 109,
+    "name": "שווארמה שמעוני",
+    "city": "אשדוד",
+    "region": "shfela",
+    "platform_id": "שווארמה_שמעוני_ראשון_לציון",
+    "address": "לח״י 2",
+    "bayesian_average": 71.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 940
+  },
+  {
     "id": 291,
     "name": "שווארמה אדם על גחלים شوارما ادم عالفحم",
     "city": "סח'נין",
@@ -2026,19 +2026,6 @@
     "total_reviews": 0,
     "google_rating": 4.4,
     "google_ratings_total": 146
-  },
-  {
-    "id": 40,
-    "name": "שווארמה חאזן",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "שווארמה_חאזן_חיפה",
-    "address": "שדרות ההסתדרות 58",
-    "bayesian_average": 71.3,
-    "last_score": 52.9,
-    "total_reviews": 14,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 27,
@@ -2366,6 +2353,19 @@
     "google_ratings_total": 359
   },
   {
+    "id": 353,
+    "name": "שווארמה שיפודי סמי ובניו רמת גן",
+    "city": "בני ברק",
+    "region": "center",
+    "platform_id": "שווארמה_שיפודי_סמי_ובניו_רמת_גן_בני_ברק",
+    "address": "",
+    "bayesian_average": 70.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 174,
     "name": "צנטרו - הבוריק של צ'ונה",
     "city": "חולון",
@@ -2377,6 +2377,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 333
+  },
+  {
+    "id": 40,
+    "name": "שווארמה חאזן",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "שווארמה_חאזן_חיפה",
+    "address": "שדרות ההסתדרות 58",
+    "bayesian_average": 70.1,
+    "last_score": 52.9,
+    "total_reviews": 14,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 124,
@@ -2416,6 +2429,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 234
+  },
+  {
+    "id": 44,
+    "name": "שווארמה בילי",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "שווארמה_בילי_חיפה",
+    "address": "שדרות הנשיא",
+    "bayesian_average": 69.7,
+    "last_score": 54.0,
+    "total_reviews": 10,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 59,
@@ -2503,8 +2529,8 @@
     "platform_id": "שווארמה_בון_טעם_תל_אביב",
     "address": "הכל אודותבוןטעםבנג'ארה 30",
     "bayesian_average": 69.5,
-    "last_score": 57.7,
-    "total_reviews": 35,
+    "last_score": 57.5,
+    "total_reviews": 36,
     "google_rating": null,
     "google_ratings_total": 0
   },
@@ -2728,19 +2754,6 @@
     "total_reviews": 0,
     "google_rating": 4.1,
     "google_ratings_total": 466
-  },
-  {
-    "id": 353,
-    "name": "שווארמה שיפודי סמי ובניו רמת גן",
-    "city": "בני ברק",
-    "region": "center",
-    "platform_id": "שווארמה_שיפודי_סמי_ובניו_רמת_גן_בני_ברק",
-    "address": "",
-    "bayesian_average": 69.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 354,
@@ -3001,19 +3014,6 @@
     "total_reviews": 0,
     "google_rating": 4.0,
     "google_ratings_total": 912
-  },
-  {
-    "id": 44,
-    "name": "שווארמה בילי",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "שווארמה_בילי_חיפה",
-    "address": "שדרות הנשיא",
-    "bayesian_average": 67.9,
-    "last_score": 54.0,
-    "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 248,
