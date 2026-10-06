@@ -26,6 +26,19 @@
     "google_ratings_total": 688
   },
   {
+    "id": 242,
+    "name": "בגט אבו האני ובניו",
+    "city": "נצרת",
+    "region": "north",
+    "platform_id": "בגט_אבו_האני_ובניו_נצרת",
+    "address": "פאולוס השישי  93",
+    "bayesian_average": 81.9,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.7,
+    "google_ratings_total": 498
+  },
+  {
     "id": 171,
     "name": "הטאבון והשווארמה",
     "city": "חולון",
@@ -50,19 +63,6 @@
     "total_reviews": 0,
     "google_rating": 4.8,
     "google_ratings_total": 483
-  },
-  {
-    "id": 242,
-    "name": "בגט אבו האני ובניו",
-    "city": "נצרת",
-    "region": "north",
-    "platform_id": "בגט_אבו_האני_ובניו_נצרת",
-    "address": "פאולוס השישי  93",
-    "bayesian_average": 81.3,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.7,
-    "google_ratings_total": 498
   },
   {
     "id": 194,
@@ -676,6 +676,19 @@
     "google_ratings_total": 620
   },
   {
+    "id": 187,
+    "name": "גריל נייט GRIIL NIGHT",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "גריל_נייט_GRIIL_NIGHT_רמת_גן",
+    "address": "מנחם בגין 20",
+    "bayesian_average": 77.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.8,
+    "google_ratings_total": 192
+  },
+  {
     "id": 95,
     "name": "השווארמה של רונן",
     "city": "באר שבע",
@@ -713,6 +726,19 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 365
+  },
+  {
+    "id": 195,
+    "name": "דדה",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "דדה_בת_ים",
+    "address": "בן גוריון 61",
+    "bayesian_average": 77.1,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 324
   },
   {
     "id": 196,
@@ -767,19 +793,6 @@
     "google_ratings_total": 284
   },
   {
-    "id": 187,
-    "name": "גריל נייט GRIIL NIGHT",
-    "city": "רמת גן",
-    "region": "center",
-    "platform_id": "גריל_נייט_GRIIL_NIGHT_רמת_גן",
-    "address": "מנחם בגין 20",
-    "bayesian_average": 76.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.8,
-    "google_ratings_total": 192
-  },
-  {
     "id": 323,
     "name": "שוארמה פרג",
     "city": "מע'אר",
@@ -804,6 +817,19 @@
     "total_reviews": 0,
     "google_rating": 4.6,
     "google_ratings_total": 874
+  },
+  {
+    "id": 182,
+    "name": "דודא לה מפגש העיר",
+    "city": "רמת גן",
+    "region": "center",
+    "platform_id": "דודא_לה_מפגש_העיר_רמת_גן",
+    "address": "",
+    "bayesian_average": 76.6,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.2,
+    "google_ratings_total": 771
   },
   {
     "id": 236,
@@ -843,19 +869,6 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 275
-  },
-  {
-    "id": 195,
-    "name": "דדה",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "דדה_בת_ים",
-    "address": "בן גוריון 61",
-    "bayesian_average": 76.5,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 324
   },
   {
     "id": 197,
@@ -947,6 +960,19 @@
     "total_reviews": 0,
     "google_rating": 4.6,
     "google_ratings_total": 627
+  },
+  {
+    "id": 129,
+    "name": "שווארמה רפאלוס",
+    "city": "פתח תקווה",
+    "region": "center",
+    "platform_id": "שווארמה_רפאלוס_פתח_תקווה",
+    "address": "שדה יצחק 34",
+    "bayesian_average": 76.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.1,
+    "google_ratings_total": 931
   },
   {
     "id": 270,
@@ -1066,19 +1092,6 @@
     "google_ratings_total": 900
   },
   {
-    "id": 205,
-    "name": "הגחלים",
-    "city": "אשקלון",
-    "region": "south",
-    "platform_id": "הגחלים_אשקלון",
-    "address": "",
-    "bayesian_average": 75.3,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.2,
-    "google_ratings_total": 575
-  },
-  {
     "id": 233,
     "name": "שווארמה הכיכר",
     "city": "חדרה",
@@ -1170,19 +1183,6 @@
     "google_ratings_total": 257
   },
   {
-    "id": 129,
-    "name": "שווארמה רפאלוס",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שווארמה_רפאלוס_פתח_תקווה",
-    "address": "שדה יצחק 34",
-    "bayesian_average": 75.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.1,
-    "google_ratings_total": 931
-  },
-  {
     "id": 133,
     "name": "מסעדת צנעני",
     "city": "פתח תקווה",
@@ -1259,19 +1259,6 @@
     "total_reviews": 0,
     "google_rating": 4.6,
     "google_ratings_total": 239
-  },
-  {
-    "id": 193,
-    "name": "פונדק בני",
-    "city": "בת ים",
-    "region": "center",
-    "platform_id": "פונדק_בני_בת_ים",
-    "address": "בן גוריון 109",
-    "bayesian_average": 75.0,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.5,
-    "google_ratings_total": 229
   },
   {
     "id": 189,
@@ -1376,6 +1363,19 @@
     "total_reviews": 0,
     "google_rating": 4.6,
     "google_ratings_total": 193
+  },
+  {
+    "id": 193,
+    "name": "פונדק בני",
+    "city": "בת ים",
+    "region": "center",
+    "platform_id": "פונדק_בני_בת_ים",
+    "address": "בן גוריון 109",
+    "bayesian_average": 74.4,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.5,
+    "google_ratings_total": 229
   },
   {
     "id": 120,
@@ -1586,6 +1586,19 @@
     "google_ratings_total": 496
   },
   {
+    "id": 155,
+    "name": "שווארמה נונה",
+    "city": "נתניה",
+    "region": "sharon",
+    "platform_id": "שווארמה_נונה_נתניה",
+    "address": "סמילנסקי 5",
+    "bayesian_average": 73.2,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.3,
+    "google_ratings_total": 468
+  },
+  {
     "id": 260,
     "name": "שווארמה סאמר עוספיה",
     "city": "דאלית אל-כרמל",
@@ -1649,19 +1662,6 @@
     "total_reviews": 0,
     "google_rating": 4.4,
     "google_ratings_total": 290
-  },
-  {
-    "id": 155,
-    "name": "שווארמה נונה",
-    "city": "נתניה",
-    "region": "sharon",
-    "platform_id": "שווארמה_נונה_נתניה",
-    "address": "סמילנסקי 5",
-    "bayesian_average": 72.6,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.3,
-    "google_ratings_total": 468
   },
   {
     "id": 188,
@@ -1846,6 +1846,19 @@
     "google_ratings_total": 692
   },
   {
+    "id": 134,
+    "name": "פיתה בשר",
+    "city": "חולון",
+    "region": "center",
+    "platform_id": "פיתה_בשר_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 72.1,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.0,
+    "google_ratings_total": 457
+  },
+  {
     "id": 255,
     "name": "טעם אחר",
     "city": "עוספיא",
@@ -1974,6 +1987,19 @@
     "total_reviews": 0,
     "google_rating": 4.3,
     "google_ratings_total": 397
+  },
+  {
+    "id": 63,
+    "name": "שווארמה בכיכר",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "שווארמה_בכיכר_חיפה",
+    "address": "",
+    "bayesian_average": 71.5,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 109,
@@ -2171,19 +2197,6 @@
     "google_ratings_total": 790
   },
   {
-    "id": 182,
-    "name": "דודא לה מפגש העיר",
-    "city": "רמת גן",
-    "region": "center",
-    "platform_id": "דודא_לה_מפגש_העיר_רמת_גן",
-    "address": "",
-    "bayesian_average": 70.8,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.2,
-    "google_ratings_total": 771
-  },
-  {
     "id": 192,
     "name": "Talassa",
     "city": "בת ים",
@@ -2247,6 +2260,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 649
+  },
+  {
+    "id": 205,
+    "name": "הגחלים",
+    "city": "אשקלון",
+    "region": "south",
+    "platform_id": "הגחלים_אשקלון",
+    "address": "",
+    "bayesian_average": 70.6,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.2,
+    "google_ratings_total": 575
   },
   {
     "id": 330,
@@ -2336,6 +2362,19 @@
     "bayesian_average": 70.3,
     "last_score": 54.0,
     "total_reviews": 10,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
+    "id": 67,
+    "name": "צפרירים 1",
+    "city": "חיפה",
+    "region": "north",
+    "platform_id": "צפרירים_1_חיפה",
+    "address": "צפרירים",
+    "bayesian_average": 70.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
     "google_rating": null,
     "google_ratings_total": 0
   },
@@ -2457,19 +2496,6 @@
     "google_ratings_total": 0
   },
   {
-    "id": 67,
-    "name": "צפרירים 1",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "צפרירים_1_חיפה",
-    "address": "צפרירים",
-    "bayesian_average": 69.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 77,
     "name": "שווארמה מסוב - כשר למהדרין",
     "city": "ירושלים",
@@ -2509,6 +2535,32 @@
     "google_ratings_total": 0
   },
   {
+    "id": 5,
+    "name": "שווארמה בון טעם",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "שווארמה_בון_טעם_תל_אביב",
+    "address": "הכל אודותבוןטעםבנג'ארה 30",
+    "bayesian_average": 69.6,
+    "last_score": 57.5,
+    "total_reviews": 36,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
+    "id": 35,
+    "name": "לה גרדיה גריל בר",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "לה_גרדיה_גריל_בר_תל_אביב",
+    "address": "לה גרדיה 76 תל אביב",
+    "bayesian_average": 69.6,
+    "last_score": 53.5,
+    "total_reviews": 10,
+    "google_rating": 3.9,
+    "google_ratings_total": 0
+  },
+  {
     "id": 299,
     "name": "סמיראמיס",
     "city": "שפרעם",
@@ -2520,19 +2572,6 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 208
-  },
-  {
-    "id": 5,
-    "name": "שווארמה בון טעם",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "שווארמה_בון_טעם_תל_אביב",
-    "address": "הכל אודותבוןטעםבנג'ארה 30",
-    "bayesian_average": 69.5,
-    "last_score": 57.5,
-    "total_reviews": 36,
-    "google_rating": null,
-    "google_ratings_total": 0
   },
   {
     "id": 123,
@@ -2665,6 +2704,19 @@
     "google_ratings_total": 520
   },
   {
+    "id": 12,
+    "name": "פינת השווארמה",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "פינת_השווארמה_תל_אביב",
+    "address": "אצ״ל 2",
+    "bayesian_average": 69.1,
+    "last_score": 50.0,
+    "total_reviews": 10,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 20,
     "name": "פנינת השווארמה",
     "city": "תל אביב",
@@ -2691,19 +2743,6 @@
     "google_ratings_total": 0
   },
   {
-    "id": 32,
-    "name": "בוטרא שווארמה",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "בוטרא_שווארמה_תל_אביב",
-    "address": "הארבעה 28",
-    "bayesian_average": 69.1,
-    "last_score": 50.0,
-    "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 57,
     "name": "שווארמה פלפלת",
     "city": "חיפה",
@@ -2715,19 +2754,6 @@
     "total_reviews": 0,
     "google_rating": null,
     "google_ratings_total": 0
-  },
-  {
-    "id": 134,
-    "name": "פיתה בשר",
-    "city": "חולון",
-    "region": "center",
-    "platform_id": "פיתה_בשר_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 69.1,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.0,
-    "google_ratings_total": 457
   },
   {
     "id": 227,
@@ -2792,19 +2818,6 @@
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 35,
-    "name": "לה גרדיה גריל בר",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "לה_גרדיה_גריל_בר_תל_אביב",
-    "address": "לה גרדיה 76 תל אביב",
-    "bayesian_average": 69.0,
-    "last_score": 53.5,
-    "total_reviews": 10,
-    "google_rating": 3.9,
     "google_ratings_total": 0
   },
   {
@@ -2912,19 +2925,6 @@
     "google_ratings_total": 0
   },
   {
-    "id": 12,
-    "name": "פינת השווארמה",
-    "city": "תל אביב",
-    "region": "center",
-    "platform_id": "פינת_השווארמה_תל_אביב",
-    "address": "אצ״ל 2",
-    "bayesian_average": 68.5,
-    "last_score": 50.0,
-    "total_reviews": 10,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 24,
     "name": "שווארמה הכרמל Shawarma Carmel",
     "city": "תל אביב",
@@ -2935,6 +2935,19 @@
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.1,
+    "google_ratings_total": 0
+  },
+  {
+    "id": 32,
+    "name": "בוטרא שווארמה",
+    "city": "תל אביב",
+    "region": "center",
+    "platform_id": "בוטרא_שווארמה_תל_אביב",
+    "address": "הארבעה 28",
+    "bayesian_average": 68.5,
+    "last_score": 50.0,
+    "total_reviews": 10,
+    "google_rating": null,
     "google_ratings_total": 0
   },
   {
@@ -3040,6 +3053,19 @@
     "total_reviews": 0,
     "google_rating": 4.0,
     "google_ratings_total": 742
+  },
+  {
+    "id": 349,
+    "name": "רונן בשרים",
+    "city": "נתניה",
+    "region": "sharon",
+    "platform_id": "רונן_בשרים_נתניה",
+    "address": "",
+    "bayesian_average": 67.9,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 204,
@@ -3198,19 +3224,6 @@
     "google_ratings_total": 348
   },
   {
-    "id": 63,
-    "name": "שווארמה בכיכר",
-    "city": "חיפה",
-    "region": "north",
-    "platform_id": "שווארמה_בכיכר_חיפה",
-    "address": "",
-    "bayesian_average": 67.3,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 221,
     "name": "M25",
     "city": "כפר סבא",
@@ -3230,19 +3243,6 @@
     "region": "center",
     "platform_id": "שיפודי_הנכדים_תל_אביב",
     "address": "יגאל אלון 88",
-    "bayesian_average": 67.3,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 349,
-    "name": "רונן בשרים",
-    "city": "נתניה",
-    "region": "sharon",
-    "platform_id": "רונן_בשרים_נתניה",
-    "address": "",
     "bayesian_average": 67.3,
     "last_score": 50.0,
     "total_reviews": 0,
@@ -3295,7 +3295,7 @@
     "region": "center",
     "platform_id": "שיפודי_חן_פתח_תקווה",
     "address": "",
-    "bayesian_average": 66.1,
+    "bayesian_average": 66.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": null,
@@ -3308,7 +3308,7 @@
     "region": "center",
     "platform_id": "הדודקא_גריל_בשרים_בד\"ץ_בית_יוסף_חולון",
     "address": "המרכבה 31 חולון",
-    "bayesian_average": 65.5,
+    "bayesian_average": 66.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": null,
@@ -3321,7 +3321,7 @@
     "region": "center",
     "platform_id": "שווארמה_הטורקי_ירושלים",
     "address": "בן יהודה 2 ירושלים",
-    "bayesian_average": 63.1,
+    "bayesian_average": 64.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": null,
