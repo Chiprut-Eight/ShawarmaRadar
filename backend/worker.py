@@ -78,15 +78,29 @@ def process_restaurant(
     db: Session,
     search_query: str,
     default_city: str,
-    address_warnings: list
+    address_warnings: list,
+    seed_name: str = "",
+    seed_address: str = ""
 ):
     print(f"\n--- [Daily Scan] Processing: {search_query} ({default_city}) ---")
     
     # 1. Clean Display Name
-    display_name = search_query.replace(f" {default_city}", "").strip()
+    display_name = seed_name.strip() if seed_name else search_query.replace(f" {default_city}", "").strip()
     
+    # Unique platform ID / key based on normalized name and city
+    platform_key = f"{display_name}_{default_city}".replace(" ", "_")
+
+    # Look up existing restaurant early so we know if it already has a verified address
+    restaurant = db.query(models.Restaurant).filter(
+        (models.Restaurant.platform_id == platform_key) | 
+        ((models.Restaurant.name == display_name) & (models.Restaurant.city == default_city))
+    ).first()
+
+    existing_address = (restaurant.address or "").strip() if restaurant else ""
+    verified_address = seed_address.strip() or existing_address
+
     # 2. Free Google Scraper
-    google_data = scraper.fetch_place_data(search_query)
+    google_data = scraper.fetch_place_data(search_query, city=default_city, skip_address_lookup=bool(verified_address))
     google_rating = google_data.get("rating")
     google_ratings_total = google_data.get("user_ratings_total", 0)
     google_address = google_data.get("address")
@@ -115,24 +129,22 @@ def process_restaurant(
     except Exception as e:
         print(f"10bis lookup error: {e}")
 
-    # Ensure Wolt/TenBis addresses actually belong to the target city before trusting them over Google
-    valid_wolt = wolt_address and default_city in wolt_address
-    valid_tenbis = tenbis_address and default_city in tenbis_address
+    # Priority: Verified seed/DB address -> Google scraped address -> Wolt address -> 10Bis address
+    if verified_address:
+        best_address = verified_address
+    else:
+        valid_wolt = wolt_address and default_city in wolt_address
+        valid_tenbis = tenbis_address and default_city in tenbis_address
+        raw_candidate = ""
+        if google_address:
+            raw_candidate = google_address
+        elif valid_wolt:
+            raw_candidate = wolt_address
+        elif valid_tenbis:
+            raw_candidate = tenbis_address
+        best_address = clean_address(raw_candidate, business_name=display_name, city=default_city)
     
-    best_address = ""
-    if google_address:
-        best_address = google_address
-    elif valid_wolt:
-        best_address = wolt_address
-    elif valid_tenbis:
-        best_address = tenbis_address
-    
-    # Apply address cleaning
-    best_address = clean_address(best_address, business_name=display_name, city=default_city)
-    
-    if best_address and default_city not in best_address and default_city not in "": # Simplified legacy check
-        pass # The cleaner handles formatting
-    elif not best_address:
+    if not best_address:
         warning_msg = f"No address for '{display_name}' in '{default_city}'"
         print(warning_msg)
         address_warnings.append(warning_msg)
@@ -144,21 +156,12 @@ def process_restaurant(
     # Also check if snippets explicitly mention it's a pizza place or something else and NOT shawarma
     if not is_invalid and google_reviews:
         snippet_text = " ".join([r.get("text", "") for r in google_reviews])
-        if any(term in snippet_text for term in blacklisted_terms) and "שווארמה" not in display_name:
+        if any(term in snippet_text for term in blacklisted_terms) and "שווארמה" not in display_name and "שוארמה" not in display_name:
             is_invalid = True
 
     if is_invalid:
         print(f"Skipping {display_name} - Detected as non-shawarma (Blacklist match).")
         return
-
-    # Unique platform ID / key based on normalized name and city
-    platform_key = f"{display_name}_{default_city}".replace(" ", "_")
-
-    # 5. Get or Create Restaurant in DB
-    restaurant = db.query(models.Restaurant).filter(
-        (models.Restaurant.platform_id == platform_key) | 
-        ((models.Restaurant.name == display_name) & (models.Restaurant.city == default_city))
-    ).first()
 
     region = get_region_by_city(default_city) or "center"
 
@@ -176,6 +179,9 @@ def process_restaurant(
         db.commit()
         db.refresh(restaurant)
     else:
+        restaurant.name = display_name
+        restaurant.city = default_city
+        restaurant.platform_id = platform_key
         if google_rating:
             restaurant.google_rating = google_rating
         if google_ratings_total:
@@ -275,7 +281,18 @@ def run_daily_scan_sync():
     
     for target in seed_targets:
         try:
-            process_restaurant(scraper, wolt, tenbis, ai, db, target["query"], target["city"], address_warnings)
+            process_restaurant(
+                scraper,
+                wolt,
+                tenbis,
+                ai,
+                db,
+                target["query"],
+                target["city"],
+                address_warnings,
+                seed_name=target.get("name", ""),
+                seed_address=target.get("address", "")
+            )
             success_count += 1
             time.sleep(1.0) # Polite delay
         except Exception as e:

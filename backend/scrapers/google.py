@@ -96,11 +96,12 @@ class GoogleBusinessScraper(PoliteScraper):
         
         return ", ".join(clean_parts) if clean_parts else ""
 
-    def fetch_place_data(self, query: str, city: str = ""):
+    def fetch_place_data(self, query: str, city: str = "", skip_address_lookup: bool = False):
         """
         Free Web & Google/Local Knowledge Scraper.
-        Uses DuckDuckGo for reviews/ratings and Nominatim for addresses.
+        Uses DuckDuckGo for reviews/ratings and Nominatim for addresses (when needed).
         """
+        self._wait_for_rate_limit()
         encoded_query = urllib.parse.quote(f"{query} ביקורות דירוג")
         url = f"https://html.duckduckgo.com/html/?q={encoded_query}"
         
@@ -115,6 +116,7 @@ class GoogleBusinessScraper(PoliteScraper):
         # --- DuckDuckGo: reviews, rating, and address attempt ---
         try:
             res = httpx.get(url, headers=self.headers, timeout=8.0)
+            self.last_request_time = time.time()
             if res.status_code == 200:
                 soup = BeautifulSoup(res.text, "html.parser")
                 snippets = [a.get_text(strip=True) for a in soup.find_all('a', class_='result__snippet')]
@@ -130,7 +132,7 @@ class GoogleBusinessScraper(PoliteScraper):
                             result["rating"] = float(rating_match.group(1).replace(',', '.'))
                             
                     # Address extraction with improved regex
-                    if not result["address"]:
+                    if not skip_address_lookup and not result["address"]:
                         addr = self._extract_address_from_snippet(snippet)
                         if addr:
                             result["address"] = addr
@@ -139,7 +141,7 @@ class GoogleBusinessScraper(PoliteScraper):
             print(f"Web/Google search error for {query}: {e}")
 
         # --- Nominatim: reliable structured address fallback ---
-        if not result["address"]:
+        if not skip_address_lookup and not result["address"]:
             try:
                 # Try with city context for better accuracy
                 search_term = f"{query}" if city in query else f"{query} {city}"
