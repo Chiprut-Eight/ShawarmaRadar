@@ -13,6 +13,32 @@
     "google_ratings_total": 631
   },
   {
+    "id": 137,
+    "name": "שווארמה אלוני",
+    "city": "פתח תקווה",
+    "region": "center",
+    "platform_id": "שווארמה_אלוני_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 81.1,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.7,
+    "google_ratings_total": 257
+  },
+  {
+    "id": 92,
+    "name": "מיט טיים Meat time -",
+    "city": "ירושלים",
+    "region": "center",
+    "platform_id": "מיט_טיים_Meat_time_-_ירושלים",
+    "address": "הערמונים 2",
+    "bayesian_average": 80.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.6,
+    "google_ratings_total": 531
+  },
+  {
     "id": 322,
     "name": "שווארמה גמיל",
     "city": "מע'אר",
@@ -115,6 +141,19 @@
     "total_reviews": 0,
     "google_rating": 4.8,
     "google_ratings_total": 688
+  },
+  {
+    "id": 132,
+    "name": "שווארמה מיקס",
+    "city": "פתח תקווה",
+    "region": "center",
+    "platform_id": "שווארמה_מיקס_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 79.4,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.7,
+    "google_ratings_total": 490
   },
   {
     "id": 245,
@@ -455,19 +494,6 @@
     "google_ratings_total": 571
   },
   {
-    "id": 132,
-    "name": "שווארמה מיקס",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שווארמה_מיקס_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 77.6,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.7,
-    "google_ratings_total": 490
-  },
-  {
     "id": 242,
     "name": "בגט אבו האני ובניו",
     "city": "נצרת",
@@ -689,6 +715,19 @@
     "google_ratings_total": 874
   },
   {
+    "id": 87,
+    "name": "באבוש",
+    "city": "ירושלים",
+    "region": "center",
+    "platform_id": "באבוש_ירושלים",
+    "address": "נחום שדמי",
+    "bayesian_average": 76.6,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.2,
+    "google_ratings_total": 772
+  },
+  {
     "id": 236,
     "name": "שווארמה שאולי",
     "city": "חדרה",
@@ -726,19 +765,6 @@
     "total_reviews": 0,
     "google_rating": 4.7,
     "google_ratings_total": 275
-  },
-  {
-    "id": 137,
-    "name": "שווארמה אלוני",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שווארמה_אלוני_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 76.5,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.7,
-    "google_ratings_total": 257
   },
   {
     "id": 207,
@@ -817,19 +843,6 @@
     "total_reviews": 0,
     "google_rating": 4.6,
     "google_ratings_total": 627
-  },
-  {
-    "id": 92,
-    "name": "מיט טיים Meat time -",
-    "city": "ירושלים",
-    "region": "center",
-    "platform_id": "מיט_טיים_Meat_time_-_ירושלים",
-    "address": "הערמונים 2",
-    "bayesian_average": 76.2,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.6,
-    "google_ratings_total": 531
   },
   {
     "id": 99,
@@ -1129,6 +1142,19 @@
     "total_reviews": 0,
     "google_rating": 4.5,
     "google_ratings_total": 506
+  },
+  {
+    "id": 120,
+    "name": "שווארמה מלאבס",
+    "city": "פתח תקווה",
+    "region": "center",
+    "platform_id": "שווארמה_מלאבס_פתח_תקווה",
+    "address": "חיים עוזר",
+    "bayesian_average": 74.8,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.0,
+    "google_ratings_total": 259
   },
   {
     "id": 250,
@@ -1703,6 +1729,19 @@
     "google_ratings_total": 692
   },
   {
+    "id": 134,
+    "name": "פיתה בשר",
+    "city": "חולון",
+    "region": "center",
+    "platform_id": "פיתה_בשר_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 72.1,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": 4.0,
+    "google_ratings_total": 457
+  },
+  {
     "id": 173,
     "name": "קלבוני",
     "city": "חולון",
@@ -1937,25 +1976,12 @@
     "google_ratings_total": 903
   },
   {
-    "id": 87,
-    "name": "באבוש",
-    "city": "ירושלים",
-    "region": "center",
-    "platform_id": "באבוש_ירושלים",
-    "address": "נחום שדמי",
-    "bayesian_average": 70.8,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.2,
-    "google_ratings_total": 772
-  },
-  {
     "id": 104,
     "name": "גרל׳ה",
     "city": "ראשון לציון",
     "region": "shfela",
     "platform_id": "גרל׳ה_ראשון_לציון",
-    "address": "בנימין שמוטקין 1",
+    "address": "בנימין שמוטקין",
     "bayesian_average": 70.8,
     "last_score": 50.0,
     "total_reviews": 0,
@@ -2158,6 +2184,32 @@
     "google_ratings_total": 102
   },
   {
+    "id": 77,
+    "name": "שווארמה מסוב - כשר למהדרין",
+    "city": "ירושלים",
+    "region": "center",
+    "platform_id": "שווארמה_מסוב_-_כשר_למהדרין_ירושלים",
+    "address": "יפו 234",
+    "bayesian_average": 70.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
+    "id": 79,
+    "name": "השמן",
+    "city": "אשדוד",
+    "region": "center",
+    "platform_id": "השמן_ירושלים",
+    "address": "התנופה",
+    "bayesian_average": 70.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
     "id": 135,
     "name": "שווארמה אחים ג'יוסי",
     "city": "פתח תקווה",
@@ -2169,6 +2221,19 @@
     "total_reviews": 0,
     "google_rating": 4.2,
     "google_ratings_total": 359
+  },
+  {
+    "id": 353,
+    "name": "שווארמה שיפודי סמי ובניו רמת גן",
+    "city": "בני ברק",
+    "region": "center",
+    "platform_id": "שווארמה_שיפודי_סמי_ובניו_רמת_גן_בני_ברק",
+    "address": "",
+    "bayesian_average": 70.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 174,
@@ -2600,19 +2665,6 @@
     "google_ratings_total": 582
   },
   {
-    "id": 134,
-    "name": "פיתה בשר",
-    "city": "חולון",
-    "region": "center",
-    "platform_id": "פיתה_בשר_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 67.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.0,
-    "google_ratings_total": 457
-  },
-  {
     "id": 161,
     "name": "שווארמה יונס",
     "city": "נתניה",
@@ -2756,19 +2808,6 @@
     "google_ratings_total": 348
   },
   {
-    "id": 120,
-    "name": "שווארמה מלאבס",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שווארמה_מלאבס_פתח_תקווה",
-    "address": "חיים עוזר",
-    "bayesian_average": 67.3,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.0,
-    "google_ratings_total": 259
-  },
-  {
     "id": 221,
     "name": "M25",
     "city": "כפר סבא",
@@ -2793,6 +2832,32 @@
     "total_reviews": 0,
     "google_rating": 4.0,
     "google_ratings_total": 233
+  },
+  {
+    "id": 346,
+    "name": "שיפודי חן",
+    "city": "פתח תקווה",
+    "region": "center",
+    "platform_id": "שיפודי_חן_פתח_תקווה",
+    "address": "",
+    "bayesian_average": 66.7,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
+  },
+  {
+    "id": 81,
+    "name": "שווארמה הטורקי",
+    "city": "ירושלים",
+    "region": "center",
+    "platform_id": "שווארמה_הטורקי_ירושלים",
+    "address": "בן יהודה 2 ירושלים",
+    "bayesian_average": 64.3,
+    "last_score": 50.0,
+    "total_reviews": 0,
+    "google_rating": null,
+    "google_ratings_total": 0
   },
   {
     "id": 34,
@@ -3060,7 +3125,7 @@
     "city": "תל אביב",
     "region": "center",
     "platform_id": "הקוסם_תל_אביב",
-    "address": "אוסוולדו ארניה",
+    "address": "אלוף קלמן מגן 3",
     "bayesian_average": 61.2,
     "last_score": 53.5,
     "total_reviews": 10,
@@ -3666,19 +3731,6 @@
     "google_ratings_total": 0
   },
   {
-    "id": 77,
-    "name": "שווארמה מסוב - כשר למהדרין",
-    "city": "ירושלים",
-    "region": "center",
-    "platform_id": "שווארמה_מסוב_-_כשר_למהדרין_ירושלים",
-    "address": "יפו 234",
-    "bayesian_average": 60.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 78,
     "name": "שווארמה צנעני",
     "city": "ירושלים",
@@ -3692,38 +3744,12 @@
     "google_ratings_total": 0
   },
   {
-    "id": 79,
-    "name": "השמן",
-    "city": "אשדוד",
-    "region": "center",
-    "platform_id": "השמן_ירושלים",
-    "address": "התנופה",
-    "bayesian_average": 60.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 80,
     "name": "בבאדו שווארמה Babado Shawarma",
     "city": "ירושלים",
     "region": "center",
     "platform_id": "בבאדו_שווארמה_Babado_Shawarma_ירושלים",
     "address": "",
-    "bayesian_average": 60.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 81,
-    "name": "שווארמה הטורקי",
-    "city": "ירושלים",
-    "region": "center",
-    "platform_id": "שווארמה_הטורקי_ירושלים",
-    "address": "בן יהודה 2 ירושלים",
     "bayesian_average": 60.7,
     "last_score": 50.0,
     "total_reviews": 0,
@@ -3900,19 +3926,6 @@
     "google_ratings_total": 0
   },
   {
-    "id": 346,
-    "name": "שיפודי חן",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שיפודי_חן_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 60.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
     "id": 347,
     "name": "המיצלה מסעדה שווארמה ובשרים על האש",
     "city": "פתח תקווה",
@@ -3983,19 +3996,6 @@
     "city": "בני ברק",
     "region": "center",
     "platform_id": "נחום_בשרים_בני_ברק",
-    "address": "",
-    "bayesian_average": 60.7,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": null,
-    "google_ratings_total": 0
-  },
-  {
-    "id": 353,
-    "name": "שווארמה שיפודי סמי ובניו רמת גן",
-    "city": "בני ברק",
-    "region": "center",
-    "platform_id": "שווארמה_שיפודי_סמי_ובניו_רמת_גן_בני_ברק",
     "address": "",
     "bayesian_average": 60.7,
     "last_score": 50.0,
