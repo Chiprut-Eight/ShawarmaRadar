@@ -416,3 +416,152 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
+/* Private Owner Reign Panel */
+.owner-reign-panel {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 680px;
+  background: linear-gradient(145deg, rgba(24, 24, 27, 0.98), rgba(15, 23, 18, 0.96));
+  border: 1px solid rgba(250, 204, 21, 0.45);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 204, 21, 0.12);
+  text-align: right;
+}
+
+.owner-reign-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.owner-reign-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #facc15;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.owner-hide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #9ca3af;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.owner-hide-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.owner-current-king-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.owner-stat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.owner-duration-highlight {
+  margin-top: 4px;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+}
+
+.owner-duration-highlight span {
+  color: #4ade80;
+  font-weight: 700;
+}
+
+.owner-date-sub {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.owner-past-summary-box {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed rgba(250, 204, 21, 0.3);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #fef08a;
+}
+
+.owner-first-reign-note {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.owner-history-section {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.owner-history-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #d1d5db;
+  margin-bottom: 0.65rem;
+}
+
+.owner-history-empty {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.owner-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.owner-history-item {
+  background: rgba(0, 0, 0, 0.3);
+  border-right: 3px solid #facc15;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+}
+
+.owner-history-name {
+  font-size: 0.92rem;
+  color: #fff;
+}
+
+.owner-history-details {
+  font-size: 0.88rem;
+  color: #facc15;
+  margin-top: 2px;
+}

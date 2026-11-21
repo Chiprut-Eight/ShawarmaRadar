@@ -1,0 +1,17 @@
+{
+  "last_updated": "2026-11-21T16:20:04.190912+00:00",
+  "reigns": [
+    {
+      "platform_id": "Walla_Shawarma_(וואלה_שווארמה)_שפרעם",
+      "name": "Walla Shawarma (וואלה שווארמה)",
+      "city": "שפרעם",
+      "address": "וואדי אל-ג'מאל (ליד משרד הרישוי)",
+      "started_at": "2026-11-21T00:00:00+02:00",
+      "ended_at": null,
+      "score_at_start": 84.1,
+      "current_score": 84.1,
+      "peak_score": 84.1,
+      "duration_seconds": 66004
+    }
+  ]
+}

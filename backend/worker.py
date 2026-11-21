@@ -18,6 +18,7 @@ from nlp import RankingEngine
 from database import get_db, SessionLocal
 import models
 from regions import get_region_by_city
+from export_json import update_king_history, format_hebrew_duration
 
 def clean_address(raw_address: str, business_name: str = "", city: str = "") -> str:
     if not raw_address:
@@ -322,6 +323,40 @@ def run_daily_scan_sync():
 
     king_info = f"{top_king.name} ({top_king.city}) — `{top_king.bayesian_average}%`" if top_king else "אין נתונים"
 
+    # Update King Reign History and build private reign summary for Telegram
+    reign_summary_text = ""
+    if top_king:
+        try:
+            history_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "src", "data", "king_history.json")
+            top_king_dict = {
+                "platform_id": top_king.platform_id,
+                "name": top_king.name,
+                "city": top_king.city,
+                "address": top_king.address or "",
+                "bayesian_average": top_king.bayesian_average
+            }
+            history_data = update_king_history(top_king_dict, history_path)
+            reigns = history_data.get("reigns", [])
+            if reigns:
+                current_reign = reigns[-1]
+                cur_dur_str = format_hebrew_duration(current_reign.get("duration_seconds", 0))
+                past_reigns = [
+                    r for r in reigns[:-1]
+                    if r.get("platform_id") == top_king.platform_id
+                    or (r.get("name") == top_king.name and r.get("city") == top_king.city)
+                ]
+                reign_summary_text = f"⏱️ *רצף נוכחי בפסגה:* {cur_dur_str}\n"
+                if past_reigns:
+                    past_secs = sum(r.get("duration_seconds", 0) for r in past_reigns)
+                    past_dur_str = format_hebrew_duration(past_secs)
+                    reign_summary_text += f"📜 *היסטוריה קודמת בפסגה:* {past_dur_str} ({len(past_reigns)} קדנציות בעבר)\n"
+                if len(reigns) > 1:
+                    prev_king = reigns[-2]
+                    prev_dur_str = format_hebrew_duration(prev_king.get("duration_seconds", 0))
+                    reign_summary_text += f"👑 *המלך הקודם:* {prev_king.get('name')} ({prev_king.get('city')}) — שלט {prev_dur_str}\n"
+        except Exception as e:
+            print(f"Error building reign summary: {e}")
+
     warnings_text = ""
     if address_warnings:
         warnings_text = f"\n⚠️ *אזהרות כתובות ({len(address_warnings)}):*\n"
@@ -338,7 +373,8 @@ def run_daily_scan_sync():
         f"• משך סריקה: {duration_mins:.1f} דקות\n"
         f"{warnings_text}\n"
         f"🏆 *מלך השווארמה הארצי להיום:*\n"
-        f"👉 *{king_info}*\n\n"
+        f"👉 *{king_info}*\n"
+        f"{reign_summary_text}\n"
         f"📍 *מובילי האזורים:*\n"
         f"{regional_kings_text}\n"
         f"🌐 האתר מעודכן: [ShawarmaRadar Live](https://shawarmaradar-app.web.app)"
