@@ -91,32 +91,6 @@
     "google_ratings_total": 688
   },
   {
-    "id": 112,
-    "name": "שווארמה אשר",
-    "city": "ראשון לציון",
-    "region": "shfela",
-    "platform_id": "שווארמה_אשר_ראשון_לציון",
-    "address": "",
-    "bayesian_average": 79.4,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.8,
-    "google_ratings_total": 688
-  },
-  {
-    "id": 132,
-    "name": "שווארמה מיקס",
-    "city": "פתח תקווה",
-    "region": "center",
-    "platform_id": "שווארמה_מיקס_פתח_תקווה",
-    "address": "",
-    "bayesian_average": 79.4,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.7,
-    "google_ratings_total": 490
-  },
-  {
     "id": 245,
     "name": "שווארמה סמי",
     "city": "דאלית אל-כרמל",
@@ -2143,19 +2117,6 @@
     "total_reviews": 0,
     "google_rating": 4.3,
     "google_ratings_total": 450
-  },
-  {
-    "id": 155,
-    "name": "שווארמה נונה",
-    "city": "נתניה",
-    "region": "sharon",
-    "platform_id": "שווארמה_נונה_נתניה",
-    "address": "סמילנסקי 5",
-    "bayesian_average": 71.9,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.3,
-    "google_ratings_total": 468
   },
   {
     "id": 155,
