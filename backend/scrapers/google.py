@@ -7,9 +7,9 @@ import time
 
 class GoogleBusinessScraper(PoliteScraper):
     def __init__(self):
-        super().__init__(base_url="https://html.duckduckgo.com", delay_seconds=4.0)
+        super().__init__(base_url="https://html.duckduckgo.com", delay_seconds=1.5)
         self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
         }
@@ -113,40 +113,47 @@ class GoogleBusinessScraper(PoliteScraper):
             "reviews": []
         }
 
-        # --- DuckDuckGo: reviews, rating, and address attempt ---
+        # --- DuckDuckGo (with Bing fallback if DDG returns 202): reviews, rating, and address attempt ---
         try:
             res = httpx.get(url, headers=self.headers, timeout=8.0)
             self.last_request_time = time.time()
+            snippets = []
             if res.status_code == 200:
                 soup = BeautifulSoup(res.text, "html.parser")
                 snippets = [a.get_text(strip=True) for a in soup.find_all('a', class_='result__snippet')]
-                
-                for snippet in snippets:
-                    if len(snippet) > 20:
-                        result["reviews"].append({"text": snippet, "source": "web"})
+            if not snippets:
+                bing_q = urllib.parse.quote(f'"{query}" שווארמה ביקורות')
+                bing_res = httpx.get(f"https://www.bing.com/search?q={bing_q}", headers=self.headers, timeout=8.0, follow_redirects=True)
+                if bing_res.status_code == 200:
+                    bsoup = BeautifulSoup(bing_res.text, "html.parser")
+                    snippets = [p.get_text(" ", strip=True) for p in bsoup.select("li.b_algo .b_caption p, li.b_algo p") if query.split()[0] in p.get_text()]
 
-                    # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7, or Easy 8.8/10)
-                    if not result["rating"]:
-                        rating_match = re.search(r'([1-4][\.,]\d|5[\.,]0)\s*(?:stars|כוכבים|★|\/5|מתוך\s*5)', snippet)
-                        if not rating_match:
-                            rating_match = re.search(r'(?:דירוג|ציון)\s*:?\s*([1-4][\.,]\d|5[\.,]0)', snippet)
-                        if rating_match:
-                            result["rating"] = float(rating_match.group(1).replace(',', '.'))
+            for snippet in snippets:
+                if len(snippet) > 20:
+                    result["reviews"].append({"text": snippet, "source": "web"})
 
-                    # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת, (520))
-                    if not result["user_ratings_total"]:
-                        count_match = re.search(r'(\d[\d,]{1,5})\s*(?:ביקורות|חוות דעת|דירוגים|reviews)', snippet)
-                        if count_match:
-                            try:
-                                result["user_ratings_total"] = int(count_match.group(1).replace(',', ''))
-                            except ValueError:
-                                pass
-                            
-                    # Address extraction with improved regex
-                    if not skip_address_lookup and not result["address"]:
-                        addr = self._extract_address_from_snippet(snippet)
-                        if addr:
-                            result["address"] = addr
+                # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7, or Easy 8.8/10)
+                if not result["rating"]:
+                    rating_match = re.search(r'([1-4][\.,]\d|5[\.,]0)\s*(?:stars|כוכבים|★|\/5|מתוך\s*5)', snippet)
+                    if not rating_match:
+                        rating_match = re.search(r'(?:דירוג|ציון)\s*:?\s*([1-4][\.,]\d|5[\.,]0)', snippet)
+                    if rating_match:
+                        result["rating"] = float(rating_match.group(1).replace(',', '.'))
+
+                # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת, (520))
+                if not result["user_ratings_total"]:
+                    count_match = re.search(r'(\d[\d,]{1,5})\s*(?:ביקורות|חוות דעת|דירוגים|reviews)', snippet)
+                    if count_match:
+                        try:
+                            result["user_ratings_total"] = int(count_match.group(1).replace(',', ''))
+                        except ValueError:
+                            pass
+
+                # Address extraction with improved regex
+                if not skip_address_lookup and not result["address"]:
+                    addr = self._extract_address_from_snippet(snippet)
+                    if addr:
+                        result["address"] = addr
 
         except Exception as e:
             print(f"Web/Google search error for {query}: {e}")

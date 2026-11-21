@@ -125,6 +125,24 @@ class WoltTracker(PoliteScraper):
         self.city_venues_cache[city] = venues
         return venues
 
+    def _extract_brand_core(self, text: str) -> str:
+        """
+        Extracts the distinctive brand name by removing parentheticals, branch suffixes after | or -,
+        and generic category words like 'שווארמה', 'וגריל', 'מסעדת'.
+        """
+        cleaned = text.lower().strip()
+        cleaned = re.sub(r'\s*\([^)]*\)\s*', ' ', cleaned)
+        cleaned = re.split(r'\s*[\|\-–]\s*', cleaned)[0].strip()
+        generic_words = [
+            "שווארמה", "שוארמה", "שאוורמה", "שוורמה", "השווארמה של", "השוארמה של",
+            "מסעדת", "וגריל", "גריל", "בשרים", "ועל האש", "על האש", "ושיפודים",
+            "על גחלים", "כיד המלך", "בע\"מ", "כשר", "למהדרין", "shawarma"
+        ]
+        for gw in generic_words:
+            cleaned = re.sub(rf'(?:^|\s){re.escape(gw)}(?=\s|$)', ' ', cleaned)
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+
     def search_venue(self, query: str, city: str = "תל אביב"):
         """
         Searches for a venue on Wolt using the discovery cache strictly within that city.
@@ -134,18 +152,27 @@ class WoltTracker(PoliteScraper):
             return None
             
         query_norm = query.lower().strip()
-        # Strip parenthetical clarifications e.g. "שווארמה חאזן (צ'ק פוסט)" -> "שווארמה חאזן"
         query_core = re.sub(r'\s*\([^)]*\)\s*', ' ', query_norm).strip()
+        query_brand = self._extract_brand_core(query_norm)
         
         # 1. Exact match
         for venue_name, vdata in city_venues.items():
             if query_norm == venue_name or query_core == venue_name:
                 return vdata
                 
-        # 2. Strict containment
+        # 2. Strict containment on full/core name
         for venue_name, vdata in city_venues.items():
             if (query_core and (query_core in venue_name or venue_name in query_core)) or (query_norm in venue_name or venue_name in query_norm):
                 return vdata
+
+        # 3. Brand match (e.g., "יאשקה שווארמה" -> "יאשקה" matches "יאשקה | דיזנגוף")
+        if query_brand and len(query_brand) >= 3:
+            for venue_name, vdata in city_venues.items():
+                venue_brand = self._extract_brand_core(venue_name)
+                if query_brand == venue_brand:
+                    return vdata
+                if len(query_brand) >= 4 and (query_brand in venue_brand or (len(venue_brand) >= 4 and venue_brand in query_brand)):
+                    return vdata
                 
         return None
 
