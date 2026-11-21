@@ -5,7 +5,14 @@ import re
 CITY_COORDINATES = {
     "תל אביב": (32.0853, 34.7818),
     "חיפה": (32.7940, 34.9896),
+    "נשר": (32.7700, 35.0394),
+    "קרית אתא": (32.8064, 35.1053),
+    "קריית אתא": (32.8064, 35.1053),
+    "קרית מוצקין": (32.8372, 35.0778),
+    "קריית מוצקין": (32.8372, 35.0778),
     "ירושלים": (31.7683, 35.2137),
+    "מבשרת ציון": (31.8022, 35.1506),
+    "אבו גוש": (31.8058, 35.1094),
     "באר שבע": (31.2529, 34.7915),
     "ראשון לציון": (31.9730, 34.7925),
     "נס ציונה": (31.9314, 34.7981),
@@ -26,6 +33,11 @@ CITY_COORDINATES = {
     "אילת": (29.5577, 34.9519),
     "נתניה": (32.3215, 34.8532),
     "חדרה": (32.4340, 34.9197),
+    "פרדס חנה-כרכור": (32.4719, 34.9708),
+    "פרדס חנה": (32.4719, 34.9708),
+    "כפר יונה": (32.3167, 34.9358),
+    "משמר השרון": (32.3611, 34.9044),
+    "באקה אל-ע'רביה": (32.4189, 35.0408),
     "כפר סבא": (32.1782, 34.9076),
     "רעננה": (32.1848, 34.8713),
     "הרצליה": (32.1663, 34.8432),
@@ -34,17 +46,24 @@ CITY_COORDINATES = {
     "טירה": (32.2333, 34.9500),
     "טייבה": (32.2667, 35.0167),
     "כפר קאסם": (32.1147, 34.9753),
+    "ג'לג'וליה": (32.1544, 34.9519),
     "קלנסווה": (32.2858, 34.9819),
+    "כפר קרע": (32.5025, 35.0567),
     "חולון": (32.0158, 34.7874),
+    "אזור": (32.0242, 34.8053),
     "בת ים": (32.0197, 34.7500),
     "בני ברק": (32.0841, 34.8354),
     "רמת גן": (32.0684, 34.8248),
     "גבעתיים": (32.0722, 34.8089),
     "קרית אונו": (32.0628, 34.8569),
+    "קריית אונו": (32.0628, 34.8569),
     "אור יהודה": (32.0294, 34.8572),
     "יהוד": (32.0331, 34.8894),
+    "יהוד-מונוסון": (32.0331, 34.8894),
+    "יהוד מונוסון": (32.0331, 34.8894),
     "ראש העין": (32.0956, 34.9567),
     "נצרת": (32.6996, 35.3035),
+    "כפר כנא": (32.7475, 35.3414),
     "נוף הגליל": (32.7050, 35.3333),
     "עכו": (32.9278, 35.0818),
     "כרמיאל": (32.9199, 35.2901),
@@ -115,15 +134,17 @@ class WoltTracker(PoliteScraper):
             return None
             
         query_norm = query.lower().strip()
+        # Strip parenthetical clarifications e.g. "שווארמה חאזן (צ'ק פוסט)" -> "שווארמה חאזן"
+        query_core = re.sub(r'\s*\([^)]*\)\s*', ' ', query_norm).strip()
         
         # 1. Exact match
         for venue_name, vdata in city_venues.items():
-            if query_norm == venue_name:
+            if query_norm == venue_name or query_core == venue_name:
                 return vdata
                 
         # 2. Strict containment
         for venue_name, vdata in city_venues.items():
-            if query_norm in venue_name or venue_name in query_norm:
+            if (query_core and (query_core in venue_name or venue_name in query_core)) or (query_norm in venue_name or venue_name in query_norm):
                 return vdata
                 
         return None
@@ -131,6 +152,40 @@ class WoltTracker(PoliteScraper):
 class TenBisTracker(PoliteScraper):
     def __init__(self):
         super().__init__(base_url="https://www.10bis.co.il", delay_seconds=0.5)
+        self.city_cache = {}
 
     def search_restaurant(self, restaurant_name: str, city: str = "תל אביב"):
+        """
+        Searches for a restaurant rating on 10Bis via their public NextApi/search endpoints,
+        falling back gracefully if not listed on 10Bis.
+        """
+        if not restaurant_name:
+            return None
+        core_name = re.sub(r'\s*\([^)]*\)\s*', ' ', restaurant_name).strip()
+        try:
+            endpoint = f"/NextApi/GetRestaurantsList?cityName={urllib.parse.quote(city)}"
+            if city not in self.city_cache:
+                res = self.get(endpoint)
+                if res and res.status_code == 200 and "application/json" in res.headers.get("content-type", ""):
+                    data = res.json()
+                    rest_list = data.get("Data", {}).get("restaurantsList", []) or []
+                    self.city_cache[city] = rest_list
+                else:
+                    self.city_cache[city] = []
+
+            for item in self.city_cache.get(city, []):
+                r_name = (item.get("restaurantName") or "").strip()
+                if r_name and (core_name in r_name or r_name in core_name):
+                    raw_score = item.get("ReviewsRank") or item.get("restaurantPopularityRank")
+                    if raw_score:
+                        score_val = float(raw_score)
+                        if score_val > 5.0:
+                            score_val = score_val / 2.0
+                        return {
+                            "name": r_name,
+                            "rating": round(min(5.0, max(1.0, score_val)), 1),
+                            "address": item.get("restaurantAddress")
+                        }
+        except Exception:
+            pass
         return None

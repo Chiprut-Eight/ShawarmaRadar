@@ -125,11 +125,22 @@ class GoogleBusinessScraper(PoliteScraper):
                     if len(snippet) > 20:
                         result["reviews"].append({"text": snippet, "source": "web"})
 
-                    # Rating pattern (e.g. 4.5/5 or 4.6 כוכבים)
+                    # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7, or Easy 8.8/10)
                     if not result["rating"]:
-                        rating_match = re.search(r'([1-5][\.,]\d)\s*(?:stars|כוכבים|★|\/5|\/10)', snippet)
+                        rating_match = re.search(r'([1-4][\.,]\d|5[\.,]0)\s*(?:stars|כוכבים|★|\/5|מתוך\s*5)', snippet)
+                        if not rating_match:
+                            rating_match = re.search(r'(?:דירוג|ציון)\s*:?\s*([1-4][\.,]\d|5[\.,]0)', snippet)
                         if rating_match:
                             result["rating"] = float(rating_match.group(1).replace(',', '.'))
+
+                    # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת, (520))
+                    if not result["user_ratings_total"]:
+                        count_match = re.search(r'(\d[\d,]{1,5})\s*(?:ביקורות|חוות דעת|דירוגים|reviews)', snippet)
+                        if count_match:
+                            try:
+                                result["user_ratings_total"] = int(count_match.group(1).replace(',', ''))
+                            except ValueError:
+                                pass
                             
                     # Address extraction with improved regex
                     if not skip_address_lookup and not result["address"]:

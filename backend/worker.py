@@ -122,7 +122,7 @@ def process_restaurant(
     tenbis_rating = 0.0
     tenbis_address = None
     try:
-        tb_data = tenbis.search_restaurant(display_name)
+        tb_data = tenbis.search_restaurant(display_name, default_city)
         if tb_data:
             tenbis_rating = tb_data.get("rating", 0.0)
             tenbis_address = tb_data.get("address")
