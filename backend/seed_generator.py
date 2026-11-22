@@ -87,12 +87,12 @@ def generate_seeds():
         # Delay between cities
         time.sleep(1.5)
 
-    # Save to JSON
-    output_path = os.path.join(os.path.dirname(__file__), "auto_seeds.json")
+    # Save candidates to a staging file — NEVER overwrite the verified master backend/auto_seeds.json directly!
+    output_path = os.path.join(os.path.dirname(__file__), "candidate_seeds.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(seeds, f, ensure_ascii=False, indent=4)
         
-    print(f"Successfully generated {len(seeds)} authentic shawarma seeds to {output_path}")
+    print(f"Saved {len(seeds)} unverified candidate seeds to {output_path} for manual shawarma-spit & Google-address review.")
 
 if __name__ == "__main__":
     generate_seeds()

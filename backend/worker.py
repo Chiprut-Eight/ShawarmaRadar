@@ -177,8 +177,12 @@ def process_restaurant(
         print(warning_msg)
         address_warnings.append(warning_msg)
     
-    # Filter non-shawarma places that slipped into the radar
-    blacklisted_terms = ["סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה"]
+    # Strict non-shawarma safeguard (only authentic vertical-spit shawarma businesses allowed)
+    blacklisted_terms = [
+        "סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה",
+        "ביס בפיתה", "ביס בלח\"י", "פיתה ביד", "פיתה בשר", "פיתה בסטה",
+        "מיט טיים", "שניצליה", "סביח", "קוסקוס"
+    ]
     is_invalid = any(term in display_name for term in blacklisted_terms)
     
     # Also check if snippets explicitly mention it's a pizza place or something else and NOT shawarma
