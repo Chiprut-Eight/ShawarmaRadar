@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 sys.stdout.reconfigure(encoding='utf-8')
 
 from scrapers.google import GoogleBusinessScraper
-from scrapers.wolt import WoltTracker, TenBisTracker
+from scrapers.wolt import WoltTracker, TenBisTracker, CITY_COORDINATES
 from nlp import RankingEngine
 from database import get_db, SessionLocal
 import models
@@ -110,12 +110,16 @@ def process_restaurant(
     # 3. Wolt Free API
     wolt_rating = 0.0
     wolt_address = None
+    wolt_lat = None
+    wolt_lng = None
     try:
         venue_data = wolt.search_venue(display_name, default_city)
         if venue_data:
             if venue_data.get("rating") is not None:
                 wolt_rating = float(venue_data["rating"])
             wolt_address = venue_data.get("address")
+            wolt_lat = venue_data.get("lat")
+            wolt_lng = venue_data.get("lng")
     except Exception as e:
         print(f"Wolt lookup error: {e}")
 
@@ -165,6 +169,9 @@ def process_restaurant(
         return
 
     region = get_region_by_city(default_city) or "center"
+    city_coords = CITY_COORDINATES.get(default_city, (32.0853, 34.7818))
+    final_lat = wolt_lat or (restaurant.lat if restaurant and restaurant.lat else city_coords[0])
+    final_lng = wolt_lng or (restaurant.lng if restaurant and restaurant.lng else city_coords[1])
 
     if not restaurant:
         restaurant = models.Restaurant(
@@ -173,6 +180,8 @@ def process_restaurant(
             region=region,
             platform_id=platform_key,
             address=best_address,
+            lat=final_lat,
+            lng=final_lng,
             google_rating=google_rating,
             google_ratings_total=google_ratings_total
         )
@@ -189,6 +198,8 @@ def process_restaurant(
             restaurant.google_ratings_total = google_ratings_total
         if best_address:
             restaurant.address = best_address
+        restaurant.lat = final_lat
+        restaurant.lng = final_lng
         restaurant.region = region
         db.commit()
 

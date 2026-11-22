@@ -110,7 +110,7 @@ def export_all():
     rows = cur.fetchall()
 
     result = []
-    for r in rows:
+    for idx, r in enumerate(rows, 1):
         d = dict(r)
         out = {
             'id': d['id'],
@@ -119,6 +119,9 @@ def export_all():
             'region': d['region'],
             'platform_id': d['platform_id'],
             'address': d['address'] or '',
+            'lat': d.get('lat'),
+            'lng': d.get('lng'),
+            'national_rank': idx,
             'bayesian_average': d['bayesian_average'],
             'last_score': d['last_score'],
             'total_reviews': d['total_reviews'],

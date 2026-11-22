@@ -79,7 +79,30 @@ const resources = {
       "footer_copyright": "ShawarmaRadar © 2026 - נבנה על ידי גל צ'יפרוט ובינה מלאכותית",
       "whatsapp_ad_prefill": "היי, ספר לי איך ניתן לפרסם את העסק שלי ב-ShawarmaRadar",
       "banner_demo_text": "עסקים המציעים שווארמה - דברו איתנו ותופיעו כאן",
-      "banner_cta": "דרגו אותנו והוסיפו ביקורת"
+      "banner_cta": "דרגו אותנו והוסיפו ביקורת",
+
+      "nav_near_me": "📍 קרוב אלי",
+      "near_me_title": "10 השווארמיות הטובות ביותר קרוב אליך",
+      "near_me_subtitle": "מבוסס על מיקומך הנוכחי, ציון המכ\"ם והדירוג בטבלה הארצית",
+      "near_me_gps_active": "מיקום GPS פעיל",
+      "near_me_locating": "מאתר מיקום...",
+      "near_me_use_gps": "הפעל איתור GPS",
+      "near_me_select_city": "או בחר עיר ידנית (למחשב/ללא GPS)...",
+      "near_me_top_in_radius": "הטובות עד {{km}} ק\"מ",
+      "near_me_sort_closest": "הכי קרובות אלי",
+      "near_me_expanded_notice": "הטווח הורחב ל-{{km}} ק\"מ כדי להציג לך את 10 השווארמיות המובילות בסביבתך",
+      "near_me_king_title": "השווארמיה המובילה בסביבה שלך",
+      "near_me_list_title": "עוד שווארמיות מובילות קרוב אליך",
+      "national_table_place": "מקום #{{rank}} בטבלה הארצית",
+      "in_israel_short": "בארץ",
+      "km_away": "ק\"מ ממך",
+      "km_short": "ק\"מ",
+      "click_to_navigate": "לחץ לניווט ב-Waze או Google Maps",
+      "navigate_btn": "נווט",
+      "nav_choose_app": "בחר אפליקציית ניווט להגעה לעסק:",
+      "nav_waze_sub": "פתיחה וניווט מהיר באפליקציית Waze או במפה",
+      "nav_gmaps_sub": "פתיחת כרטיס העסק וניווט ב-Google Maps",
+      "nav_universal_note": "מותאם אוטומטית לאפליקציות בנייד ולדפדפן במחשב"
     }
   },
   en: {
@@ -158,7 +181,30 @@ const resources = {
       "footer_copyright": "ShawarmaRadar © 2026 - Built by Gal Chiprut & AI",
       "whatsapp_ad_prefill": "Hi, tell me how I can advertise my business on ShawarmaRadar",
       "banner_demo_text": "Shawarma businesses - talk to us and appear here",
-      "banner_cta": "Rate us and add a review"
+      "banner_cta": "Rate us and add a review",
+
+      "nav_near_me": "📍 Near Me",
+      "near_me_title": "Top 10 Best Shawarmas Near You",
+      "near_me_subtitle": "Based on your location, radar score, and national table ranking",
+      "near_me_gps_active": "GPS Location Active",
+      "near_me_locating": "Locating...",
+      "near_me_use_gps": "Use GPS Location",
+      "near_me_select_city": "Or pick a city manually (Desktop / No GPS)...",
+      "near_me_top_in_radius": "Best within {{km}} km",
+      "near_me_sort_closest": "Closest to me",
+      "near_me_expanded_notice": "Radius expanded to {{km}} km to show the top 10 shawarmas in your area",
+      "near_me_king_title": "#1 Shawarma Near You",
+      "near_me_list_title": "More Top Shawarmas Near You",
+      "national_table_place": "Rank #{{rank}} Nationally",
+      "in_israel_short": "National",
+      "km_away": "km away",
+      "km_short": "km",
+      "click_to_navigate": "Click to navigate with Waze or Google Maps",
+      "navigate_btn": "Navigate",
+      "nav_choose_app": "Choose a navigation app to get directions:",
+      "nav_waze_sub": "Launch fast turn-by-turn navigation in Waze",
+      "nav_gmaps_sub": "Open business listing & directions in Google Maps",
+      "nav_universal_note": "Automatically adapts to mobile apps and desktop browsers"
     }
   }
 };

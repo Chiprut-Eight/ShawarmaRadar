@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
-import { Crown, Lock, History, Clock, Award } from 'lucide-react';
+import { Crown, Lock, History, Clock, Award, Navigation } from 'lucide-react';
 import { getNationalRankings, getBundledNationalRankings, type Restaurant } from '../services/firebase';
+import NavigationModal from '../components/NavigationModal';
 import kingHistoryData from '../data/king_history.json';
 
 interface ReignRecord {
@@ -73,6 +74,7 @@ const Home: React.FC = () => {
   
   // Real-time clock for the header
   const [time, setTime] = useState(new Date());
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
 
   // Secret Owner Mode (visible ONLY to Gal)
   const [isOwnerMode, setIsOwnerMode] = useState<boolean>(() => {
@@ -198,10 +200,17 @@ const Home: React.FC = () => {
         </div>
         
         {nationalKing ? (
-          <div className="radar-display">
+          <div
+            className="radar-display clickable-radar"
+            onClick={() => setSelectedRestaurant(nationalKing)}
+            title={t('click_to_navigate')}
+          >
             <div className="radar-sweep"></div>
             <div
-              onClick={handleSecretCrownClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSecretCrownClick();
+              }}
               style={{ zIndex: 3, cursor: 'pointer', userSelect: 'none' }}
               title=""
             >
@@ -214,6 +223,10 @@ const Home: React.FC = () => {
                <div className="king-radar-address">{nationalKing.city}</div>
             )}
             <div className="king-radar-score">{nationalKing.bayesian_average.toFixed(1)}%</div>
+            <div className="radar-nav-cta" style={{ zIndex: 2 }}>
+              <Navigation size={14} />
+              <span>{t('click_to_navigate')}</span>
+            </div>
           </div>
         ) : (
           <div className="radar-display">
@@ -313,7 +326,11 @@ const Home: React.FC = () => {
           
           {/* Runners Up Data Signals */}
           {runnersUp.map((place, idx) => (
-            <div className="signal-card" key={place.id}>
+            <div
+              className="signal-card clickable-card"
+              key={place.id}
+              onClick={() => setSelectedRestaurant(place)}
+            >
               <div className="signal-icon-box">
                 #{idx + 2}
               </div>
@@ -328,10 +345,17 @@ const Home: React.FC = () => {
                 </p>
               </div>
 
-              <div className="signal-graph">
+              <div className="signal-graph hide-mobile">
                 <svg viewBox="0 0 100 30" className="sparkline green">
                   <polyline points="0,20 20,20 30,10 40,25 50,15 60,5 70,15 80,10 90,20 100,10" />
                 </svg>
+              </div>
+
+              <div className="signal-nav-btn-wrap">
+                <span className="nav-chip">
+                  <Navigation size={13} />
+                  <span className="hide-mobile">{t('navigate_btn')}</span>
+                </span>
               </div>
 
               <div className="signal-score">
@@ -344,6 +368,11 @@ const Home: React.FC = () => {
              <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>{t('no_data')}</div>
           )}
         </div>
+
+      <NavigationModal
+        restaurant={selectedRestaurant}
+        onClose={() => setSelectedRestaurant(null)}
+      />
     </div>
   );
 };

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { MapPin } from 'lucide-react';
+import { MapPin, Navigation, Trophy } from 'lucide-react';
 import './RegionalDashboard.css';
 import { getRegionalRankings, getBundledRegionalRankings, type Restaurant } from '../services/firebase';
+import NavigationModal from '../components/NavigationModal';
 
 const RegionalDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t, i18n } = useTranslation();
   
   const [restaurants, setRestaurants] = useState<Restaurant[]>(() => getBundledRegionalRankings(id || 'center'));
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
 
   const regionNameMap: Record<string, string> = {
     north: t('region_north'),
@@ -53,8 +55,20 @@ const RegionalDashboard: React.FC = () => {
         <h2 className="king-radar-title">{t('region_king_title')}</h2>
         
         {localKing ? (
-          <div className="radar-display">
+          <div
+            className="radar-display clickable-radar"
+            onClick={() => setSelectedRestaurant(localKing)}
+            title={t('click_to_navigate')}
+          >
             <div className="radar-sweep"></div>
+            {localKing.national_rank && (
+              <div className="nearme-king-badges" style={{ zIndex: 2 }}>
+                <span className="national-rank-pill">
+                  <Trophy size={13} />
+                  {t('national_table_place', { rank: localKing.national_rank })}
+                </span>
+              </div>
+            )}
             <div className="king-radar-name">{localKing.name}</div>
             {localKing.address && localKing.address !== localKing.city ? (
                <div className="king-radar-address">{localKing.city} • {localKing.address}</div>
@@ -62,6 +76,10 @@ const RegionalDashboard: React.FC = () => {
                <div className="king-radar-address">{localKing.city}</div>
             )}
             <div className="king-radar-score">{localKing.bayesian_average.toFixed(1)}%</div>
+            <div className="radar-nav-cta" style={{ zIndex: 2 }}>
+              <Navigation size={14} />
+              <span>{t('click_to_navigate')}</span>
+            </div>
           </div>
         ) : (
           <div className="radar-display">
@@ -75,7 +93,11 @@ const RegionalDashboard: React.FC = () => {
         <h2 className="signals-section-title">{t('region_leaders')} {currentRegionName}</h2>
           
           {restaurants.slice(1).map((place, idx) => (
-            <div className="signal-card" key={place.id}>
+            <div
+              className="signal-card clickable-card"
+              key={place.id}
+              onClick={() => setSelectedRestaurant(place)}
+            >
               <div className="signal-icon-box">
                 #{idx + 2}
               </div>
@@ -83,6 +105,11 @@ const RegionalDashboard: React.FC = () => {
               <div className="signal-content">
                 <div className="signal-title-row">
                   <h3>{place.name}</h3>
+                  {place.national_rank && (
+                    <span className="national-rank-tag">
+                      🏆 #{place.national_rank} {t('in_israel_short')}
+                    </span>
+                  )}
                   <span className="live-tag">LIVE</span>
                 </div>
                 <p className="signal-sub">
@@ -90,10 +117,17 @@ const RegionalDashboard: React.FC = () => {
                 </p>
               </div>
 
-              <div className="signal-graph">
+              <div className="signal-graph hide-mobile">
                 <svg viewBox="0 0 100 30" className="sparkline green">
                   <polyline points="0,20 20,20 30,10 40,25 50,15 60,5 70,15 80,10 90,20 100,10" />
                 </svg>
+              </div>
+
+              <div className="signal-nav-btn-wrap">
+                <span className="nav-chip">
+                  <Navigation size={13} />
+                  <span className="hide-mobile">{t('navigate_btn')}</span>
+                </span>
               </div>
 
               <div className="signal-score">
@@ -106,6 +140,11 @@ const RegionalDashboard: React.FC = () => {
              <div style={{color: '#888', textAlign: 'center', padding: '2rem'}}>{t('region_no_more_data')}</div>
           )}
         </div>
+
+      <NavigationModal
+        restaurant={selectedRestaurant}
+        onClose={() => setSelectedRestaurant(null)}
+      />
     </div>
   );
 };

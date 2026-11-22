@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import RegionalDashboard from './pages/RegionalDashboard';
+import NearMe from './pages/NearMe';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 
@@ -18,6 +19,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/near-me" element={<NearMe />} />
           <Route path="/region/:id" element={<RegionalDashboard />} />
         </Routes>
       </Layout>

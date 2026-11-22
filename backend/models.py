@@ -12,6 +12,8 @@ class Restaurant(Base):
     region = Column(String, index=True) # north, center, south, sharon, shfela
     platform_id = Column(String, unique=True, index=True) # e.g. google place id
     address = Column(String, nullable=True)
+    lat = Column(Float, nullable=True)
+    lng = Column(Float, nullable=True)
     
     # Calculated scores
     last_score = Column(Float, default=0.0)

@@ -113,11 +113,16 @@ class WoltTracker(PoliteScraper):
                             slug = venue.get("slug")
                             rating = venue.get("rating", {}).get("score")
                             address = venue.get("address")
+                            loc = venue.get("location")
+                            v_lat = float(loc[1]) if isinstance(loc, list) and len(loc) == 2 else lat
+                            v_lng = float(loc[0]) if isinstance(loc, list) and len(loc) == 2 else lon
                             venues[name.lower()] = {
                                 "name": name,
                                 "slug": slug,
                                 "rating": float(rating) if rating is not None else None,
-                                "address": address
+                                "address": address,
+                                "lat": v_lat,
+                                "lng": v_lng
                             }
         except Exception as e:
             print(f"Wolt preloading error for {city}: {e}")

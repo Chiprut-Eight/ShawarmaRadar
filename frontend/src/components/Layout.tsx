@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle } from 'lucide-react';
+import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy } from 'lucide-react';
 import AdBanner from './AdBanner';
+import NavigationModal from './NavigationModal';
 import './Layout.css';
 
-import { searchRestaurantLocal } from '../services/firebase';
+import { searchRestaurantLocal, type Restaurant } from '../services/firebase';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
@@ -16,8 +17,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, whatsapp?: string} | null>(null);
+  const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, matches?: Restaurant[], whatsapp?: string} | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [navRestaurant, setNavRestaurant] = useState<Restaurant | null>(null);
 
   // Demo banners - replace with real advertiser data later
   const demoBanners = [
@@ -72,11 +74,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       const result = searchRestaurantLocal(searchQuery);
       if (result.exists) {
         const foundMsg = i18n.language === 'he' 
-          ? `כן! העסק '${result.name}' מזוהה ונמצא במעקב הרדאר.` 
-          : `Yes! '${result.name}' is identified and tracked by the radar.`;
+          ? `כן! נמצאו ${result.matches.length} תוצאות במעקב הרדאר (לחץ על עסק לניווט):` 
+          : `Yes! Found ${result.matches.length} matching businesses on the radar (click to navigate):`;
         setSearchResult({
           message: foundMsg,
-          isFound: true
+          isFound: true,
+          matches: result.matches
         });
       } else {
         const notFoundMsg = i18n.language === 'he'
@@ -128,11 +131,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <span className="hide-mobile">{t('national_king')}</span>
           </Link>
           <div className="dropdown">
-            <button className={`nav-btn ${location.pathname.includes('/region') ? 'active' : ''}`}>
+            <button className={`nav-btn ${location.pathname.includes('/region') || location.pathname === '/near-me' ? 'active' : ''}`}>
               <Map size={18} />
               <span className="hide-mobile">{t('nav_filter_region')}</span>
             </button>
             <div className="dropdown-content">
+              <Link
+                to="/near-me"
+                style={{
+                  color: '#4ade80',
+                  fontWeight: 'bold',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)'
+                }}
+              >
+                {t('nav_near_me')}
+              </Link>
               {regions.map((r) => (
                 <Link key={r.id} to={`/region/${r.id}`}>{r.label}</Link>
               ))}
@@ -171,6 +184,50 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
                 {searchResult.message}
               </div>
+              {searchResult.matches && searchResult.matches.length > 0 && (
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px'}}>
+                  {searchResult.matches.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => setNavRestaurant(item)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: '#1e1e22',
+                        border: '1px solid rgba(250, 204, 21, 0.3)',
+                        borderRadius: '10px',
+                        padding: '10px 14px',
+                        cursor: 'pointer',
+                        textAlign: i18n.language === 'he' ? 'right' : 'left'
+                      }}
+                    >
+                      <div>
+                        <div style={{fontWeight: 'bold', color: '#fff', fontSize: '1rem'}}>
+                          {item.name}
+                          {item.national_rank && (
+                            <span style={{marginInlineStart: '8px', fontSize: '0.78rem', color: '#facc15'}}>
+                              <Trophy size={12} style={{display: 'inline', verticalAlign: 'middle', marginInlineEnd: '3px'}} />
+                              #{item.national_rank} {t('in_israel_short')}
+                            </span>
+                          )}
+                        </div>
+                        <div style={{fontSize: '0.82rem', color: '#9ca3af'}}>
+                          {item.city} {item.address && item.address !== item.city ? `• ${item.address}` : ''}
+                        </div>
+                      </div>
+                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                        <span style={{color: '#4ade80', fontWeight: 'bold', fontFamily: 'monospace'}}>
+                          {item.bayesian_average.toFixed(1)}%
+                        </span>
+                        <span style={{background: '#facc15', color: '#000', padding: '5px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
+                          <Navigation size={13} /> {t('navigate_btn')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               {searchResult.whatsapp && (
                 <a 
                   href={searchResult.whatsapp}
@@ -270,6 +327,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
       )}
+
+      <NavigationModal
+        restaurant={navRestaurant}
+        onClose={() => setNavRestaurant(null)}
+      />
     </div>
   );
 };
