@@ -82,7 +82,9 @@ def process_restaurant(
     default_city: str,
     address_warnings: list,
     seed_name: str = "",
-    seed_address: str = ""
+    seed_address: str = "",
+    seed_lat: Optional[float] = None,
+    seed_lng: Optional[float] = None
 ):
     print(f"\n--- [Daily Scan] Processing: {search_query} ({default_city}) ---")
     
@@ -191,8 +193,8 @@ def process_restaurant(
 
     region = get_region_by_city(default_city) or "center"
     city_coords = CITY_COORDINATES.get(default_city, (32.0853, 34.7818))
-    final_lat = (restaurant.lat if restaurant and restaurant.lat else None) or wolt_lat or city_coords[0]
-    final_lng = (restaurant.lng if restaurant and restaurant.lng else None) or wolt_lng or city_coords[1]
+    final_lat = seed_lat or (restaurant.lat if restaurant and restaurant.lat else None) or wolt_lat or city_coords[0]
+    final_lng = seed_lng or (restaurant.lng if restaurant and restaurant.lng else None) or wolt_lng or city_coords[1]
 
     if not restaurant:
         restaurant = models.Restaurant(
@@ -334,7 +336,9 @@ def run_daily_scan_sync():
                 target["city"],
                 address_warnings,
                 seed_name=target.get("name", ""),
-                seed_address=target.get("address", "")
+                seed_address=target.get("address", ""),
+                seed_lat=target.get("lat"),
+                seed_lng=target.get("lng")
             )
             success_count += 1
             time.sleep(1.0) # Polite delay
