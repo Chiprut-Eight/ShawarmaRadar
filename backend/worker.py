@@ -5,7 +5,7 @@ load_dotenv()
 import time
 import json
 import re
-import requests
+import httpx
 import sys
 from datetime import datetime, timezone
 from typing import Optional
@@ -64,7 +64,7 @@ def send_telegram_alert(message: str):
         return
     try:
         url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-        requests.post(
+        httpx.post(
             url,
             json={"chat_id": chat_id, "text": message, "parse_mode": "Markdown"},
             timeout=8.0
@@ -242,8 +242,8 @@ def process_restaurant(
     restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
     restaurant.total_reviews = len(all_reviews)
     
-    effective_g_rating: float = float(restaurant.google_rating) if restaurant.google_rating is not None else 3.5
-    effective_g_total: int = int(restaurant.google_ratings_total) if restaurant.google_ratings_total is not None else 0
+    effective_g_rating: float = restaurant.google_rating if restaurant.google_rating is not None else 3.5
+    effective_g_total: int = restaurant.google_ratings_total or 0
 
     restaurant.bayesian_average = ai.calculate_final_radar_score(
         google_rating=effective_g_rating,
