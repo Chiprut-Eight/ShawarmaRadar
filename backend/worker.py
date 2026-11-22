@@ -173,8 +173,8 @@ def process_restaurant(
 
     region = get_region_by_city(default_city) or "center"
     city_coords = CITY_COORDINATES.get(default_city, (32.0853, 34.7818))
-    final_lat = wolt_lat or (restaurant.lat if restaurant and restaurant.lat else city_coords[0])
-    final_lng = wolt_lng or (restaurant.lng if restaurant and restaurant.lng else city_coords[1])
+    final_lat = (restaurant.lat if restaurant and restaurant.lat else None) or wolt_lat or city_coords[0]
+    final_lng = (restaurant.lng if restaurant and restaurant.lng else None) or wolt_lng or city_coords[1]
 
     if not restaurant:
         restaurant = models.Restaurant(
