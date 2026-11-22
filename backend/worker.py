@@ -113,8 +113,16 @@ def process_restaurant(
     wolt_address: str = ""
     wolt_lat: Optional[float] = None
     wolt_lng: Optional[float] = None
+    ref_lat = restaurant.lat if restaurant else None
+    ref_lng = restaurant.lng if restaurant else None
     try:
-        venue_data = wolt.search_venue(display_name, default_city)
+        venue_data = wolt.search_venue(
+            display_name,
+            default_city,
+            target_lat=ref_lat,
+            target_lng=ref_lng,
+            target_address=verified_address
+        )
         if venue_data:
             if venue_data.get("rating") is not None:
                 wolt_rating = float(venue_data["rating"])
@@ -129,11 +137,21 @@ def process_restaurant(
     # 4. 10Bis Free API
     tenbis_rating: float = 0.0
     tenbis_address: str = ""
+    tenbis_reviews: list = []
     try:
-        tb_data = tenbis.search_restaurant(display_name, default_city)
+        tb_data = tenbis.search_restaurant(
+            display_name,
+            default_city,
+            target_lat=ref_lat,
+            target_lng=ref_lng,
+            target_address=verified_address
+        )
         if tb_data:
             tenbis_rating = float(tb_data.get("rating") or 0.0)
             tenbis_address = str(tb_data.get("address") or "")
+            tb_id = int(tb_data.get("restaurantId") or 0)
+            if tb_id > 0:
+                tenbis_reviews = tenbis.fetch_reviews(tb_id)
     except Exception as e:
         print(f"10bis lookup error: {e}")
 
@@ -206,11 +224,15 @@ def process_restaurant(
         restaurant.region = region
         db.commit()
 
-    # 6. Process Reviews with Local Hebrew Sentiment
-    for rev_data in google_reviews:
-        content = rev_data.get("text", "")
-        if not content:
+    # 6. Process Reviews with Local Hebrew Sentiment (Web + 10Bis verified customer reviews)
+    combined_reviews = list(google_reviews) + list(tenbis_reviews)
+    for rev_data in combined_reviews:
+        content = (rev_data.get("text") or "").strip()
+        rev_rank = rev_data.get("rank")
+        if not content and rev_rank is None:
             continue
+        if not content and rev_rank is not None:
+            content = f"דירוג לקוח מאומת בתן-ביס: {int(rev_rank)}/10"
             
         existing = db.query(models.Review).filter(
             models.Review.restaurant_id == restaurant.id,
@@ -221,12 +243,15 @@ def process_restaurant(
             continue
             
         sentiment = ai.analyze_sentiment(content)
+        if rev_rank is not None:
+            rank_sent = max(-1.0, min(1.0, (float(rev_rank) - 5.5) / 4.5))
+            sentiment = round((sentiment + rank_sent) / 2.0, 2) if abs(sentiment) > 0.01 else round(rank_sent, 2)
         published_at = datetime.now(timezone.utc)
         weight = ai.calculate_recency_weight(published_at)
         
         review = models.Review(
             restaurant_id=restaurant.id,
-            source="google",
+            source=str(rev_data.get("source") or "google"),
             content=content,
             sentiment_score=sentiment,
             weight=weight,
@@ -239,11 +264,11 @@ def process_restaurant(
     # 7. Recalculate Final Radar Score
     all_reviews = db.query(models.Review).filter(models.Review.restaurant_id == restaurant.id).all()
     
-    restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
-    restaurant.total_reviews = len(all_reviews)
-    
     effective_g_rating: float = restaurant.google_rating if restaurant.google_rating is not None else 3.5
     effective_g_total: int = restaurant.google_ratings_total or 0
+
+    restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews, fallback_rating=effective_g_rating)
+    restaurant.total_reviews = len(all_reviews)
 
     restaurant.bayesian_average = ai.calculate_final_radar_score(
         google_rating=effective_g_rating,

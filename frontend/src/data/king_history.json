@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-22T15:34:54.394033+00:00",
+  "last_updated": "2026-11-22T16:10:45.846995+00:00",
   "reigns": [
     {
       "platform_id": "Walla_Shawarma_(וואלה_שווארמה)_שפרעם",
@@ -7,11 +7,23 @@
       "city": "שפרעם",
       "address": "וואדי אל-ג'מאל (ליד משרד הרישוי)",
       "started_at": "2026-11-21T00:00:00+02:00",
-      "ended_at": null,
+      "ended_at": "2026-11-22T16:10:45.846995+00:00",
       "score_at_start": 84.1,
       "current_score": 84.1,
       "peak_score": 84.1,
-      "duration_seconds": 149694
+      "duration_seconds": 151845
+    },
+    {
+      "platform_id": "שווארמה_אמיל_חיפה",
+      "name": "שווארמה אמיל",
+      "city": "חיפה",
+      "address": "שדרות המגינים 68",
+      "started_at": "2026-11-22T16:10:45.846995+00:00",
+      "ended_at": null,
+      "score_at_start": 91.4,
+      "current_score": 91.4,
+      "peak_score": 91.4,
+      "duration_seconds": 0
     }
   ]
 }

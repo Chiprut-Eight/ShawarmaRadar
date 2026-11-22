@@ -95,10 +95,29 @@ CITY_COORDINATES = {
     "מע'אר": (32.8889, 35.4056)
 }
 
+def _normalize_hebrew(text: str) -> str:
+    if not text:
+        return ""
+    s = text.lower().strip()
+    s = re.sub(r'[׳\'״"\-–|]', ' ', s)
+    s = s.replace("שוארמה", "שווארמה").replace("שאוורמה", "שווארמה").replace("שוורמה", "שווארמה")
+    s = s.replace("חאזן", "חזן").replace("ח׳אזן", "חזן").replace("ח'אזן", "חזן")
+    s = s.replace("קריית", "קרית")
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    import math
+    r = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    return r * (2 * math.atan2(math.sqrt(a), math.sqrt(1 - a)))
+
 class WoltTracker(PoliteScraper):
     def __init__(self):
-        super().__init__(base_url="https://restaurant-api.wolt.com", delay_seconds=0.5)
-        self.city_venues_cache: dict[str, dict[str, dict[str, Any]]] = {} # Cache discovered venues by city
+        super().__init__(base_url="https://restaurant-api.wolt.com", delay_seconds=0.35)
+        self.city_venues_cache: dict[str, dict[str, dict[str, Any]]] = {}
 
     def _preload_city(self, city: str) -> dict[str, dict[str, Any]]:
         """ Preloads and caches all restaurants for a given city from Wolt discovery """
@@ -112,7 +131,7 @@ class WoltTracker(PoliteScraper):
         lat, lon = coords
         url = f"/v1/pages/restaurants?lat={lat}&lon={lon}"
         
-        venues = {}
+        venues: dict[str, dict[str, Any]] = {}
         try:
             response = self.get(url)
             if response and response.status_code == 200:
@@ -122,17 +141,24 @@ class WoltTracker(PoliteScraper):
                         venue = item.get("venue")
                         if venue:
                             name = venue.get("name", "").strip()
-                            slug = venue.get("slug")
-                            rating = venue.get("rating", {}).get("score")
-                            address = venue.get("address")
+                            slug = venue.get("slug") or name.lower()
+                            rating_obj = venue.get("rating") or {}
+                            rating = rating_obj.get("score")
+                            volume = rating_obj.get("volume") or 0
+                            address = venue.get("address") or ""
+                            short_desc = venue.get("short_description") or ""
+                            tags = venue.get("tags") or []
                             loc = venue.get("location")
                             v_lat = float(loc[1]) if isinstance(loc, list) and len(loc) == 2 else lat
                             v_lng = float(loc[0]) if isinstance(loc, list) and len(loc) == 2 else lon
-                            venues[name.lower()] = {
+                            venues[str(slug)] = {
                                 "name": name,
                                 "slug": slug,
                                 "rating": float(rating) if rating is not None else None,
+                                "volume": int(volume),
                                 "address": address,
+                                "short_description": short_desc,
+                                "tags": tags,
                                 "lat": v_lat,
                                 "lng": v_lng
                             }
@@ -150,86 +176,248 @@ class WoltTracker(PoliteScraper):
         cleaned = text.lower().strip()
         cleaned = re.sub(r'\s*\([^)]*\)\s*', ' ', cleaned)
         cleaned = re.split(r'\s*[\|\-–]\s*', cleaned)[0].strip()
+        cleaned = _normalize_hebrew(cleaned)
         generic_words = [
-            "שווארמה", "שוארמה", "שאוורמה", "שוורמה", "השווארמה של", "השוארמה של",
-            "מסעדת", "וגריל", "גריל", "בשרים", "ועל האש", "על האש", "ושיפודים",
-            "על גחלים", "כיד המלך", "בע\"מ", "כשר", "למהדרין", "shawarma"
+            "שווארמה", "השווארמה", "של", "מסעדת", "וגריל", "גריל", "בשרים",
+            "ועל", "האש", "על", "ושיפודים", "גחלים", "כיד", "המלך", "בעמ",
+            "כשר", "למהדרין", "shawarma", " ופלאפל", "פלאפל"
         ]
         for gw in generic_words:
-            cleaned = re.sub(rf'(?:^|\s){re.escape(gw)}(?=\s|$)', ' ', cleaned)
+            cleaned = re.sub(rf'(?:^|\s){re.escape(gw.strip())}(?=\s|$)', ' ', cleaned)
         cleaned = re.sub(r'\s+', ' ', cleaned).strip()
         return cleaned
 
-    def search_venue(self, query: str, city: str = "תל אביב"):
+    def search_venue(
+        self,
+        query: str,
+        city: str = "תל אביב",
+        target_lat: Optional[float] = None,
+        target_lng: Optional[float] = None,
+        target_address: str = ""
+    ) -> Optional[dict[str, Any]]:
         """
-        Searches for a venue on Wolt using the discovery cache strictly within that city.
+        Searches for a venue on Wolt using the discovery cache for the city,
+        combining normalized Hebrew name/brand matching with GPS/address proximity.
         """
         city_venues = self._preload_city(city)
         if not city_venues:
             return None
             
-        query_norm = query.lower().strip()
-        query_core = re.sub(r'\s*\([^)]*\)\s*', ' ', query_norm).strip()
-        query_brand = self._extract_brand_core(query_norm)
-        
-        # 1. Exact match
-        for venue_name, vdata in city_venues.items():
-            if query_norm == venue_name or query_core == venue_name:
-                return vdata
-                
-        # 2. Strict containment on full/core name
-        for venue_name, vdata in city_venues.items():
-            if (query_core and (query_core in venue_name or venue_name in query_core)) or (query_norm in venue_name or venue_name in query_norm):
-                return vdata
+        query_norm = _normalize_hebrew(query)
+        query_core = _normalize_hebrew(re.sub(r'\s*\([^)]*\)\s*', ' ', query))
+        query_brand = self._extract_brand_core(query)
+        addr_norm = _normalize_hebrew(target_address)
+        addr_num_match = re.search(r'\d+', addr_norm)
+        addr_num = addr_num_match.group(0) if addr_num_match else ""
 
-        # 3. Brand match (e.g., "יאשקה שווארמה" -> "יאשקה" matches "יאשקה | דיזנגוף")
-        if query_brand and len(query_brand) >= 3:
-            for venue_name, vdata in city_venues.items():
-                venue_brand = self._extract_brand_core(venue_name)
-                if query_brand == venue_brand:
-                    return vdata
-                if len(query_brand) >= 4 and (query_brand in venue_brand or (len(venue_brand) >= 4 and venue_brand in query_brand)):
-                    return vdata
-                
-        return None
+        candidates: list[tuple[float, dict[str, Any]]] = []
+
+        for _, vdata in city_venues.items():
+            v_name_raw = vdata.get("name", "")
+            v_name = _normalize_hebrew(v_name_raw)
+            v_brand = self._extract_brand_core(v_name_raw)
+            v_addr = _normalize_hebrew(vdata.get("address", ""))
+
+            score = 0.0
+            # Name / brand match
+            if query_norm == v_name or (query_core and query_core == v_name):
+                score += 100.0
+            elif query_core and (query_core in v_name or v_name in query_core):
+                score += 80.0
+            elif query_brand and len(query_brand) >= 2 and v_brand:
+                if query_brand == v_brand:
+                    score += 75.0
+                elif len(query_brand) >= 3 and (query_brand in v_brand or (len(v_brand) >= 3 and v_brand in query_brand)):
+                    score += 60.0
+
+            # Coordinate / address proximity bonus
+            dist_km = 999.0
+            if target_lat and target_lng and vdata.get("lat") and vdata.get("lng"):
+                dist_km = _haversine_km(target_lat, target_lng, float(vdata["lat"]), float(vdata["lng"]))
+                if dist_km <= 0.12:
+                    score += 50.0
+                elif dist_km <= 0.35:
+                    score += 25.0
+                elif dist_km > 4.0:
+                    score -= 30.0
+
+            if addr_num and addr_num in v_addr:
+                score += 20.0
+
+            if score >= 60.0:
+                candidates.append((score, vdata))
+
+        if not candidates:
+            return None
+
+        candidates.sort(key=lambda x: x[0], reverse=True)
+        return candidates[0][1]
 
 class TenBisTracker(PoliteScraper):
     def __init__(self):
-        super().__init__(base_url="https://www.10bis.co.il", delay_seconds=0.5)
+        super().__init__(base_url="https://www.10bis.co.il", delay_seconds=0.3)
         self.city_cache: dict[str, list[dict[str, Any]]] = {}
+        self.reviews_cache: dict[int, list[dict[str, Any]]] = {}
 
-    def search_restaurant(self, restaurant_name: str, city: str = "תל אביב") -> Optional[dict[str, Any]]:
+    def _preload_city(self, city: str) -> list[dict[str, Any]]:
+        if city in self.city_cache:
+            return self.city_cache[city]
+
+        coords = CITY_COORDINATES.get(city)
+        if not coords:
+            self.city_cache[city] = []
+            return []
+
+        lat, lon = coords
+        by_id: dict[int, dict[str, Any]] = {}
+        for mode in ("pickup", "delivery"):
+            try:
+                endpoint = f"/NextApi/SearchRestaurants?deliveryMethod={mode}&latitude={lat}&longitude={lon}"
+                res = self.get(endpoint)
+                if res and res.status_code == 200:
+                    data = res.json()
+                    rlist = data.get("Data", {}).get("restaurantsList", []) or []
+                    for item in rlist:
+                        rid = item.get("restaurantId")
+                        if rid and rid not in by_id:
+                            by_id[int(rid)] = item
+            except Exception as e:
+                print(f"10Bis preload error for {city} ({mode}): {e}")
+
+        self.city_cache[city] = list(by_id.values())
+        return self.city_cache[city]
+
+    def _extract_brand_core(self, text: str) -> str:
+        cleaned = text.lower().strip()
+        cleaned = re.sub(r'\s*\([^)]*\)\s*', ' ', cleaned)
+        cleaned = re.split(r'\s*[\|\-–]\s*', cleaned)[0].strip()
+        cleaned = _normalize_hebrew(cleaned)
+        generic_words = [
+            "שווארמה", "השווארמה", "של", "מסעדת", "וגריל", "גריל", "בשרים",
+            "ועל", "האש", "על", "ושיפודים", "גחלים", "כיד", "המלך", "בעמ",
+            "כשר", "למהדרין", "shawarma", "פלאפל"
+        ]
+        for gw in generic_words:
+            cleaned = re.sub(rf'(?:^|\s){re.escape(gw.strip())}(?=\s|$)', ' ', cleaned)
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+
+    def fetch_reviews(self, restaurant_id: int) -> list[dict[str, Any]]:
         """
-        Searches for a restaurant rating on 10Bis via their public NextApi/search endpoints,
-        falling back gracefully if not listed on 10Bis.
+        Fetches verified customer reviews for a 10Bis restaurantId via GetRestaurantReviews.
+        """
+        if not restaurant_id:
+            return []
+        if restaurant_id in self.reviews_cache:
+            return self.reviews_cache[restaurant_id]
+
+        reviews: list[dict[str, Any]] = []
+        try:
+            res = self.get(f"/NextApi/GetRestaurantReviews?restaurantId={restaurant_id}")
+            if res and res.status_code == 200:
+                data = res.json()
+                raw_list = data.get("Data", {}).get("reviewsList", []) or []
+                for rv in raw_list[:20]:
+                    txt = (rv.get("reviewText") or "").strip()
+                    rank = rv.get("reviewRank")
+                    if txt or rank:
+                        reviews.append({
+                            "text": txt,
+                            "rank": float(rank) if rank is not None else None,
+                            "source": "10bis"
+                        })
+        except Exception:
+            pass
+
+        self.reviews_cache[restaurant_id] = reviews
+        return reviews
+
+    def search_restaurant(
+        self,
+        restaurant_name: str,
+        city: str = "תל אביב",
+        target_lat: Optional[float] = None,
+        target_lng: Optional[float] = None,
+        target_address: str = ""
+    ) -> Optional[dict[str, Any]]:
+        """
+        Searches for a restaurant on 10Bis using coordinate-based SearchRestaurants discovery,
+        matching by brand name and GPS/address proximity.
         """
         if not restaurant_name:
             return None
-        core_name = re.sub(r'\s*\([^)]*\)\s*', ' ', restaurant_name).strip()
-        try:
-            endpoint = f"/NextApi/GetRestaurantsList?cityName={urllib.parse.quote(city)}"
-            if city not in self.city_cache:
-                res = self.get(endpoint)
-                if res and res.status_code == 200 and "application/json" in res.headers.get("content-type", ""):
-                    data = res.json()
-                    rest_list = data.get("Data", {}).get("restaurantsList", []) or []
-                    self.city_cache[city] = rest_list
-                else:
-                    self.city_cache[city] = []
 
-            for item in self.city_cache.get(city, []):
-                r_name = (item.get("restaurantName") or "").strip()
-                if r_name and (core_name in r_name or r_name in core_name):
-                    raw_score = item.get("ReviewsRank") or item.get("restaurantPopularityRank")
-                    if raw_score:
-                        score_val = float(raw_score)
-                        if score_val > 5.0:
-                            score_val = score_val / 2.0
-                        return {
-                            "name": r_name,
-                            "rating": round(min(5.0, max(1.0, score_val)), 1),
-                            "address": item.get("restaurantAddress")
-                        }
-        except Exception:
-            pass
-        return None
+        city_items = self._preload_city(city)
+        if not city_items:
+            return None
+
+        query_norm = _normalize_hebrew(restaurant_name)
+        query_core = _normalize_hebrew(re.sub(r'\s*\([^)]*\)\s*', ' ', restaurant_name))
+        query_brand = self._extract_brand_core(restaurant_name)
+        addr_norm = _normalize_hebrew(target_address)
+        addr_num_match = re.search(r'\d+', addr_norm)
+        addr_num = addr_num_match.group(0) if addr_num_match else ""
+
+        candidates: list[tuple[float, dict[str, Any]]] = []
+
+        for item in city_items:
+            r_name_raw = (item.get("restaurantName") or "").strip()
+            if not r_name_raw:
+                continue
+            r_name = _normalize_hebrew(r_name_raw)
+            r_brand = self._extract_brand_core(r_name_raw)
+            r_addr = _normalize_hebrew(item.get("restaurantAddress") or "")
+
+            score = 0.0
+            if query_norm == r_name or (query_core and query_core == r_name):
+                score += 100.0
+            elif query_core and (query_core in r_name or r_name in query_core):
+                score += 80.0
+            elif query_brand and len(query_brand) >= 2 and r_brand:
+                if query_brand == r_brand:
+                    score += 75.0
+                elif len(query_brand) >= 3 and (query_brand in r_brand or (len(r_brand) >= 3 and r_brand in query_brand)):
+                    score += 60.0
+
+            item_lat = item.get("latitude")
+            item_lng = item.get("longitude")
+            if target_lat and target_lng and item_lat and item_lng:
+                dist_km = _haversine_km(target_lat, target_lng, float(item_lat), float(item_lng))
+                if dist_km <= 0.12:
+                    score += 50.0
+                elif dist_km <= 0.35:
+                    score += 25.0
+                elif dist_km > 4.0:
+                    score -= 30.0
+
+            if addr_num and addr_num in r_addr:
+                score += 20.0
+
+            if score >= 60.0:
+                candidates.append((score, item))
+
+        if not candidates:
+            return None
+
+        candidates.sort(key=lambda x: x[0], reverse=True)
+        best = candidates[0][1]
+
+        raw_dec = best.get("reviewsRankDecimal")
+        raw_int = best.get("reviewsRank")
+        rating_val = 0.0
+        if raw_dec and float(raw_dec) > 0:
+            rating_val = float(raw_dec)
+            if rating_val > 5.0:
+                rating_val = rating_val / 2.0
+        elif raw_int and float(raw_int) > 0:
+            rating_val = float(raw_int)
+            if rating_val > 5.0:
+                rating_val = rating_val / 2.0
+
+        return {
+            "restaurantId": int(best.get("restaurantId") or 0),
+            "name": best.get("restaurantName"),
+            "rating": round(min(5.0, max(1.0, rating_val)), 2) if rating_val > 0 else 0.0,
+            "numOfReviews": int(best.get("numOfReviews") or 0),
+            "address": best.get("restaurantAddress")
+        }
