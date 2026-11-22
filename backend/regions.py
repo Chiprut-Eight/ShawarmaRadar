@@ -79,7 +79,9 @@ REGIONS = {
     "אופקים": "south", "ofakim": "south"
 }
 
-def get_region_by_city(city_name: str) -> str:
+from typing import Optional
+
+def get_region_by_city(city_name: str) -> Optional[str]:
     if not city_name:
         return None
     

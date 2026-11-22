@@ -1,6 +1,7 @@
 from .base import PoliteScraper
 import re
 import urllib.parse
+from typing import Any
 from bs4 import BeautifulSoup
 import httpx
 import time
@@ -96,7 +97,7 @@ class GoogleBusinessScraper(PoliteScraper):
         
         return ", ".join(clean_parts) if clean_parts else ""
 
-    def fetch_place_data(self, query: str, city: str = "", skip_address_lookup: bool = False):
+    def fetch_place_data(self, query: str, city: str = "", skip_address_lookup: bool = False) -> dict[str, Any]:
         """
         Free Web & Google/Local Knowledge Scraper.
         Uses DuckDuckGo for reviews/ratings and Nominatim for addresses (when needed).
@@ -105,7 +106,7 @@ class GoogleBusinessScraper(PoliteScraper):
         encoded_query = urllib.parse.quote(f"{query} ביקורות דירוג")
         url = f"https://html.duckduckgo.com/html/?q={encoded_query}"
         
-        result = {
+        result: dict[str, Any] = {
             "name": query,
             "rating": None,
             "user_ratings_total": 0,

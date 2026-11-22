@@ -8,9 +8,10 @@ import re
 import requests
 import sys
 from datetime import datetime, timezone
+from typing import Optional
 from sqlalchemy.orm import Session
 
-sys.stdout.reconfigure(encoding='utf-8')
+getattr(sys.stdout, "reconfigure", lambda **_: None)(encoding="utf-8")
 
 from scrapers.google import GoogleBusinessScraper
 from scrapers.wolt import WoltTracker, TenBisTracker, CITY_COORDINATES
@@ -102,35 +103,37 @@ def process_restaurant(
 
     # 2. Free Google Scraper
     google_data = scraper.fetch_place_data(search_query, city=default_city, skip_address_lookup=bool(verified_address))
-    google_rating = google_data.get("rating")
-    google_ratings_total = google_data.get("user_ratings_total", 0)
-    google_address = google_data.get("address")
-    google_reviews = google_data.get("reviews", [])
+    google_rating: Optional[float] = google_data.get("rating")
+    google_ratings_total: int = int(google_data.get("user_ratings_total") or 0)
+    google_address: str = str(google_data.get("address") or "")
+    google_reviews: list = google_data.get("reviews") or []
 
     # 3. Wolt Free API
-    wolt_rating = 0.0
-    wolt_address = None
-    wolt_lat = None
-    wolt_lng = None
+    wolt_rating: float = 0.0
+    wolt_address: str = ""
+    wolt_lat: Optional[float] = None
+    wolt_lng: Optional[float] = None
     try:
         venue_data = wolt.search_venue(display_name, default_city)
         if venue_data:
             if venue_data.get("rating") is not None:
                 wolt_rating = float(venue_data["rating"])
-            wolt_address = venue_data.get("address")
-            wolt_lat = venue_data.get("lat")
-            wolt_lng = venue_data.get("lng")
+            wolt_address = str(venue_data.get("address") or "")
+            if venue_data.get("lat") is not None:
+                wolt_lat = float(venue_data["lat"])
+            if venue_data.get("lng") is not None:
+                wolt_lng = float(venue_data["lng"])
     except Exception as e:
         print(f"Wolt lookup error: {e}")
 
     # 4. 10Bis Free API
-    tenbis_rating = 0.0
-    tenbis_address = None
+    tenbis_rating: float = 0.0
+    tenbis_address: str = ""
     try:
         tb_data = tenbis.search_restaurant(display_name, default_city)
         if tb_data:
-            tenbis_rating = tb_data.get("rating", 0.0)
-            tenbis_address = tb_data.get("address")
+            tenbis_rating = float(tb_data.get("rating") or 0.0)
+            tenbis_address = str(tb_data.get("address") or "")
     except Exception as e:
         print(f"10bis lookup error: {e}")
 
@@ -138,8 +141,8 @@ def process_restaurant(
     if verified_address:
         best_address = verified_address
     else:
-        valid_wolt = wolt_address and default_city in wolt_address
-        valid_tenbis = tenbis_address and default_city in tenbis_address
+        valid_wolt = bool(wolt_address and default_city in wolt_address)
+        valid_tenbis = bool(tenbis_address and default_city in tenbis_address)
         raw_candidate = ""
         if google_address:
             raw_candidate = google_address
@@ -239,9 +242,12 @@ def process_restaurant(
     restaurant.last_score = ai.calculate_net_sentiment_score(all_reviews)
     restaurant.total_reviews = len(all_reviews)
     
+    effective_g_rating: float = float(restaurant.google_rating) if restaurant.google_rating is not None else 3.5
+    effective_g_total: int = int(restaurant.google_ratings_total) if restaurant.google_ratings_total is not None else 0
+
     restaurant.bayesian_average = ai.calculate_final_radar_score(
-        google_rating=restaurant.google_rating or 3.5,
-        google_ratings_total=restaurant.google_ratings_total or 0,
+        google_rating=effective_g_rating,
+        google_ratings_total=effective_g_total,
         recent_reviews=all_reviews,
         wolt_rating=wolt_rating,
         tenbis_rating=tenbis_rating,
