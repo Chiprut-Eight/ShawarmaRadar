@@ -8,7 +8,7 @@ import re
 import httpx
 import sys
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 from sqlalchemy.orm import Session
 
 getattr(sys.stdout, "reconfigure", lambda **_: None)(encoding="utf-8")
@@ -108,15 +108,15 @@ def process_restaurant(
     google_rating: Optional[float] = google_data.get("rating")
     google_ratings_total: int = int(google_data.get("user_ratings_total") or 0)
     google_address: str = str(google_data.get("address") or "")
-    google_reviews: list = google_data.get("reviews") or []
+    google_reviews: list[dict[str, Any]] = google_data.get("reviews") or []
 
     # 3. Wolt Free API
     wolt_rating: float = 0.0
     wolt_address: str = ""
     wolt_lat: Optional[float] = None
     wolt_lng: Optional[float] = None
-    ref_lat = restaurant.lat if restaurant else None
-    ref_lng = restaurant.lng if restaurant else None
+    ref_lat: Optional[float] = seed_lat or (restaurant.lat if restaurant else None)
+    ref_lng: Optional[float] = seed_lng or (restaurant.lng if restaurant else None)
     try:
         venue_data = wolt.search_venue(
             display_name,
@@ -139,7 +139,7 @@ def process_restaurant(
     # 4. 10Bis Free API
     tenbis_rating: float = 0.0
     tenbis_address: str = ""
-    tenbis_reviews: list = []
+    tenbis_reviews: list[dict[str, Any]] = []
     try:
         tb_data = tenbis.search_restaurant(
             display_name,
@@ -301,7 +301,7 @@ def run_daily_scan_sync():
     ai = RankingEngine()
     
     seeds_path = os.path.join(os.path.dirname(__file__), "auto_seeds.json")
-    seed_targets = []
+    seed_targets: list[dict[str, Any]] = []
     if os.path.exists(seeds_path):
         try:
             with open(seeds_path, "r", encoding="utf-8") as f:
@@ -321,24 +321,28 @@ def run_daily_scan_sync():
         
     success_count = 0
     failure_count = 0
-    address_warnings = []
+    address_warnings: list[str] = []
     start_time = time.time()
     
     for target in seed_targets:
         try:
+            raw_lat = target.get("lat")
+            raw_lng = target.get("lng")
+            s_lat: Optional[float] = float(raw_lat) if isinstance(raw_lat, (int, float)) else None
+            s_lng: Optional[float] = float(raw_lng) if isinstance(raw_lng, (int, float)) else None
             process_restaurant(
                 scraper,
                 wolt,
                 tenbis,
                 ai,
                 db,
-                target["query"],
-                target["city"],
+                str(target.get("query") or ""),
+                str(target.get("city") or ""),
                 address_warnings,
-                seed_name=target.get("name", ""),
-                seed_address=target.get("address", ""),
-                seed_lat=target.get("lat"),
-                seed_lng=target.get("lng")
+                seed_name=str(target.get("name") or ""),
+                seed_address=str(target.get("address") or ""),
+                seed_lat=s_lat,
+                seed_lng=s_lng
             )
             success_count += 1
             time.sleep(1.0) # Polite delay
