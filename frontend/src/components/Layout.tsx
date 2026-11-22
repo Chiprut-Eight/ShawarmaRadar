@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy } from 'lucide-react';
@@ -14,6 +14,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,6 +38,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  // Close region menu automatically on route change or outside click
+  useEffect(() => {
+    setIsRegionMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsRegionMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleShare = async () => {
@@ -130,26 +147,39 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Globe size={18} />
             <span className="hide-mobile">{t('national_king')}</span>
           </Link>
-          <div className="dropdown">
-            <button className={`nav-btn ${location.pathname.includes('/region') || location.pathname === '/near-me' ? 'active' : ''}`}>
+          <div className="dropdown" ref={dropdownRef}>
+            <button
+              type="button"
+              className={`nav-btn ${location.pathname.includes('/region') || location.pathname === '/near-me' ? 'active' : ''}`}
+              onClick={() => setIsRegionMenuOpen((prev) => !prev)}
+            >
               <Map size={18} />
               <span className="hide-mobile">{t('nav_filter_region')}</span>
             </button>
-            <div className="dropdown-content">
-              <Link
-                to="/near-me"
-                style={{
-                  color: '#4ade80',
-                  fontWeight: 'bold',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)'
-                }}
-              >
-                {t('nav_near_me')}
-              </Link>
-              {regions.map((r) => (
-                <Link key={r.id} to={`/region/${r.id}`}>{r.label}</Link>
-              ))}
-            </div>
+            {isRegionMenuOpen && (
+              <div className="dropdown-content open">
+                <Link
+                  to="/near-me"
+                  onClick={() => setIsRegionMenuOpen(false)}
+                  style={{
+                    color: '#4ade80',
+                    fontWeight: 'bold',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)'
+                  }}
+                >
+                  {t('nav_near_me')}
+                </Link>
+                {regions.map((r) => (
+                  <Link
+                    key={r.id}
+                    to={`/region/${r.id}`}
+                    onClick={() => setIsRegionMenuOpen(false)}
+                  >
+                    {r.label}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </nav>
 

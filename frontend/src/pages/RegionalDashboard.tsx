@@ -105,16 +105,17 @@ const RegionalDashboard: React.FC = () => {
               <div className="signal-content">
                 <div className="signal-title-row">
                   <h3>{place.name}</h3>
-                  {place.national_rank && (
-                    <span className="national-rank-tag">
-                      🏆 #{place.national_rank} {t('in_israel_short')}
-                    </span>
-                  )}
-                  <span className="live-tag">LIVE</span>
                 </div>
                 <p className="signal-sub">
                   {place.city} {place.address && place.address !== place.city ? `• ${place.address}` : ''}
                 </p>
+                {place.national_rank && (
+                  <div className="signal-meta-badges">
+                    <span className="national-rank-tag">
+                      🏆 #{place.national_rank} {t('in_israel_short')}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="signal-graph hide-mobile">
@@ -123,15 +124,14 @@ const RegionalDashboard: React.FC = () => {
                 </svg>
               </div>
 
-              <div className="signal-nav-btn-wrap">
+              <div className="signal-end-col">
+                <div className="signal-score">
+                   {place.bayesian_average.toFixed(1)}%
+                </div>
                 <span className="nav-chip">
-                  <Navigation size={13} />
-                  <span className="hide-mobile">{t('navigate_btn')}</span>
+                  <Navigation size={12} />
+                  <span>{t('navigate_btn')}</span>
                 </span>
-              </div>
-
-              <div className="signal-score">
-                 {place.bayesian_average.toFixed(1)}%
               </div>
             </div>
           ))}

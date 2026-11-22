@@ -35,23 +35,26 @@ const NearMe: React.FC = () => {
         setLocationStatus('gps');
       },
       () => {
-        // Fallback to manual city selection (defaulting to Tel Aviv center so screen is never empty)
-        const fallbackCity = selectedCity || 'תל אביב';
-        setSelectedCity(fallbackCity);
-        setUserCoords(ISRAEL_CITY_COORDINATES[fallbackCity]);
+        setSelectedCity((prev) => {
+          const fallback = prev || 'תל אביב';
+          setUserCoords(ISRAEL_CITY_COORDINATES[fallback] || ISRAEL_CITY_COORDINATES['תל אביב']);
+          return fallback;
+        });
         setLocationStatus('manual');
       },
       { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
     );
-  }, [selectedCity]);
+  }, []);
 
+  // Run initial GPS lookup ONLY ONCE when entering the screen
   useEffect(() => {
     requestGpsLocation();
   }, [requestGpsLocation]);
 
   const handleCitySelect = (city: string) => {
+    if (!city) return;
     setSelectedCity(city);
-    if (city && ISRAEL_CITY_COORDINATES[city]) {
+    if (ISRAEL_CITY_COORDINATES[city]) {
       setUserCoords(ISRAEL_CITY_COORDINATES[city]);
       setLocationStatus('manual');
     }
@@ -72,15 +75,15 @@ const NearMe: React.FC = () => {
     <div className="nearme-container" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       <div className="nearme-header">
         <h2 className="nearme-title">
-          <LocateFixed className="nearme-icon" size={28} color="#4ade80" />
+          <LocateFixed className="nearme-icon" size={26} color="#4ade80" />
           <span>{t('near_me_title')}</span>
         </h2>
         <p className="nearme-subtitle">{t('near_me_subtitle')}</p>
 
-        {/* Controls Bar: GPS Status, Manual City Picker (for Desktop/Fallback), Radius & Sort */}
+        {/* Controls Bar: GPS Status, Desktop-Only City Picker, Radius & Sort */}
         <div className="nearme-controls">
           <div className="nearme-location-row">
-            <button className="gps-refresh-btn" onClick={requestGpsLocation}>
+            <button type="button" className="gps-refresh-btn" onClick={requestGpsLocation}>
               <RefreshCw size={15} className={locationStatus === 'loading' ? 'spin' : ''} />
               <span>
                 {locationStatus === 'gps'
@@ -91,7 +94,8 @@ const NearMe: React.FC = () => {
               </span>
             </button>
 
-            <div className="city-picker-wrap">
+            {/* Desktop-only manual city selector (hidden on mobile phones) */}
+            <div className="city-picker-wrap desktop-only-city-picker">
               <MapPin size={15} color="#facc15" />
               <select
                 value={selectedCity}
@@ -112,6 +116,7 @@ const NearMe: React.FC = () => {
             <div className="radius-pills">
               {[5, 10, 25].map((r) => (
                 <button
+                  type="button"
                   key={r}
                   className={`radius-pill ${sortBy === 'score' && radiusKm === r ? 'active' : ''}`}
                   onClick={() => {
@@ -123,6 +128,7 @@ const NearMe: React.FC = () => {
                 </button>
               ))}
               <button
+                type="button"
                 className={`radius-pill ${sortBy === 'distance' ? 'active' : ''}`}
                 onClick={() => setSortBy('distance')}
               >
@@ -202,6 +208,12 @@ const NearMe: React.FC = () => {
             <div className="signal-content">
               <div className="signal-title-row">
                 <h3>{place.name}</h3>
+              </div>
+              <p className="signal-sub">
+                {place.city}{' '}
+                {place.address && place.address !== place.city ? `• ${place.address}` : ''}
+              </p>
+              <div className="signal-meta-badges">
                 {place.national_rank && (
                   <span className="national-rank-tag">
                     🏆 #{place.national_rank} {t('in_israel_short')}
@@ -213,20 +225,15 @@ const NearMe: React.FC = () => {
                   </span>
                 )}
               </div>
-              <p className="signal-sub">
-                {place.city}{' '}
-                {place.address && place.address !== place.city ? `• ${place.address}` : ''}
-              </p>
             </div>
 
-            <div className="signal-nav-btn-wrap">
+            <div className="signal-end-col">
+              <div className="signal-score">{place.bayesian_average.toFixed(1)}%</div>
               <span className="nav-chip">
-                <Navigation size={13} />
-                <span className="hide-mobile">{t('navigate_btn')}</span>
+                <Navigation size={12} />
+                <span>{t('navigate_btn')}</span>
               </span>
             </div>
-
-            <div className="signal-score">{place.bayesian_average.toFixed(1)}%</div>
           </div>
         ))}
       </div>

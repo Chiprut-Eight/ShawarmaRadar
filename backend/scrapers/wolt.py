@@ -1,6 +1,7 @@
 from .base import PoliteScraper
 import urllib.parse
 import re
+from typing import Any, Optional
 
 CITY_COORDINATES = {
     "תל אביב": (32.0853, 34.7818),
@@ -86,9 +87,9 @@ CITY_COORDINATES = {
 class WoltTracker(PoliteScraper):
     def __init__(self):
         super().__init__(base_url="https://restaurant-api.wolt.com", delay_seconds=0.5)
-        self.city_venues_cache = {} # Cache discovered venues by city
+        self.city_venues_cache: dict[str, dict[str, dict[str, Any]]] = {} # Cache discovered venues by city
 
-    def _preload_city(self, city: str):
+    def _preload_city(self, city: str) -> dict[str, dict[str, Any]]:
         """ Preloads and caches all restaurants for a given city from Wolt discovery """
         if city in self.city_venues_cache:
             return self.city_venues_cache[city]
@@ -184,9 +185,9 @@ class WoltTracker(PoliteScraper):
 class TenBisTracker(PoliteScraper):
     def __init__(self):
         super().__init__(base_url="https://www.10bis.co.il", delay_seconds=0.5)
-        self.city_cache = {}
+        self.city_cache: dict[str, list[dict[str, Any]]] = {}
 
-    def search_restaurant(self, restaurant_name: str, city: str = "תל אביב"):
+    def search_restaurant(self, restaurant_name: str, city: str = "תל אביב") -> Optional[dict[str, Any]]:
         """
         Searches for a restaurant rating on 10Bis via their public NextApi/search endpoints,
         falling back gracefully if not listed on 10Bis.

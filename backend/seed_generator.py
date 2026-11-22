@@ -1,5 +1,5 @@
 import os
-import requests
+import httpx
 import json
 import time
 from dotenv import load_dotenv
@@ -32,7 +32,7 @@ def generate_seeds():
         
         while url:
             try:
-                res = requests.get(url)
+                res = httpx.get(url, timeout=10.0)
                 data = res.json()
                 results = data.get("results", [])
                 

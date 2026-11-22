@@ -338,7 +338,7 @@ const Home: React.FC = () => {
               <div className="signal-content">
                 <div className="signal-title-row">
                   <h3>{place.name}</h3>
-                  <span className="live-tag">LIVE</span>
+                  <span className="live-tag hide-mobile">LIVE</span>
                 </div>
                 <p className="signal-sub">
                   {place.city} {place.address && place.address !== place.city ? `• ${place.address}` : ''}
@@ -351,15 +351,14 @@ const Home: React.FC = () => {
                 </svg>
               </div>
 
-              <div className="signal-nav-btn-wrap">
+              <div className="signal-end-col">
+                <div className="signal-score">
+                   {place.bayesian_average.toFixed(1)}%
+                </div>
                 <span className="nav-chip">
-                  <Navigation size={13} />
-                  <span className="hide-mobile">{t('navigate_btn')}</span>
+                  <Navigation size={12} />
+                  <span>{t('navigate_btn')}</span>
                 </span>
-              </div>
-
-              <div className="signal-score">
-                 {place.bayesian_average.toFixed(1)}%
               </div>
             </div>
           ))}
