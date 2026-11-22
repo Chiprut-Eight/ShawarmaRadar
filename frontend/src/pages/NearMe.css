@@ -107,7 +107,25 @@
 
 .nearme-filters-row {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
+}
+
+.sort-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.gps-refresh-btn.active-gps {
+  background: rgba(74, 222, 128, 0.24);
+  border-color: #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
 }
 
 .radius-pills {
@@ -268,13 +286,24 @@
   border-color: #facc15;
 }
 
-/* Hide city dropdown on mobile phones */
 @media (max-width: 768px) {
-  .desktop-only-city-picker {
-    display: none !important;
-  }
-
   .nearme-title {
     font-size: 1.3rem;
+  }
+
+  .nearme-location-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gps-refresh-btn,
+  .city-picker-wrap {
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .city-picker-select {
+    width: 100%;
   }
 }

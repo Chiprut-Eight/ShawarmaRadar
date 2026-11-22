@@ -5,7 +5,8 @@ REGIONS = {
     # הצפון (North)
     "חיפה": "north", "haifa": "north",
     "נשר": "north", "nesher": "north",
-    "קריות": "north", "krayot": "north", "קרית אתא": "north", "קריית אתא": "north", "קרית ביאליק": "north", "קריית ביאליק": "north", "קרית מוצקין": "north", "קריית מוצקין": "north", "קרית ים": "north", "קריית ים": "north",
+    "טירת כרמל": "north", "טירת הכרמל": "north", "tirat carmel": "north",
+    "קריות": "north", "krayot": "north", "קרית אתא": "north", "קריית אתא": "north", "קרית ביאליק": "north", "קריית ביאליק": "north", "קרית מוצקין": "north", "קריית מוצקין": "north", "קרית ים": "north", "קריית ים": "north", "קרית חיים": "north", "קריית חיים": "north",
     "נצרת": "north", "nazareth": "north", "נוף הגליל": "north",
     "עפולה": "north", "afula": "north",
     "טבריה": "north", "tiberias": "north",
@@ -51,6 +52,9 @@ REGIONS = {
     "חדרה": "sharon", "hadera": "sharon",
     "כפר יונה": "sharon", "kfar yona": "sharon",
     "פרדס חנה": "sharon", "פרדס חנה כרכור": "sharon", "פרדס חנה-כרכור": "sharon",
+    "חריש": "sharon", "harish": "sharon",
+    "אבן יהודה": "sharon", "even yehuda": "sharon",
+    "בני דרור": "sharon", "bnei dror": "sharon",
     "באקה אל גרביה": "sharon", "באקה אל ערביה": "sharon", "באקה אל-ע'רביה": "sharon",
     "גלגוליה": "sharon", "ג'לג'וליה": "sharon", "משמר השרון": "sharon",
     
@@ -63,10 +67,12 @@ REGIONS = {
     "יבנה": "shfela", "yavne": "shfela",
     "מודיעין": "shfela", "modi'in": "shfela", "מודיעין-מכבים-רעות": "shfela",
     "באר יעקב": "shfela", "beer yaakov": "shfela",
-    "גדרה": "shfela", "מזכרת בתיה": "shfela",
+    "גדרה": "shfela", "מזכרת בתיה": "shfela", "קרית עקרון": "shfela", "קריית עקרון": "shfela",
     
     # הדרום (South)
     "אשדוד": "south", "ashdod": "south",
+    "גן יבנה": "south", "gan yavne": "south",
+    "קרית מלאכי": "south", "קריית מלאכי": "south", "kiryat malakhi": "south",
     "אשקלון": "south", "ashkelon": "south",
     "באר שבע": "south", "beer sheva": "south", "be'er sheva": "south",
     "רהט": "south", "rahat": "south",

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LocateFixed, Navigation, Trophy, MapPin, RefreshCw } from 'lucide-react';
+import { LocateFixed, Navigation, Trophy, MapPin, RefreshCw, ArrowUpDown } from 'lucide-react';
 import {
   getNearMeRankings,
+  getAvailableCities,
   ISRAEL_CITY_COORDINATES,
   type Restaurant
 } from '../services/firebase';
@@ -12,34 +13,30 @@ import './NearMe.css';
 const NearMe: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const [userCoords, setUserCoords] = useState<[number, number] | null>(null);
+  const [gpsCoords, setGpsCoords] = useState<[number, number] | null>(null);
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [locationStatus, setLocationStatus] = useState<'loading' | 'gps' | 'manual'>('loading');
-  const [radiusKm, setRadiusKm] = useState<number>(10);
-  const [sortBy, setSortBy] = useState<'score' | 'distance'>('score');
+  const [sortBy, setSortBy] = useState<'national_rank' | 'distance'>('national_rank');
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+
+  const availableCities = useMemo(() => getAvailableCities(), []);
 
   const requestGpsLocation = useCallback(() => {
     setLocationStatus('loading');
+    setSelectedCity('');
     if (!navigator.geolocation) {
-      setSelectedCity('תל אביב');
-      setUserCoords(ISRAEL_CITY_COORDINATES['תל אביב']);
+      setGpsCoords(ISRAEL_CITY_COORDINATES['תל אביב']);
       setLocationStatus('manual');
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setUserCoords([pos.coords.latitude, pos.coords.longitude]);
-        setSelectedCity('');
+        setGpsCoords([pos.coords.latitude, pos.coords.longitude]);
         setLocationStatus('gps');
       },
       () => {
-        setSelectedCity((prev) => {
-          const fallback = prev || 'תל אביב';
-          setUserCoords(ISRAEL_CITY_COORDINATES[fallback] || ISRAEL_CITY_COORDINATES['תל אביב']);
-          return fallback;
-        });
+        setGpsCoords((prev) => prev || ISRAEL_CITY_COORDINATES['תל אביב']);
         setLocationStatus('manual');
       },
       { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
@@ -52,41 +49,52 @@ const NearMe: React.FC = () => {
   }, [requestGpsLocation]);
 
   const handleCitySelect = (city: string) => {
-    if (!city) return;
     setSelectedCity(city);
-    if (ISRAEL_CITY_COORDINATES[city]) {
-      setUserCoords(ISRAEL_CITY_COORDINATES[city]);
-      setLocationStatus('manual');
+    if (!city) {
+      if (!gpsCoords) {
+        requestGpsLocation();
+      }
+      return;
     }
+    setLocationStatus('manual');
   };
 
-  const activeCoords = userCoords || ISRAEL_CITY_COORDINATES['תל אביב'];
-  const { results: nearbyRestaurants, effectiveRadiusKm } = getNearMeRankings(
-    activeCoords[0],
-    activeCoords[1],
-    radiusKm,
-    sortBy
+  // Reference coordinates: if GPS was acquired, measure real distance from user's GPS;
+  // otherwise measure from the selected city's center (or Tel Aviv default)
+  const referenceCoords: [number, number] =
+    gpsCoords ||
+    (selectedCity && ISRAEL_CITY_COORDINATES[selectedCity]) ||
+    ISRAEL_CITY_COORDINATES['תל אביב'];
+
+  const { results: nearbyRestaurants } = getNearMeRankings(
+    referenceCoords[0],
+    referenceCoords[1],
+    sortBy,
+    selectedCity
   );
 
   const localKing = nearbyRestaurants.length > 0 ? nearbyRestaurants[0] : null;
-  const cityNames = Object.keys(ISRAEL_CITY_COORDINATES);
 
   return (
     <div className="nearme-container" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       <div className="nearme-header">
         <h2 className="nearme-title">
           <LocateFixed className="nearme-icon" size={26} color="#4ade80" />
-          <span>{t('near_me_title')}</span>
+          <span>{selectedCity ? `${t('near_me_city_title')} ${selectedCity}` : t('near_me_title')}</span>
         </h2>
         <p className="nearme-subtitle">{t('near_me_subtitle')}</p>
 
-        {/* Controls Bar: GPS Status, Desktop-Only City Picker, Radius & Sort */}
+        {/* Controls Bar: City Filter (Mobile & Desktop) + GPS Button + 2 Sort Modes */}
         <div className="nearme-controls">
           <div className="nearme-location-row">
-            <button type="button" className="gps-refresh-btn" onClick={requestGpsLocation}>
+            <button
+              type="button"
+              className={`gps-refresh-btn ${!selectedCity && locationStatus === 'gps' ? 'active-gps' : ''}`}
+              onClick={requestGpsLocation}
+            >
               <RefreshCw size={15} className={locationStatus === 'loading' ? 'spin' : ''} />
               <span>
-                {locationStatus === 'gps'
+                {!selectedCity && locationStatus === 'gps'
                   ? t('near_me_gps_active')
                   : locationStatus === 'loading'
                   ? t('near_me_locating')
@@ -94,60 +102,55 @@ const NearMe: React.FC = () => {
               </span>
             </button>
 
-            {/* Desktop-only manual city selector (hidden on mobile phones) */}
-            <div className="city-picker-wrap desktop-only-city-picker">
+            {/* City Filter Dropdown — Active on BOTH Mobile and Desktop */}
+            <div className="city-picker-wrap">
               <MapPin size={15} color="#facc15" />
               <select
                 value={selectedCity}
                 onChange={(e) => handleCitySelect(e.target.value)}
                 className="city-picker-select"
               >
-                <option value="">{t('near_me_select_city')}</option>
-                {cityNames.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
+                <option value="">{t('near_me_all_cities_gps')}</option>
+                {availableCities.map(({ city, count }) => (
+                  <option key={city} value={city}>
+                    {city} ({count})
                   </option>
                 ))}
               </select>
             </div>
           </div>
 
+          {/* Sort Toggle: By Closest vs By National Rank */}
           <div className="nearme-filters-row">
+            <div className="sort-label">
+              <ArrowUpDown size={14} />
+              <span>{t('near_me_sort_label')}</span>
+            </div>
             <div className="radius-pills">
-              {[5, 10, 25].map((r) => (
-                <button
-                  type="button"
-                  key={r}
-                  className={`radius-pill ${sortBy === 'score' && radiusKm === r ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortBy('score');
-                    setRadiusKm(r);
-                  }}
-                >
-                  {t('near_me_top_in_radius', { km: r })}
-                </button>
-              ))}
               <button
                 type="button"
                 className={`radius-pill ${sortBy === 'distance' ? 'active' : ''}`}
                 onClick={() => setSortBy('distance')}
               >
-                {t('near_me_sort_closest')}
+                📍 {t('near_me_sort_closest')}
+              </button>
+              <button
+                type="button"
+                className={`radius-pill ${sortBy === 'national_rank' ? 'active' : ''}`}
+                onClick={() => setSortBy('national_rank')}
+              >
+                🏆 {t('near_me_sort_national_rank')}
               </button>
             </div>
           </div>
-
-          {sortBy === 'score' && effectiveRadiusKm > radiusKm && (
-            <div className="nearme-radius-notice">
-              {t('near_me_expanded_notice', { km: effectiveRadiusKm })}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* #1 Best Shawarma Near User Radar Display */}
+      {/* #1 Shawarma Display */}
       <div className="king-radar-container">
-        <h3 className="king-radar-title">{t('near_me_king_title')}</h3>
+        <h3 className="king-radar-title">
+          {sortBy === 'distance' ? t('near_me_closest_king_title') : t('near_me_king_title')}
+        </h3>
 
         {localKing ? (
           <div
@@ -193,7 +196,7 @@ const NearMe: React.FC = () => {
         )}
       </div>
 
-      {/* Top 2 - 10 Nearby Shawarmas */}
+      {/* Top 2 - 10 List */}
       <div className="signals-panel" style={{ marginTop: '20px' }}>
         <h2 className="signals-section-title">{t('near_me_list_title')}</h2>
 
