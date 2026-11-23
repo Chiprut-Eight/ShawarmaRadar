@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-22T19:40:14.565219+00:00",
+  "last_updated": "2026-11-23T10:38:35.231906+00:00",
   "reigns": [
     {
       "platform_id": "Walla_Shawarma_(וואלה_שווארמה)_שפרעם",
@@ -19,11 +19,23 @@
       "city": "חיפה",
       "address": "שדרות המגינים 68",
       "started_at": "2026-11-22T16:10:45.846995+00:00",
-      "ended_at": null,
+      "ended_at": "2026-11-23T10:38:34.663070+00:00",
       "score_at_start": 91.4,
       "current_score": 91.4,
       "peak_score": 91.4,
-      "duration_seconds": 12568
+      "duration_seconds": 66468
+    },
+    {
+      "platform_id": "סנדוויץ'_שוק_שווארמה_ראשון_לציון",
+      "name": "סנדוויץ' שוק שווארמה",
+      "city": "ראשון לציון",
+      "address": "זלמן שניאור 16",
+      "started_at": "2026-11-23T10:38:34.663070+00:00",
+      "ended_at": null,
+      "score_at_start": 90.8,
+      "current_score": 90.8,
+      "peak_score": 90.8,
+      "duration_seconds": 0
     }
   ]
 }
