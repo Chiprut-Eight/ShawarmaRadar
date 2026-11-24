@@ -140,58 +140,50 @@ class RankingEngine:
         if wolt_rating and wolt_rating > 0:
             wolt_score = (wolt_rating / 10.0) * 30.0
         else:
-            # Fair baseline for venues not on Wolt so they aren't completely handicapped
-            wolt_score = (bayesian_rating / 5.0) * 24.0
+            # Equal scale (no 20% penalty) for traditional/HAAT venues not on Wolt
+            wolt_score = (bayesian_rating / 5.0) * 30.0
             
         # 3. 10Bis Rating (15 Points Max)
         if tenbis_rating and tenbis_rating > 0:
             tenbis_score = (tenbis_rating / 5.0) * 15.0
         else:
-            tenbis_score = (bayesian_rating / 5.0) * 12.0
+            # Equal scale (no 20% penalty) for traditional/HAAT venues not on 10Bis
+            tenbis_score = (bayesian_rating / 5.0) * 15.0
             
-        # 4. Sentiment & Buzz (15 Points Max)
-        # Bayesian prior anchored to verified customer satisfaction so 1 lucky snippet can't skew 15 pts
-        prior_sentiment = max(-0.4, min(0.75, (bayesian_rating - 3.5) / 1.6))
-        prior_weight = 2.0
-        total_weight = prior_weight
-        weighted_sentiment = prior_sentiment * prior_weight
-
+        # 4. Sentiment & Buzz (15 Points Max) - Pure Hebrew text sentiment only
+        sentiment_points = 7.5 # Neutral baseline (50%)
         if recent_reviews:
+            total_weight = 0.0
+            weighted_sentiment = 0.0
             for r in recent_reviews:
                 published_at = getattr(r, 'published_at', None)
                 live_weight = self.calculate_recency_weight(published_at) if published_at else 1.0
+                total_weight += live_weight
                 sentiment_score = float(getattr(r, 'sentiment_score', 0.0) or 0.0)
-                # Opinionated reviews get full weight; zero-keyword boilerplate gets 0.15x weight
-                effective_w = live_weight if abs(sentiment_score) > 0.01 else (live_weight * 0.15)
-                total_weight += effective_w
-                weighted_sentiment += sentiment_score * effective_w
-
-        avg_sentiment = weighted_sentiment / total_weight if total_weight > 0 else prior_sentiment
-        # Buzz volume bonus (up to +1.2 pts out of 15 for high verified review count)
-        buzz_bonus = min(1.2, math.log10(max(1, google_ratings_total + social_volume * 20)) * 0.35)
-        raw_sentiment_pts = ((avg_sentiment + 1.0) / 2.0) * 13.8 + buzz_bonus
-        sentiment_points = min(15.0, max(0.0, raw_sentiment_pts))
+                weighted_sentiment += sentiment_score * live_weight
+                
+            if total_weight > 0:
+                avg_sentiment = weighted_sentiment / total_weight # -1.0 to 1.0
+                sentiment_points = ((avg_sentiment + 1.0) / 2.0) * 15.0
                 
         final_score = google_score + wolt_score + tenbis_score + sentiment_points
         return round(min(100.0, max(0.0, final_score)), 1)
 
-    def calculate_net_sentiment_score(self, reviews: list, fallback_rating: float = 4.2) -> float:
+    def calculate_net_sentiment_score(self, reviews: list) -> float:
         """
-        Net Sentiment Score percentage (0-100%).
+        Net Sentiment Score percentage (0-100%) from real text reviews only.
         """
-        prior_sentiment = max(-0.4, min(0.75, (fallback_rating - 3.5) / 1.6))
         if not reviews:
-            return round(((prior_sentiment + 1.0) / 2.0) * 100, 1)
+            return 50.0
             
-        total_weight = 1.5
-        weighted_score = prior_sentiment * 1.5
+        total_weight = 0.0
+        weighted_score = 0.0
         
         for review in reviews:
             weight = float(getattr(review, 'weight', 1.0) or 1.0)
             sentiment = float(getattr(review, 'sentiment_score', 0.0) or 0.0)
-            effective_w = weight if abs(sentiment) > 0.01 else (weight * 0.15)
-            total_weight += effective_w
-            weighted_score += sentiment * effective_w
+            total_weight += weight
+            weighted_score += sentiment * weight
             
         if total_weight == 0:
             return 50.0

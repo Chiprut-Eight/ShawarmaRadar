@@ -39,6 +39,8 @@ export interface Restaurant {
   distance_km?: number;
   google_rating?: number;
   google_ratings_total?: number;
+  audit_flag?: boolean;
+  audit_reasons?: string[];
 }
 
 export const ISRAEL_CITY_COORDINATES: Record<string, [number, number]> = {

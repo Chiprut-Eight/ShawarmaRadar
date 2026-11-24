@@ -3,11 +3,13 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import RegionalDashboard from './pages/RegionalDashboard';
 import NearMe from './pages/NearMe';
+import AuditPage from './pages/AuditPage';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 
 function App() {
   const { i18n } = useTranslation();
+  const isAuditQuery = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('audit') === '1';
 
   // Handle RTL logic automatically based on language
   useEffect(() => {
@@ -18,7 +20,8 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={isAuditQuery ? <AuditPage /> : <Home />} />
+          <Route path="/audit" element={<AuditPage />} />
           <Route path="/near-me" element={<NearMe />} />
           <Route path="/region/:id" element={<RegionalDashboard />} />
         </Routes>

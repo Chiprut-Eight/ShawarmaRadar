@@ -97,6 +97,24 @@ def update_king_history(top_king: dict, history_path: str) -> dict:
 
     return history
 
+def classify_for_audit(name: str) -> list[str]:
+    reasons: list[str] = []
+    grill_terms = ["גריל", "שיפודי", "שיפודים", "על האש", "בשרים", "בר בשר", "מנגל", "שף על האש", "המיצלה", "הרכבת", "בבאגריל", "עבדאללה", "אצל הטורקי", "יונס", "יוני 71"]
+    sandwich_terms = ["סנדוויץ'", "סנדוויץ", "בגט", "באגט", "טאבון", "אשתנור", "אבולעפיה", "לחמג'ון", "בגטוס"]
+    general_terms = ["בית הפול", "פול", "פלאפל", "שניצל", "אצל מלי", "פינתי", "חג' כחיל", "הקוסם", "מפגש", "פונדק", "מנה וחצי", "המשביע", "כיפה אדומה"]
+    shawarma_terms = ["שווארמה", "שווארמ", "דונר", "Shawarma"]
+
+    if any(t in name for t in grill_terms):
+        reasons.append("מסעדת גריל / שיפודים / בשרים")
+    if any(t in name for t in sandwich_terms):
+        reasons.append("כריכייה / באגט / טאבון")
+    if any(t in name for t in general_terms):
+        reasons.append("תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)")
+    if not any(t in name for t in shawarma_terms):
+        reasons.append("ללא המילה 'שווארמה' או 'דונר' בשם")
+
+    return reasons
+
 def export_all():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(base_dir, 'shawarma_radar.db')
@@ -112,6 +130,7 @@ def export_all():
     result = []
     for idx, r in enumerate(rows, 1):
         d = dict(r)
+        audit_reasons = classify_for_audit(d['name'] or '')
         out = {
             'id': d['id'],
             'name': d['name'],
@@ -126,7 +145,9 @@ def export_all():
             'last_score': d['last_score'],
             'total_reviews': d['total_reviews'],
             'google_rating': d['google_rating'],
-            'google_ratings_total': d['google_ratings_total']
+            'google_ratings_total': d['google_ratings_total'],
+            'audit_flag': len(audit_reasons) > 0,
+            'audit_reasons': audit_reasons
         }
         result.append(out)
 
