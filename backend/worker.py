@@ -322,6 +322,14 @@ def run_daily_scan_sync():
     failure_count = 0
     address_warnings: list[str] = []
     start_time = time.time()
+
+    # Snapshot previous national rankings & scores before running the scan
+    prev_ordered = db.query(models.Restaurant).order_by(
+        models.Restaurant.bayesian_average.desc(),
+        models.Restaurant.id.asc()
+    ).all()
+    prev_ranks: dict[int, int] = {r.id: idx for idx, r in enumerate(prev_ordered, 1)}
+    prev_scores: dict[int, float] = {r.id: float(r.bayesian_average or 0.0) for r in prev_ordered}
     
     for target in seed_targets:
         try:
@@ -414,6 +422,33 @@ def run_daily_scan_sync():
         if len(address_warnings) > 15:
             warnings_text += f"... ועוד {len(address_warnings)-15} שגיאות."
 
+    # Compare new national rankings against previous snapshot
+    new_ordered = db.query(models.Restaurant).order_by(
+        models.Restaurant.bayesian_average.desc(),
+        models.Restaurant.id.asc()
+    ).all()
+    movements: list[tuple[int, str]] = []
+    for new_rank, r in enumerate(new_ordered, 1):
+        old_rank = prev_ranks.get(r.id)
+        old_score = prev_scores.get(r.id, float(r.bayesian_average or 0.0))
+        new_score = float(r.bayesian_average or 0.0)
+        if old_rank is None:
+            movements.append((999, f"🆕 *{r.name}* ({r.city}): נכנסה למקום #{new_rank} (`{new_score}%`)"))
+        elif old_rank != new_rank:
+            diff = old_rank - new_rank
+            if diff > 0:
+                movements.append((abs(diff), f"🟢 *{r.name}* ({r.city}): עלתה ממקום #{old_rank} למקום #{new_rank} (+{diff} | `{old_score}%` ⬅️ `{new_score}%`)"))
+            else:
+                movements.append((abs(diff), f"🔴 *{r.name}* ({r.city}): ירדה ממקום #{old_rank} למקום #{new_rank} ({diff} | `{old_score}%` ⬅️ `{new_score}%`)"))
+
+    movements.sort(key=lambda x: x[0], reverse=True)
+    if movements:
+        shown_moves = [m[1] for m in movements[:15]]
+        extra_moves = f"\n...ועוד {len(movements) - 15} תנועות נוספות בטבלה." if len(movements) > 15 else ""
+        movements_text = f"📈 *תנועות בדירוג הבוקר ({len(movements)} שינויי מיקום):*\n" + "\n".join(shown_moves) + f"{extra_moves}\n"
+    else:
+        movements_text = "📈 *תנועות בדירוג הבוקר:*\n➖ לא הייתה שום תנועה בדירוגים הבוקר (הטבלה יציבה ללא שינויי מיקום).\n"
+
     telegram_report = (
         f"👑 *ShawarmaRadar — דו\"ח סריקה יומי*\n\n"
         f"📊 *סיכום סריקה:*\n"
@@ -426,6 +461,7 @@ def run_daily_scan_sync():
         f"{reign_summary_text}\n"
         f"📍 *מובילי האזורים:*\n"
         f"{regional_kings_text}\n"
+        f"{movements_text}\n"
         f"🌐 האתר מעודכן: [ShawarmaRadar Live](https://shawarmaradar-app.web.app)"
     )
 
