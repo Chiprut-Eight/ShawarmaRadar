@@ -40,6 +40,9 @@ const resources = {
       "ai_modal_nlp_title": "- סנטימנט עכשווי:",
       "ai_modal_nlp_desc": "המערכת קוראת את הביקורות האחרונות והשיח ברשת, מנתחת את השפה ומבינה אם יש כרגע התלהבות שיא או אכזבה.",
       "ai_modal_summary": "האלמנטים החיים הללו משוקללים כמעין \"בונוס\" או \"קנס\" לדירוג. כך הרדאר שלנו מרים מקומות ש'לוהטים' הרגע, ומוריד מקומות שאכזבו לאחרונה - הכל כדי שתדעו איפה לאכול ממש עכשיו.",
+      "community_boost_title": "השווארמה האהובה עליכם ראויה להיות מדורגת גבוה יותר? 🥙",
+      "community_boost_body": "אנחנו יודעים שעל שווארמה יש דעות חזקות וטעם אישי ולכל אחד יש את השווארמה שהוא הכי אוהב. המכ\"ם שלנו לא מחליט בעצמו, אלא משקלל מדי יום את הדירוגים והמילים החמות שאתם כותבים ברשת. רוצים להרים למקום שלכם? פרגנו לו בדירוג ובביקורת טובה בגוגל ובאפליקציות המשלוחים - והמכ\"ם כבר יעשה את שלו.",
+      "btn_got_it": "הבנתי",
       "ai_modal_footer": "בתאבון :)",
       "btn_understood": "הבנתי, תודה",
       
@@ -145,6 +148,9 @@ const resources = {
       "ai_modal_nlp_title": "- Current Sentiment:",
       "ai_modal_nlp_desc": "The system reads the latest reviews and network chatter, analyzing the language to understand if there is currently peak enthusiasm or fresh disappointment.",
       "ai_modal_summary": "These live elements act as a \"bonus\" or \"penalty\" to the rating. Thus, our radar boosts places that are 'hot' right now, and demotes places that recently disappointed - all so you know where to eat right now.",
+      "community_boost_title": "Does your favorite shawarma deserve to be ranked higher? 🥙",
+      "community_boost_body": "We know people have strong opinions and personal taste when it comes to shawarma, and everyone has the spot they love most. Our radar doesn't decide on its own — every day it weighs the ratings and warm words you write online. Want to boost your favorite place? Show it some love with a high rating and a great review on Google and delivery apps — and the radar will do the rest.",
+      "btn_got_it": "Got it",
       "ai_modal_footer": "Bon Appetit :)",
       "btn_understood": "Got it, thanks",
       

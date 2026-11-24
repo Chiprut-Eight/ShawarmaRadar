@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy } from 'lucide-react';
+import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy, X } from 'lucide-react';
 import AdBanner from './AdBanner';
 import NavigationModal from './NavigationModal';
 import './Layout.css';
@@ -13,6 +13,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
+  const [showWelcomePopup, setShowWelcomePopup] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('shawarma_radar_welcome_understood_v1') !== 'true';
+    } catch {
+      return true;
+    }
+  });
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -330,6 +337,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <p>
               {t('ai_modal_summary')}
             </p>
+            <div style={{ marginTop: '1.25rem', padding: '1rem 1.15rem', background: 'rgba(250, 204, 21, 0.08)', border: '1px solid rgba(250, 204, 21, 0.35)', borderRadius: '10px' }}>
+              <p style={{ color: '#facc15', fontWeight: 'bold', margin: '0 0 0.5rem 0', fontSize: '1rem' }}>
+                {t('community_boost_title')}
+              </p>
+              <p style={{ color: '#e5e7eb', margin: 0, lineHeight: '1.6', fontSize: '0.92rem' }}>
+                {t('community_boost_body')}
+              </p>
+            </div>
             <p style={{fontWeight: 'bold', marginTop: '1rem'}}>{t('ai_modal_footer')}</p>
             
             <div style={{marginTop: '2rem', clear: 'both'}}>
@@ -353,6 +368,90 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             
             <div style={{marginTop: '2rem'}}>
               <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{border: '1px solid #444'}}>{t('btn_close')}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showWelcomePopup && (
+        <div className="modal-overlay" onClick={() => setShowWelcomePopup(false)}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            dir={i18n.language === 'he' ? 'rtl' : 'ltr'}
+            style={{
+              textAlign: i18n.language === 'he' ? 'right' : 'left',
+              position: 'relative',
+              border: '1px solid rgba(250, 204, 21, 0.45)',
+              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.75)'
+            }}
+          >
+            <button
+              type="button"
+              aria-label={t('btn_close')}
+              onClick={() => setShowWelcomePopup(false)}
+              style={{
+                position: 'absolute',
+                top: '14px',
+                ...(i18n.language === 'he' ? { left: '14px' } : { right: '14px' }),
+                background: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                color: '#d1d5db',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            <h3 style={{ paddingInlineEnd: '36px', lineHeight: '1.4', fontSize: '1.2rem' }}>
+              {t('community_boost_title')}
+            </h3>
+            <p style={{ color: '#e5e7eb', lineHeight: '1.7', fontSize: '0.98rem', marginTop: '0.75rem' }}>
+              {t('community_boost_body')}
+            </p>
+
+            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="nav-btn"
+                onClick={() => {
+                  try {
+                    localStorage.setItem('shawarma_radar_welcome_understood_v1', 'true');
+                  } catch {
+                    // ignore storage errors
+                  }
+                  setShowWelcomePopup(false);
+                }}
+                style={{
+                  background: '#facc15',
+                  color: '#000',
+                  fontWeight: 'bold',
+                  padding: '0.6rem 1.4rem',
+                  cursor: 'pointer'
+                }}
+              >
+                {t('btn_got_it')}
+              </button>
+              <button
+                type="button"
+                className="nav-btn"
+                onClick={() => setShowWelcomePopup(false)}
+                style={{
+                  border: '1px solid #555',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: '#d1d5db',
+                  padding: '0.6rem 1.2rem',
+                  cursor: 'pointer'
+                }}
+              >
+                {t('btn_close')}
+              </button>
             </div>
           </div>
         </div>
