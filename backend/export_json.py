@@ -2,6 +2,7 @@ import json
 import os
 import sqlite3
 from datetime import datetime, timezone
+from typing import Any
 
 def format_hebrew_duration(total_seconds: float) -> str:
     days = max(1, int(total_seconds // 86400) + (1 if total_seconds % 86400 >= 3600 else 0))
@@ -29,11 +30,11 @@ def format_hebrew_duration(total_seconds: float) -> str:
         return f"{days} ימים ({m_str} / כ-{weeks} שבועות)"
     return f"{days} ימים ({m_str} ו-{rem_days} ימים / כ-{weeks} שבועות)"
 
-def update_king_history(top_king: dict, history_path: str) -> dict:
+def update_king_history(top_king: dict[str, Any], history_path: str) -> dict[str, Any]:
     now = datetime.now(timezone.utc)
     now_iso = now.isoformat()
 
-    history = {"last_updated": now_iso, "reigns": []}
+    history: dict[str, Any] = {"last_updated": now_iso, "reigns": []}
     if os.path.exists(history_path):
         try:
             with open(history_path, "r", encoding="utf-8") as f:
@@ -41,11 +42,11 @@ def update_king_history(top_king: dict, history_path: str) -> dict:
         except Exception as e:
             print(f"Warning loading king_history.json: {e}")
 
-    reigns = history.get("reigns", [])
+    reigns: list[dict[str, Any]] = history.get("reigns", [])
     if not top_king:
         return history
 
-    active_reign = reigns[-1] if (reigns and reigns[-1].get("ended_at") is None) else None
+    active_reign: dict[str, Any] | None = reigns[-1] if (reigns and reigns[-1].get("ended_at") is None) else None
 
     if active_reign and (
         active_reign.get("platform_id") == top_king["platform_id"]
