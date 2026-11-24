@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import localRestaurants from '../data/restaurants_data.json';
+import { db } from '../services/firebase';
 import type { Restaurant } from '../services/firebase';
-import { AlertTriangle, CheckCircle2, Trash2, Copy, Check, ExternalLink, Search } from 'lucide-react';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { AlertTriangle, CheckCircle2, Trash2, Copy, Check, ExternalLink, Search, Cloud } from 'lucide-react';
 
 const STORAGE_KEY = 'shawarma_radar_audit_removed_ids_v1';
 
@@ -17,23 +19,80 @@ const AuditPage: React.FC = () => {
     }
   });
 
+  const [cloudSynced, setCloudSynced] = useState<boolean>(false);
+  const initialMergeDone = useRef<boolean>(false);
+
   const [filterMode, setFilterMode] = useState<'all' | 'flagged' | 'pure' | 'removed'>('flagged');
   const [cityFilter, setCityFilter] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copied, setCopied] = useState<boolean>(false);
 
-  useEffect(() => {
+  const saveToLocal = (ids: number[]) => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(removedIds));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
     } catch {
       // ignore storage errors
     }
-  }, [removedIds]);
+  };
+
+  // Real-time Firestore sync + automatic migration of existing PC localStorage markings
+  useEffect(() => {
+    const auditDocRef = doc(db, 'audit_state', 'current');
+
+    const unsubscribe = onSnapshot(
+      auditDocRef,
+      (snapshot) => {
+        const cloudData = snapshot.exists() ? snapshot.data() : null;
+        const cloudIds: number[] = Array.isArray(cloudData?.removedIds)
+          ? cloudData.removedIds.map((x: unknown) => Number(x))
+          : [];
+
+        if (!initialMergeDone.current) {
+          initialMergeDone.current = true;
+          let localIds: number[] = [];
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) localIds = JSON.parse(raw).map((x: unknown) => Number(x));
+          } catch {
+            localIds = [];
+          }
+
+          // Union local markings (from PC) with cloud markings so nothing already marked is lost!
+          const merged = Array.from(new Set([...cloudIds, ...localIds]));
+          setRemovedIds(merged);
+          saveToLocal(merged);
+          setCloudSynced(true);
+
+          // If local had items not yet in cloud, push the merged union to cloud immediately
+          if (merged.length > cloudIds.length || !snapshot.exists()) {
+            setDoc(auditDocRef, { removedIds: merged, updatedAt: Date.now() }, { merge: true }).catch(
+              () => {}
+            );
+          }
+        } else {
+          setRemovedIds(cloudIds);
+          saveToLocal(cloudIds);
+          setCloudSynced(true);
+        }
+      },
+      () => {
+        setCloudSynced(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
 
   const toggleRemove = (id: number) => {
-    setRemovedIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+    setRemovedIds((prev) => {
+      const next = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id];
+      saveToLocal(next);
+      const auditDocRef = doc(db, 'audit_state', 'current');
+      setDoc(auditDocRef, { removedIds: next, updatedAt: Date.now() }, { merge: true }).catch(
+        () => {}
+      );
+      return next;
+    });
   };
 
   const cities = useMemo(() => {
@@ -109,11 +168,30 @@ const AuditPage: React.FC = () => {
           }}
         >
           <div>
-            <h1 style={{ margin: 0, fontSize: '1.45rem', color: '#f59e0b' }}>
-              🛡️ דף בקרה וסינון עסקים (נסתר וזמני)
-            </h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <h1 style={{ margin: 0, fontSize: '1.45rem', color: '#f59e0b' }}>
+                🛡️ דף בקרה וסינון עסקים (נסתר וזמני)
+              </h1>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  fontSize: '0.78rem',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  background: cloudSynced ? 'rgba(16, 185, 129, 0.18)' : 'rgba(107, 114, 128, 0.25)',
+                  border: cloudSynced ? '1px solid #10b981' : '1px solid #6b7280',
+                  color: cloudSynced ? '#34d399' : '#d1d5db',
+                  fontWeight: 600,
+                }}
+              >
+                <Cloud size={13} />
+                {cloudSynced ? 'מסונכרן בענן בזמן אמת (מחשב + נייד)' : 'מתחבר לסנכרון ענן...'}
+              </span>
+            </div>
             <p style={{ margin: '6px 0 0', color: '#9ca3af', fontSize: '0.92rem' }}>
-              סמן את המסעדות הכלליות שאינן שווארמיות אמיתיות. הבחירות נשמרות אוטומטית בדפדפן. בסיום לחץ &quot;העתק רשימה להסרה&quot; והדבק בצ&apos;אט.
+              כל מה שסימנת במחשב נשמר ומסונכרן אוטומטית גם לנייד. בסיום לחץ &quot;העתק רשימה להסרה&quot; והדבק בצ&apos;אט.
             </p>
           </div>
 
