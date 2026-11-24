@@ -13,9 +13,7 @@
     "last_score": 63.0,
     "total_reviews": 10,
     "google_rating": 5.0,
-    "google_ratings_total": 631,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 631
   },
   {
     "id": 199,
@@ -31,9 +29,7 @@
     "last_score": 74.0,
     "total_reviews": 10,
     "google_rating": 4.8,
-    "google_ratings_total": 777,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 777
   },
   {
     "id": 421,
@@ -49,31 +45,7 @@
     "last_score": 82.8,
     "total_reviews": 9,
     "google_rating": 4.6,
-    "google_ratings_total": 650,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
-  },
-  {
-    "id": 432,
-    "name": "סנדוויץ' שוק שווארמה",
-    "city": "ראשון לציון",
-    "region": "shfela",
-    "platform_id": "סנדוויץ'_שוק_שווארמה_ראשון_לציון",
-    "address": "זלמן שניאור 16",
-    "lat": 31.984718,
-    "lng": 34.787344,
-    "national_rank": 4,
-    "bayesian_average": 90.3,
-    "last_score": 80.6,
-    "total_reviews": 8,
-    "google_rating": 4.7,
-    "google_ratings_total": 430,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 650
   },
   {
     "id": 465,
@@ -84,14 +56,12 @@
     "address": "רש\"י 7",
     "lat": 31.729359,
     "lng": 34.748666,
-    "national_rank": 5,
+    "national_rank": 4,
     "bayesian_average": 89.7,
     "last_score": 82.2,
     "total_reviews": 18,
     "google_rating": 4.6,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 379,
@@ -102,14 +72,12 @@
     "address": "אלנבי 18",
     "lat": 32.073136,
     "lng": 34.766755,
-    "national_rank": 6,
+    "national_rank": 5,
     "bayesian_average": 89.3,
     "last_score": 77.3,
     "total_reviews": 11,
     "google_rating": 4.7,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 218,
@@ -120,14 +88,12 @@
     "address": "ויצמן 78",
     "lat": 32.17992,
     "lng": 34.90634,
-    "national_rank": 7,
+    "national_rank": 6,
     "bayesian_average": 89.1,
     "last_score": 75.8,
     "total_reviews": 11,
     "google_rating": 4.6,
-    "google_ratings_total": 686,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 686
   },
   {
     "id": 456,
@@ -138,14 +104,12 @@
     "address": "בני בנימין 2",
     "lat": 32.268898,
     "lng": 34.888277,
-    "national_rank": 8,
+    "national_rank": 7,
     "bayesian_average": 88.9,
     "last_score": 88.3,
     "total_reviews": 3,
     "google_rating": 4.6,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 137,
@@ -156,14 +120,12 @@
     "address": "שלמה המלך 37",
     "lat": 32.06362,
     "lng": 34.85876,
-    "national_rank": 9,
+    "national_rank": 8,
     "bayesian_average": 88.7,
     "last_score": 80.0,
     "total_reviews": 8,
     "google_rating": 4.7,
-    "google_ratings_total": 257,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 257
   },
   {
     "id": 226,
@@ -174,14 +136,12 @@
     "address": "הלל יפה 11",
     "lat": 32.43588,
     "lng": 34.91464,
-    "national_rank": 10,
+    "national_rank": 9,
     "bayesian_average": 88.6,
     "last_score": 60.0,
     "total_reviews": 4,
     "google_rating": 4.8,
-    "google_ratings_total": 885,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 885
   },
   {
     "id": 367,
@@ -192,34 +152,12 @@
     "address": "השחרור 15",
     "lat": 32.7618,
     "lng": 34.9725,
-    "national_rank": 11,
+    "national_rank": 10,
     "bayesian_average": 88.6,
     "last_score": 95.0,
     "total_reviews": 2,
     "google_rating": 4.5,
-    "google_ratings_total": 420,
-    "audit_flag": false,
-    "audit_reasons": []
-  },
-  {
-    "id": 467,
-    "name": "בית הפול והשווארמה ביג",
-    "city": "קרית גת",
-    "region": "south",
-    "platform_id": "בית_הפול_והשווארמה_ביג_קרית_גת",
-    "address": "הדרום 3 (מתחם ביג)",
-    "lat": 31.603568,
-    "lng": 34.772327,
-    "national_rank": 12,
-    "bayesian_average": 88.6,
-    "last_score": 82.2,
-    "total_reviews": 10,
-    "google_rating": 4.6,
-    "google_ratings_total": 430,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 420
   },
   {
     "id": 388,
@@ -230,17 +168,12 @@
     "address": "הראשונים 2",
     "lat": 32.0285,
     "lng": 34.8532,
-    "national_rank": 13,
+    "national_rank": 11,
     "bayesian_average": 88.4,
     "last_score": 81.2,
     "total_reviews": 4,
     "google_rating": 4.6,
-    "google_ratings_total": 2100,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 2100
   },
   {
     "id": 292,
@@ -251,14 +184,12 @@
     "address": "אל-ג'ליל 15",
     "lat": 32.87006,
     "lng": 35.29018,
-    "national_rank": 14,
+    "national_rank": 12,
     "bayesian_average": 88.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 893,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 893
   },
   {
     "id": 410,
@@ -269,16 +200,12 @@
     "address": "שדרות ויצמן 10",
     "lat": 32.8325,
     "lng": 35.0764,
-    "national_rank": 15,
+    "national_rank": 13,
     "bayesian_average": 88.1,
     "last_score": 90.0,
     "total_reviews": 1,
     "google_rating": 4.5,
-    "google_ratings_total": 540,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 540
   },
   {
     "id": 145,
@@ -289,14 +216,12 @@
     "address": "שבי ציון 131",
     "lat": 31.8058,
     "lng": 34.6468,
-    "national_rank": 16,
+    "national_rank": 14,
     "bayesian_average": 88.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 750,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 750
   },
   {
     "id": 399,
@@ -307,14 +232,12 @@
     "address": "דרך שמחה גולן 54",
     "lat": 32.789654,
     "lng": 35.008274,
-    "national_rank": 17,
+    "national_rank": 15,
     "bayesian_average": 88.0,
     "last_score": 73.2,
     "total_reviews": 7,
     "google_rating": 4.6,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 245,
@@ -325,14 +248,12 @@
     "address": "כביש 672 (מרכז השוק)",
     "lat": 32.69762,
     "lng": 35.05418,
-    "national_rank": 18,
+    "national_rank": 16,
     "bayesian_average": 87.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 679,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 679
   },
   {
     "id": 164,
@@ -343,16 +264,12 @@
     "address": "פתח תקווה 82",
     "lat": 32.32912,
     "lng": 34.86086,
-    "national_rank": 19,
+    "national_rank": 17,
     "bayesian_average": 87.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 506,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 506
   },
   {
     "id": 98,
@@ -363,17 +280,12 @@
     "address": "חיים יחיל 18",
     "lat": 31.2595,
     "lng": 34.78968,
-    "national_rank": 20,
+    "national_rank": 18,
     "bayesian_average": 87.4,
     "last_score": 56.2,
     "total_reviews": 8,
     "google_rating": 4.8,
-    "google_ratings_total": 599,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 599
   },
   {
     "id": 127,
@@ -384,17 +296,12 @@
     "address": "המפלסים 19",
     "lat": 32.08658,
     "lng": 34.88746,
-    "national_rank": 21,
+    "national_rank": 19,
     "bayesian_average": 87.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 482,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 482
   },
   {
     "id": 254,
@@ -405,14 +312,12 @@
     "address": "כביש עוקף דאלית אל-כרמל",
     "lat": 32.69242,
     "lng": 35.05582,
-    "national_rank": 22,
+    "national_rank": 20,
     "bayesian_average": 87.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 473,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 473
   },
   {
     "id": 288,
@@ -423,14 +328,12 @@
     "address": "טארק עבד אל-חי (מתחם השוק)",
     "lat": 32.2335,
     "lng": 34.9502,
-    "national_rank": 23,
+    "national_rank": 21,
     "bayesian_average": 87.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 482,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 482
   },
   {
     "id": 322,
@@ -441,14 +344,12 @@
     "address": "דבת אל-זעתר 1",
     "lat": 32.89336,
     "lng": 35.40054,
-    "national_rank": 24,
+    "national_rank": 22,
     "bayesian_average": 87.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 464,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 464
   },
   {
     "id": 158,
@@ -459,14 +360,12 @@
     "address": "דוד פנקס 36",
     "lat": 32.31282,
     "lng": 34.85474,
-    "national_rank": 25,
+    "national_rank": 23,
     "bayesian_average": 87.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 429,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 429
   },
   {
     "id": 366,
@@ -477,34 +376,12 @@
     "address": "שדרות משה גושן 55",
     "lat": 32.8384,
     "lng": 35.0789,
-    "national_rank": 26,
+    "national_rank": 24,
     "bayesian_average": 87.1,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.6,
-    "google_ratings_total": 580,
-    "audit_flag": false,
-    "audit_reasons": []
-  },
-  {
-    "id": 475,
-    "name": "בית הפול והשווארמה נווה זאב",
-    "city": "באר שבע",
-    "region": "south",
-    "platform_id": "בית_הפול_והשווארמה_נווה_זאב_באר_שבע",
-    "address": "יוהנה ז'בוטינסקי 11",
-    "lat": 31.239004,
-    "lng": 34.774543,
-    "national_rank": 27,
-    "bayesian_average": 87.1,
-    "last_score": 92.5,
-    "total_reviews": 2,
-    "google_rating": 4.5,
-    "google_ratings_total": 560,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 580
   },
   {
     "id": 243,
@@ -515,14 +392,12 @@
     "address": "שדרות פאולוס השישי 87",
     "lat": 32.6991,
     "lng": 35.2985,
-    "national_rank": 28,
+    "national_rank": 25,
     "bayesian_average": 86.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.8,
-    "google_ratings_total": 356,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 356
   },
   {
     "id": 45,
@@ -533,14 +408,12 @@
     "address": "שדרות המגינים 68",
     "lat": 32.78434,
     "lng": 34.98746,
-    "national_rank": 29,
+    "national_rank": 26,
     "bayesian_average": 86.7,
     "last_score": 58.5,
     "total_reviews": 17,
     "google_rating": 4.6,
-    "google_ratings_total": 2650,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 2650
   },
   {
     "id": 450,
@@ -551,16 +424,12 @@
     "address": "אחוזה 87",
     "lat": 32.1804,
     "lng": 34.8752,
-    "national_rank": 30,
+    "national_rank": 27,
     "bayesian_average": 86.7,
     "last_score": 72.5,
     "total_reviews": 2,
     "google_rating": 4.5,
-    "google_ratings_total": 1650,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 1650
   },
   {
     "id": 273,
@@ -571,14 +440,12 @@
     "address": "הרב שלום שבזי 229",
     "lat": 32.08686,
     "lng": 34.9634,
-    "national_rank": 31,
+    "national_rank": 28,
     "bayesian_average": 86.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 928,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 928
   },
   {
     "id": 429,
@@ -589,16 +456,12 @@
     "address": "שדרות החוצבים 11",
     "lat": 31.793255,
     "lng": 35.144675,
-    "national_rank": 32,
+    "national_rank": 29,
     "bayesian_average": 86.6,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.5,
-    "google_ratings_total": 410,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 410
   },
   {
     "id": 94,
@@ -609,14 +472,12 @@
     "address": "וינגייט 66",
     "lat": 31.25048,
     "lng": 34.78164,
-    "national_rank": 33,
+    "national_rank": 30,
     "bayesian_average": 86.5,
     "last_score": 70.4,
     "total_reviews": 12,
     "google_rating": 4.5,
-    "google_ratings_total": 506,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 506
   },
   {
     "id": 244,
@@ -627,14 +488,12 @@
     "address": "שדרות פאולוס השישי 91",
     "lat": 32.6995,
     "lng": 35.2989,
-    "national_rank": 34,
+    "national_rank": 31,
     "bayesian_average": 86.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 677,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 677
   },
   {
     "id": 42,
@@ -645,14 +504,12 @@
     "address": "עספור 19",
     "lat": 32.79456,
     "lng": 34.98612,
-    "national_rank": 35,
+    "national_rank": 32,
     "bayesian_average": 86.1,
     "last_score": 58.0,
     "total_reviews": 20,
     "google_rating": 4.6,
-    "google_ratings_total": 940,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 940
   },
   {
     "id": 406,
@@ -663,16 +520,12 @@
     "address": "שדרות משה שרת 4",
     "lat": 32.842463,
     "lng": 35.068517,
-    "national_rank": 36,
+    "national_rank": 33,
     "bayesian_average": 86.0,
     "last_score": 75.4,
     "total_reviews": 6,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 490
   },
   {
     "id": 156,
@@ -683,16 +536,12 @@
     "address": "אחד העם 14",
     "lat": 32.31544,
     "lng": 34.85936,
-    "national_rank": 37,
+    "national_rank": 34,
     "bayesian_average": 85.9,
     "last_score": 51.7,
     "total_reviews": 6,
     "google_rating": 4.8,
-    "google_ratings_total": 483,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 483
   },
   {
     "id": 242,
@@ -703,17 +552,12 @@
     "address": "שדרות פאולוס השישי 91",
     "lat": 32.6994,
     "lng": 35.2988,
-    "national_rank": 38,
+    "national_rank": 35,
     "bayesian_average": 85.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 498,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 498
   },
   {
     "id": 268,
@@ -724,14 +568,12 @@
     "address": "עלי בן אבו טאלב 11",
     "lat": 32.10986,
     "lng": 34.97036,
-    "national_rank": 39,
+    "national_rank": 36,
     "bayesian_average": 85.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 516,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 516
   },
   {
     "id": 277,
@@ -742,14 +584,12 @@
     "address": "שכונת אל-ביר (הרחוב הראשי)",
     "lat": 32.5186,
     "lng": 35.1536,
-    "national_rank": 40,
+    "national_rank": 37,
     "bayesian_average": 85.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 516,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 516
   },
   {
     "id": 64,
@@ -760,14 +600,12 @@
     "address": "ברק 2",
     "lat": 32.76949,
     "lng": 35.047463,
-    "national_rank": 41,
+    "national_rank": 38,
     "bayesian_average": 85.8,
     "last_score": 92.5,
     "total_reviews": 2,
     "google_rating": 4.3,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 171,
@@ -778,16 +616,12 @@
     "address": "בלפור 94",
     "lat": 32.01022,
     "lng": 34.75302,
-    "national_rank": 42,
+    "national_rank": 39,
     "bayesian_average": 85.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 471,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 471
   },
   {
     "id": 232,
@@ -798,14 +632,12 @@
     "address": "אל-קודס 9",
     "lat": 32.4139,
     "lng": 35.04286,
-    "national_rank": 43,
+    "national_rank": 40,
     "bayesian_average": 85.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 482,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 482
   },
   {
     "id": 394,
@@ -816,14 +648,12 @@
     "address": "חיים עוזר 38",
     "lat": 32.085496,
     "lng": 34.887622,
-    "national_rank": 44,
+    "national_rank": 41,
     "bayesian_average": 85.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 142,
@@ -834,14 +664,12 @@
     "address": "מנגו 3",
     "lat": 31.81162,
     "lng": 34.65548,
-    "national_rank": 45,
+    "national_rank": 42,
     "bayesian_average": 85.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 454,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 454
   },
   {
     "id": 251,
@@ -852,14 +680,12 @@
     "address": "הרחוב הראשי (שדרות אבא חושי)",
     "lat": 32.7165,
     "lng": 35.0502,
-    "national_rank": 46,
+    "national_rank": 43,
     "bayesian_average": 85.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 454,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 454
   },
   {
     "id": 461,
@@ -870,14 +696,12 @@
     "address": "אל-קודס 40",
     "lat": 32.421281,
     "lng": 35.04059,
-    "national_rank": 47,
+    "national_rank": 44,
     "bayesian_average": 85.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 420,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 420
   },
   {
     "id": 75,
@@ -888,14 +712,12 @@
     "address": "כביש השלום 30",
     "lat": 31.7985,
     "lng": 35.1098,
-    "national_rank": 48,
+    "national_rank": 45,
     "bayesian_average": 85.4,
     "last_score": 68.8,
     "total_reviews": 2,
     "google_rating": 4.4,
-    "google_ratings_total": 540,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 540
   },
   {
     "id": 1,
@@ -906,17 +728,12 @@
     "address": "שלמה המלך 1",
     "lat": 32.08948,
     "lng": 34.77516,
-    "national_rank": 49,
+    "national_rank": 46,
     "bayesian_average": 85.3,
     "last_score": 51.7,
     "total_reviews": 20,
     "google_rating": 4.6,
-    "google_ratings_total": 4850,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 4850
   },
   {
     "id": 392,
@@ -927,14 +744,12 @@
     "address": "רוטשילד 27",
     "lat": 32.026977,
     "lng": 34.746388,
-    "national_rank": 50,
+    "national_rank": 47,
     "bayesian_average": 85.3,
     "last_score": 74.4,
     "total_reviews": 5,
     "google_rating": 4.5,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 407,
@@ -945,14 +760,12 @@
     "address": "דרך עכו 140",
     "lat": 32.836067,
     "lng": 35.084948,
-    "national_rank": 51,
+    "national_rank": 48,
     "bayesian_average": 85.3,
     "last_score": 66.8,
     "total_reviews": 7,
     "google_rating": 4.6,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 409,
@@ -963,14 +776,12 @@
     "address": "העצמאות 51",
     "lat": 32.805146,
     "lng": 35.104063,
-    "national_rank": 52,
+    "national_rank": 49,
     "bayesian_average": 85.3,
     "last_score": 75.0,
     "total_reviews": 5,
     "google_rating": 4.5,
-    "google_ratings_total": 430,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 430
   },
   {
     "id": 437,
@@ -981,14 +792,12 @@
     "address": "אופנהיימר 10",
     "lat": 31.910895,
     "lng": 34.807604,
-    "national_rank": 53,
+    "national_rank": 50,
     "bayesian_average": 85.3,
     "last_score": 90.0,
     "total_reviews": 3,
     "google_rating": 4.3,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 466,
@@ -999,14 +808,12 @@
     "address": "שדרות לכיש 177",
     "lat": 31.633151,
     "lng": 34.772536,
-    "national_rank": 54,
+    "national_rank": 51,
     "bayesian_average": 85.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 570,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 570
   },
   {
     "id": 287,
@@ -1017,14 +824,12 @@
     "address": "מתחם קניון טירה (כביש 554)",
     "lat": 32.22536,
     "lng": 34.9507,
-    "national_rank": 55,
+    "national_rank": 52,
     "bayesian_average": 85.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 337,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 337
   },
   {
     "id": 91,
@@ -1035,16 +840,12 @@
     "address": "יפו 30",
     "lat": 31.76372,
     "lng": 35.22324,
-    "national_rank": 56,
+    "national_rank": 53,
     "bayesian_average": 85.0,
     "last_score": 66.8,
     "total_reviews": 12,
     "google_rating": 4.7,
-    "google_ratings_total": 365,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 365
   },
   {
     "id": 430,
@@ -1055,14 +856,12 @@
     "address": "גולדה מאיר 1",
     "lat": 31.96744,
     "lng": 34.785083,
-    "national_rank": 57,
+    "national_rank": 54,
     "bayesian_average": 85.0,
     "last_score": 71.2,
     "total_reviews": 2,
     "google_rating": 4.6,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 446,
@@ -1073,14 +872,12 @@
     "address": "דם המכבים 42",
     "lat": 31.903194,
     "lng": 35.007157,
-    "national_rank": 58,
+    "national_rank": 55,
     "bayesian_average": 85.0,
     "last_score": 65.5,
     "total_reviews": 8,
     "google_rating": 4.6,
-    "google_ratings_total": 540,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 540
   },
   {
     "id": 119,
@@ -1091,14 +888,12 @@
     "address": "בן ציון גליס 43",
     "lat": 32.09118,
     "lng": 34.88886,
-    "national_rank": 59,
+    "national_rank": 56,
     "bayesian_average": 84.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 284,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 284
   },
   {
     "id": 323,
@@ -1109,14 +904,12 @@
     "address": "שכונת ראס אל-חארי 47",
     "lat": 32.8902,
     "lng": 35.4068,
-    "national_rank": 60,
+    "national_rank": 57,
     "bayesian_average": 84.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 892,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 892
   },
   {
     "id": 362,
@@ -1127,36 +920,12 @@
     "address": "סוקולוב 71",
     "lat": 32.14672,
     "lng": 34.83154,
-    "national_rank": 61,
+    "national_rank": 58,
     "bayesian_average": 84.9,
     "last_score": 91.7,
     "total_reviews": 3,
     "google_rating": 4.4,
-    "google_ratings_total": 410,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
-  },
-  {
-    "id": 387,
-    "name": "אצל מלי שווארמה",
-    "city": "גבעתיים",
-    "region": "center",
-    "platform_id": "אצל_מלי_שווארמה_גבעתיים",
-    "address": "הרב הרצוג 27",
-    "lat": 32.061436,
-    "lng": 34.81716,
-    "national_rank": 62,
-    "bayesian_average": 84.9,
-    "last_score": 66.0,
-    "total_reviews": 5,
-    "google_rating": 4.6,
-    "google_ratings_total": 610,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 410
   },
   {
     "id": 477,
@@ -1167,14 +936,12 @@
     "address": "יצחק בן צבי 4",
     "lat": 31.243106,
     "lng": 34.796765,
-    "national_rank": 63,
+    "national_rank": 59,
     "bayesian_average": 84.9,
     "last_score": 90.0,
     "total_reviews": 1,
     "google_rating": 4.4,
-    "google_ratings_total": 360,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 360
   },
   {
     "id": 74,
@@ -1185,14 +952,12 @@
     "address": "השיקמה 6",
     "lat": 31.76226,
     "lng": 35.21034,
-    "national_rank": 64,
+    "national_rank": 60,
     "bayesian_average": 84.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 840,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 840
   },
   {
     "id": 333,
@@ -1203,14 +968,12 @@
     "address": "כביש השלום 84",
     "lat": 31.80102,
     "lng": 35.11226,
-    "national_rank": 65,
+    "national_rank": 61,
     "bayesian_average": 84.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 275,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 275
   },
   {
     "id": 413,
@@ -1221,14 +984,12 @@
     "address": "שדרות הגעתון 19",
     "lat": 33.0058,
     "lng": 35.0935,
-    "national_rank": 66,
+    "national_rank": 62,
     "bayesian_average": 84.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 840,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 840
   },
   {
     "id": 460,
@@ -1239,14 +1000,12 @@
     "address": "צאלון 1",
     "lat": 32.460186,
     "lng": 35.047566,
-    "national_rank": 67,
+    "national_rank": 63,
     "bayesian_average": 84.8,
     "last_score": 84.1,
     "total_reviews": 15,
     "google_rating": 4.3,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 236,
@@ -1257,14 +1016,12 @@
     "address": "דוד שמעוני 51 (כיכר המשטרה)",
     "lat": 32.4368,
     "lng": 34.9228,
-    "national_rank": 68,
+    "national_rank": 64,
     "bayesian_average": 84.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 266,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 266
   },
   {
     "id": 420,
@@ -1275,14 +1032,12 @@
     "address": "הגליל 40",
     "lat": 32.7895,
     "lng": 35.5352,
-    "national_rank": 69,
+    "national_rank": 65,
     "bayesian_average": 84.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 720,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 720
   },
   {
     "id": 442,
@@ -1293,14 +1048,12 @@
     "address": "שדרות הציונות 1 (לוד סנטר)",
     "lat": 31.9482,
     "lng": 34.8895,
-    "national_rank": 70,
+    "national_rank": 66,
     "bayesian_average": 84.7,
     "last_score": 60.6,
     "total_reviews": 8,
     "google_rating": 4.5,
-    "google_ratings_total": 610,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 610
   },
   {
     "id": 152,
@@ -1311,14 +1064,12 @@
     "address": "שדרות גיבורי ישראל 14",
     "lat": 32.32002,
     "lng": 34.85522,
-    "national_rank": 71,
+    "national_rank": 67,
     "bayesian_average": 84.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 649,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 649
   },
   {
     "id": 223,
@@ -1329,14 +1080,12 @@
     "address": "פרופסור דן שכטמן 10 (מול החוף וילג')",
     "lat": 32.4395,
     "lng": 34.8962,
-    "national_rank": 72,
+    "national_rank": 68,
     "bayesian_average": 84.6,
     "last_score": 59.0,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 827,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 827
   },
   {
     "id": 398,
@@ -1347,14 +1096,12 @@
     "address": "דרך יפו 19",
     "lat": 32.81862,
     "lng": 34.998423,
-    "national_rank": 73,
+    "national_rank": 69,
     "bayesian_average": 84.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 850,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 850
   },
   {
     "id": 416,
@@ -1365,14 +1112,12 @@
     "address": "שדרות נשיאי ישראל 7",
     "lat": 32.9185,
     "lng": 35.2934,
-    "national_rank": 74,
+    "national_rank": 70,
     "bayesian_average": 84.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 670,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 670
   },
   {
     "id": 435,
@@ -1383,14 +1128,12 @@
     "address": "המדע 8 (פארק המדע)",
     "lat": 31.9115,
     "lng": 34.8062,
-    "national_rank": 75,
+    "national_rank": 71,
     "bayesian_average": 84.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 342,
@@ -1401,16 +1144,12 @@
     "address": "שדרות יצחק רגר 23",
     "lat": 31.25598,
     "lng": 34.79402,
-    "national_rank": 76,
+    "national_rank": 72,
     "bayesian_average": 84.5,
     "last_score": 74.5,
     "total_reviews": 14,
     "google_rating": 4.3,
-    "google_ratings_total": 610,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 610
   },
   {
     "id": 381,
@@ -1421,14 +1160,12 @@
     "address": "היצירה 1 (מתחם הבורסה)",
     "lat": 32.084596,
     "lng": 34.803213,
-    "national_rank": 77,
+    "national_rank": 73,
     "bayesian_average": 84.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 710,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 710
   },
   {
     "id": 353,
@@ -1439,14 +1176,12 @@
     "address": "דרך בן גוריון 173",
     "lat": 32.06254,
     "lng": 34.81734,
-    "national_rank": 78,
+    "national_rank": 74,
     "bayesian_average": 84.4,
     "last_score": 75.2,
     "total_reviews": 11,
     "google_rating": 4.3,
-    "google_ratings_total": 850,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 850
   },
   {
     "id": 369,
@@ -1457,14 +1192,12 @@
     "address": "מורדי הגטאות 6",
     "lat": 32.8091,
     "lng": 35.1024,
-    "national_rank": 79,
+    "national_rank": 75,
     "bayesian_average": 84.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 510,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 510
   },
   {
     "id": 341,
@@ -1475,16 +1208,12 @@
     "address": "גנרל פייר קניג 30",
     "lat": 31.76728,
     "lng": 35.21022,
-    "national_rank": 80,
+    "national_rank": 76,
     "bayesian_average": 84.3,
     "last_score": 68.6,
     "total_reviews": 6,
     "google_rating": 4.4,
-    "google_ratings_total": 580,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 580
   },
   {
     "id": 415,
@@ -1495,16 +1224,12 @@
     "address": "שדרות הנשיא בן צבי 1",
     "lat": 33.0032,
     "lng": 35.0961,
-    "national_rank": 81,
+    "national_rank": 77,
     "bayesian_average": 84.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 510,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 510
   },
   {
     "id": 2,
@@ -1515,14 +1240,12 @@
     "address": "שדרות ההסתדרות 58",
     "lat": 32.79246,
     "lng": 34.99002,
-    "national_rank": 82,
+    "national_rank": 78,
     "bayesian_average": 84.2,
     "last_score": 52.4,
     "total_reviews": 34,
     "google_rating": 4.5,
-    "google_ratings_total": 3400,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 3400
   },
   {
     "id": 11,
@@ -1533,14 +1256,12 @@
     "address": "סלומון 2",
     "lat": 32.08372,
     "lng": 34.78386,
-    "national_rank": 83,
+    "national_rank": 79,
     "bayesian_average": 84.2,
     "last_score": 63.2,
     "total_reviews": 18,
     "google_rating": 4.5,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 83,
@@ -1551,16 +1272,12 @@
     "address": "שדרות החוצבים 11",
     "lat": 31.793255,
     "lng": 35.144675,
-    "national_rank": 84,
+    "national_rank": 80,
     "bayesian_average": 84.2,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.3,
-    "google_ratings_total": 710,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 710
   },
   {
     "id": 372,
@@ -1571,16 +1288,12 @@
     "address": "אבא אחימאיר 15",
     "lat": 32.125081,
     "lng": 34.801228,
-    "national_rank": 85,
+    "national_rank": 81,
     "bayesian_average": 84.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 480,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 480
   },
   {
     "id": 463,
@@ -1591,14 +1304,12 @@
     "address": "הבנים 5",
     "lat": 31.794136,
     "lng": 34.63988,
-    "national_rank": 86,
+    "national_rank": 82,
     "bayesian_average": 84.2,
     "last_score": 63.3,
     "total_reviews": 6,
     "google_rating": 4.5,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 80,
@@ -1609,14 +1320,12 @@
     "address": "דרך בית לחם 49",
     "lat": 31.76078,
     "lng": 35.20638,
-    "national_rank": 87,
+    "national_rank": 83,
     "bayesian_average": 84.1,
     "last_score": 66.8,
     "total_reviews": 12,
     "google_rating": 4.6,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 55,
@@ -1627,14 +1336,12 @@
     "address": "דרך יפו 44",
     "lat": 32.79458,
     "lng": 34.98778,
-    "national_rank": 88,
+    "national_rank": 84,
     "bayesian_average": 84.0,
     "last_score": 58.8,
     "total_reviews": 10,
     "google_rating": 4.6,
-    "google_ratings_total": 820,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 820
   },
   {
     "id": 462,
@@ -1645,16 +1352,12 @@
     "address": "רוגוזין 9",
     "lat": 31.806808,
     "lng": 34.64416,
-    "national_rank": 89,
+    "national_rank": 85,
     "bayesian_average": 84.0,
     "last_score": 58.0,
     "total_reviews": 5,
     "google_rating": 4.6,
-    "google_ratings_total": 510,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 510
   },
   {
     "id": 451,
@@ -1665,14 +1368,12 @@
     "address": "סשה ארגוב 23 (נווה זמר)",
     "lat": 32.1956,
     "lng": 34.8682,
-    "national_rank": 90,
+    "national_rank": 86,
     "bayesian_average": 83.9,
     "last_score": 70.0,
     "total_reviews": 4,
     "google_rating": 4.4,
-    "google_ratings_total": 580,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 580
   },
   {
     "id": 472,
@@ -1683,14 +1384,12 @@
     "address": "יגאל אלון 4",
     "lat": 31.5258,
     "lng": 34.5954,
-    "national_rank": 91,
+    "national_rank": 87,
     "bayesian_average": 83.9,
     "last_score": 56.1,
     "total_reviews": 7,
     "google_rating": 4.6,
-    "google_ratings_total": 610,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 610
   },
   {
     "id": 10,
@@ -1701,16 +1400,12 @@
     "address": "דרך שלמה 110",
     "lat": 32.08062,
     "lng": 34.78752,
-    "national_rank": 92,
+    "national_rank": 88,
     "bayesian_average": 83.8,
     "last_score": 54.0,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 780,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 780
   },
   {
     "id": 112,
@@ -1721,14 +1416,12 @@
     "address": "רוטשילד 58",
     "lat": 31.96744,
     "lng": 34.79946,
-    "national_rank": 93,
+    "national_rank": 89,
     "bayesian_average": 83.8,
     "last_score": 46.5,
     "total_reviews": 10,
     "google_rating": 4.8,
-    "google_ratings_total": 688,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 688
   },
   {
     "id": 426,
@@ -1739,14 +1432,12 @@
     "address": "אליהו קורן 29",
     "lat": 31.723551,
     "lng": 35.226038,
-    "national_rank": 94,
+    "national_rank": 90,
     "bayesian_average": 83.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 350,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 350
   },
   {
     "id": 454,
@@ -1757,14 +1448,12 @@
     "address": "טום לנטוס 8",
     "lat": 32.311568,
     "lng": 34.869795,
-    "national_rank": 95,
+    "national_rank": 91,
     "bayesian_average": 83.8,
     "last_score": 62.2,
     "total_reviews": 3,
     "google_rating": 4.5,
-    "google_ratings_total": 440,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 440
   },
   {
     "id": 41,
@@ -1775,14 +1464,12 @@
     "address": "דרך אלנבי 37",
     "lat": 32.79782,
     "lng": 34.99904,
-    "national_rank": 96,
+    "national_rank": 92,
     "bayesian_average": 83.7,
     "last_score": 54.0,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 690,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 690
   },
   {
     "id": 402,
@@ -1793,14 +1480,12 @@
     "address": "הבנקים 2",
     "lat": 32.820327,
     "lng": 34.997283,
-    "national_rank": 97,
+    "national_rank": 93,
     "bayesian_average": 83.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 310,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 310
   },
   {
     "id": 400,
@@ -1811,14 +1496,12 @@
     "address": "שדרות ההסתדרות 55",
     "lat": 32.793493,
     "lng": 35.037741,
-    "national_rank": 98,
+    "national_rank": 94,
     "bayesian_average": 83.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 404,
@@ -1829,14 +1512,12 @@
     "address": "שדרות ירושלים 79",
     "lat": 32.850559,
     "lng": 35.076835,
-    "national_rank": 99,
+    "national_rank": 95,
     "bayesian_average": 83.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 470,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 470
   },
   {
     "id": 479,
@@ -1847,14 +1528,12 @@
     "address": "חיל ההנדסה 6",
     "lat": 29.5554,
     "lng": 34.9531,
-    "national_rank": 100,
+    "national_rank": 96,
     "bayesian_average": 83.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 1850,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1850
   },
   {
     "id": 87,
@@ -1865,14 +1544,12 @@
     "address": "דרך חברון 101",
     "lat": 31.76654,
     "lng": 35.20966,
-    "national_rank": 101,
+    "national_rank": 97,
     "bayesian_average": 83.5,
     "last_score": 77.9,
     "total_reviews": 17,
     "google_rating": 4.2,
-    "google_ratings_total": 772,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 772
   },
   {
     "id": 403,
@@ -1883,14 +1560,12 @@
     "address": "הרצל 39",
     "lat": 32.764445,
     "lng": 34.971165,
-    "national_rank": 102,
+    "national_rank": 98,
     "bayesian_average": 83.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 440,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 440
   },
   {
     "id": 428,
@@ -1901,14 +1576,12 @@
     "address": "בן יהודה 15",
     "lat": 31.78134,
     "lng": 35.217473,
-    "national_rank": 103,
+    "national_rank": 99,
     "bayesian_average": 83.5,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.4,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 77,
@@ -1919,14 +1592,12 @@
     "address": "יפו 234",
     "lat": 31.77716,
     "lng": 35.2216,
-    "national_rank": 104,
+    "national_rank": 100,
     "bayesian_average": 83.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 1180,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1180
   },
   {
     "id": 103,
@@ -1937,16 +1608,12 @@
     "address": "דרך מצדה 266",
     "lat": 31.24866,
     "lng": 34.7891,
-    "national_rank": 105,
+    "national_rank": 101,
     "bayesian_average": 83.4,
     "last_score": 76.7,
     "total_reviews": 3,
     "google_rating": 4.8,
-    "google_ratings_total": 527,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 527
   },
   {
     "id": 13,
@@ -1957,16 +1624,12 @@
     "address": "יגאל אלון 94",
     "lat": 32.0695,
     "lng": 34.7938,
-    "national_rank": 106,
+    "national_rank": 102,
     "bayesian_average": 83.3,
     "last_score": 50.0,
     "total_reviews": 12,
     "google_rating": 4.6,
-    "google_ratings_total": 540,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 540
   },
   {
     "id": 27,
@@ -1977,16 +1640,12 @@
     "address": "שדרות ירושלים 67",
     "lat": 32.082,
     "lng": 34.78044,
-    "national_rank": 107,
+    "national_rank": 103,
     "bayesian_average": 83.3,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.5,
-    "google_ratings_total": 740,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 740
   },
   {
     "id": 148,
@@ -1997,16 +1656,12 @@
     "address": "ז'בוטינסקי 43",
     "lat": 31.81348,
     "lng": 34.65584,
-    "national_rank": 108,
+    "national_rank": 104,
     "bayesian_average": 83.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 160,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 160
   },
   {
     "id": 157,
@@ -2017,14 +1672,12 @@
     "address": "הנוטע 1",
     "lat": 32.32018,
     "lng": 34.8587,
-    "national_rank": 109,
+    "national_rank": 105,
     "bayesian_average": 83.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 900,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 900
   },
   {
     "id": 222,
@@ -2035,14 +1688,12 @@
     "address": "הרברט סמואל 1",
     "lat": 32.42678,
     "lng": 34.91848,
-    "national_rank": 110,
+    "national_rank": 106,
     "bayesian_average": 83.3,
     "last_score": 76.7,
     "total_reviews": 6,
     "google_rating": 4.2,
-    "google_ratings_total": 476,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 476
   },
   {
     "id": 385,
@@ -2053,14 +1704,12 @@
     "address": "אבא הלל 2",
     "lat": 32.083986,
     "lng": 34.803529,
-    "national_rank": 111,
+    "national_rank": 107,
     "bayesian_average": 83.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 104,
@@ -2071,14 +1720,12 @@
     "address": "בנימין שמוטקין 1",
     "lat": 31.96732,
     "lng": 34.79802,
-    "national_rank": 112,
+    "national_rank": 108,
     "bayesian_average": 83.2,
     "last_score": 84.3,
     "total_reviews": 7,
     "google_rating": 4.2,
-    "google_ratings_total": 817,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 817
   },
   {
     "id": 116,
@@ -2089,14 +1736,12 @@
     "address": "האורגים 1",
     "lat": 32.01176,
     "lng": 34.79008,
-    "national_rank": 113,
+    "national_rank": 109,
     "bayesian_average": 83.2,
     "last_score": 75.8,
     "total_reviews": 10,
     "google_rating": 4.2,
-    "google_ratings_total": 476,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 476
   },
   {
     "id": 128,
@@ -2107,14 +1752,12 @@
     "address": "תוצרת הארץ 3",
     "lat": 32.0891,
     "lng": 34.8817,
-    "national_rank": 114,
+    "national_rank": 110,
     "bayesian_average": 83.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 820,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 820
   },
   {
     "id": 224,
@@ -2125,14 +1768,12 @@
     "address": "קומבה 29 (אזור התעשייה)",
     "lat": 32.4512,
     "lng": 34.9145,
-    "national_rank": 115,
+    "national_rank": 111,
     "bayesian_average": 83.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 257,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 257
   },
   {
     "id": 452,
@@ -2143,14 +1784,12 @@
     "address": "שער הגיא 5",
     "lat": 32.327892,
     "lng": 34.857186,
-    "national_rank": 116,
+    "national_rank": 112,
     "bayesian_average": 83.2,
     "last_score": 55.0,
     "total_reviews": 6,
     "google_rating": 4.6,
-    "google_ratings_total": 681,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 681
   },
   {
     "id": 78,
@@ -2161,14 +1800,12 @@
     "address": "רחובות הבוכרים 4",
     "lat": 31.77666,
     "lng": 35.22314,
-    "national_rank": 117,
+    "national_rank": 113,
     "bayesian_average": 83.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 760,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 760
   },
   {
     "id": 147,
@@ -2179,14 +1816,12 @@
     "address": "הבנאים 3",
     "lat": 31.79548,
     "lng": 34.65714,
-    "national_rank": 118,
+    "national_rank": 114,
     "bayesian_average": 83.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 756,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 756
   },
   {
     "id": 249,
@@ -2197,14 +1832,12 @@
     "address": "אזור התעשייה מסעף סואניה",
     "lat": 32.69336,
     "lng": 35.04562,
-    "national_rank": 119,
+    "national_rank": 115,
     "bayesian_average": 83.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 722,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 722
   },
   {
     "id": 15,
@@ -2215,17 +1848,12 @@
     "address": "רמב\"ם 3",
     "lat": 32.08472,
     "lng": 34.77386,
-    "national_rank": 120,
+    "national_rank": 116,
     "bayesian_average": 83.0,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.6,
-    "google_ratings_total": 1420,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 1420
   },
   {
     "id": 106,
@@ -2236,14 +1864,12 @@
     "address": "הרצל 2",
     "lat": 31.96982,
     "lng": 34.78636,
-    "national_rank": 121,
+    "national_rank": 117,
     "bayesian_average": 83.0,
     "last_score": 70.8,
     "total_reviews": 12,
     "google_rating": 4.7,
-    "google_ratings_total": 571,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 571
   },
   {
     "id": 412,
@@ -2254,14 +1880,12 @@
     "address": "דרך הארבעה 20",
     "lat": 32.9248,
     "lng": 35.0802,
-    "national_rank": 122,
+    "national_rank": 118,
     "bayesian_average": 83.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 458,
@@ -2272,14 +1896,12 @@
     "address": "גלבוע 1 (קניון דרורים)",
     "lat": 32.260251,
     "lng": 34.894242,
-    "national_rank": 123,
+    "national_rank": 119,
     "bayesian_average": 83.0,
     "last_score": 51.0,
     "total_reviews": 10,
     "google_rating": 4.6,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 189,
@@ -2290,14 +1912,12 @@
     "address": "רוטשילד 1",
     "lat": 32.0264,
     "lng": 34.75448,
-    "national_rank": 124,
+    "national_rank": 120,
     "bayesian_average": 82.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 577,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 577
   },
   {
     "id": 237,
@@ -2308,14 +1928,12 @@
     "address": "הרצל 9",
     "lat": 32.3255,
     "lng": 34.93988,
-    "national_rank": 125,
+    "national_rank": 121,
     "bayesian_average": 82.8,
     "last_score": 66.6,
     "total_reviews": 15,
     "google_rating": 4.7,
-    "google_ratings_total": 463,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 463
   },
   {
     "id": 250,
@@ -2326,16 +1944,12 @@
     "address": "כביש 672 הראשי",
     "lat": 32.6848,
     "lng": 35.05102,
-    "national_rank": 126,
+    "national_rank": 122,
     "bayesian_average": 82.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 531,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 531
   },
   {
     "id": 422,
@@ -2346,14 +1960,12 @@
     "address": "אילת 1",
     "lat": 32.7931,
     "lng": 35.531,
-    "national_rank": 127,
+    "national_rank": 123,
     "bayesian_average": 82.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 530,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 530
   },
   {
     "id": 424,
@@ -2364,17 +1976,12 @@
     "address": "יפו 210",
     "lat": 31.788257,
     "lng": 35.206652,
-    "national_rank": 128,
+    "national_rank": 124,
     "bayesian_average": 82.8,
     "last_score": 60.0,
     "total_reviews": 11,
     "google_rating": 4.4,
-    "google_ratings_total": 490,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים",
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 490
   },
   {
     "id": 471,
@@ -2385,14 +1992,12 @@
     "address": "יוסף סמלו 43",
     "lat": 31.4215,
     "lng": 34.5948,
-    "national_rank": 129,
+    "national_rank": 125,
     "bayesian_average": 82.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 5,
@@ -2403,14 +2008,12 @@
     "address": "אלנבי 56",
     "lat": 32.09126,
     "lng": 34.77274,
-    "national_rank": 130,
+    "national_rank": 126,
     "bayesian_average": 82.7,
     "last_score": 58.8,
     "total_reviews": 26,
     "google_rating": 4.4,
-    "google_ratings_total": 920,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 920
   },
   {
     "id": 49,
@@ -2421,14 +2024,12 @@
     "address": "החלוץ 32",
     "lat": 32.79396,
     "lng": 34.98088,
-    "national_rank": 131,
+    "national_rank": 127,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 246,
@@ -2439,14 +2040,12 @@
     "address": "שכונת ח'לת עלי",
     "lat": 32.69086,
     "lng": 35.05348,
-    "national_rank": 132,
+    "national_rank": 128,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 487,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 487
   },
   {
     "id": 252,
@@ -2457,14 +2056,12 @@
     "address": "ביירות 1",
     "lat": 32.68422,
     "lng": 35.06208,
-    "national_rank": 133,
+    "national_rank": 129,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 488,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 488
   },
   {
     "id": 405,
@@ -2475,14 +2072,12 @@
     "address": "שדרות ירושלים 13",
     "lat": 32.836831,
     "lng": 35.065893,
-    "national_rank": 134,
+    "national_rank": 130,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 360,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 360
   },
   {
     "id": 453,
@@ -2493,14 +2088,12 @@
     "address": "שדרות גיבורי ישראל 40",
     "lat": 32.283353,
     "lng": 34.861615,
-    "national_rank": 135,
+    "national_rank": 131,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 473,
@@ -2511,14 +2104,12 @@
     "address": "הרצל 32",
     "lat": 31.5224,
     "lng": 34.5972,
-    "national_rank": 136,
+    "national_rank": 132,
     "bayesian_average": 82.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 154,
@@ -2529,14 +2120,12 @@
     "address": "דרך הרכבת 7",
     "lat": 32.3155,
     "lng": 34.84384,
-    "national_rank": 137,
+    "national_rank": 133,
     "bayesian_average": 82.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 461,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 461
   },
   {
     "id": 339,
@@ -2547,16 +2136,12 @@
     "address": "שדרות מוריה 54",
     "lat": 32.80278,
     "lng": 34.98464,
-    "national_rank": 138,
+    "national_rank": 134,
     "bayesian_average": 82.6,
     "last_score": 68.1,
     "total_reviews": 9,
     "google_rating": 4.3,
-    "google_ratings_total": 590,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 590
   },
   {
     "id": 365,
@@ -2567,14 +2152,12 @@
     "address": "דרך יפו 140",
     "lat": 32.79608,
     "lng": 34.99326,
-    "national_rank": 139,
+    "national_rank": 135,
     "bayesian_average": 82.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 1950,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1950
   },
   {
     "id": 393,
@@ -2585,14 +2168,12 @@
     "address": "אברהם גירון 15",
     "lat": 32.027037,
     "lng": 34.896553,
-    "national_rank": 140,
+    "national_rank": 136,
     "bayesian_average": 82.6,
     "last_score": 70.3,
     "total_reviews": 8,
     "google_rating": 4.4,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 425,
@@ -2603,16 +2184,12 @@
     "address": "יפו 224",
     "lat": 31.789034,
     "lng": 35.203325,
-    "national_rank": 141,
+    "national_rank": 137,
     "bayesian_average": 82.6,
     "last_score": 67.0,
     "total_reviews": 5,
     "google_rating": 4.4,
-    "google_ratings_total": 420,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 420
   },
   {
     "id": 427,
@@ -2623,14 +2200,12 @@
     "address": "דב יוסף 4",
     "lat": 31.74698,
     "lng": 35.198488,
-    "national_rank": 142,
+    "national_rank": 138,
     "bayesian_average": 82.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 79,
@@ -2641,16 +2216,12 @@
     "address": "התנופה 6",
     "lat": 31.76942,
     "lng": 35.21392,
-    "national_rank": 143,
+    "national_rank": 139,
     "bayesian_average": 82.5,
     "last_score": 58.5,
     "total_reviews": 10,
     "google_rating": 4.3,
-    "google_ratings_total": 1340,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 1340
   },
   {
     "id": 211,
@@ -2661,14 +2232,12 @@
     "address": "שדרות אבא אבן 18",
     "lat": 32.16698,
     "lng": 34.8501,
-    "national_rank": 144,
+    "national_rank": 140,
     "bayesian_average": 82.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 193,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 193
   },
   {
     "id": 8,
@@ -2679,14 +2248,12 @@
     "address": "הירקון 296",
     "lat": 32.07604,
     "lng": 34.77268,
-    "national_rank": 145,
+    "national_rank": 141,
     "bayesian_average": 82.4,
     "last_score": 64.4,
     "total_reviews": 12,
     "google_rating": 4.5,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 391,
@@ -2697,16 +2264,12 @@
     "address": "יוספטל 92",
     "lat": 32.015193,
     "lng": 34.755915,
-    "national_rank": 146,
+    "national_rank": 142,
     "bayesian_average": 82.4,
     "last_score": 50.3,
     "total_reviews": 9,
     "google_rating": 4.6,
-    "google_ratings_total": 650,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 650
   },
   {
     "id": 438,
@@ -2717,14 +2280,12 @@
     "address": "הרצל 168",
     "lat": 31.895098,
     "lng": 34.81151,
-    "national_rank": 147,
+    "national_rank": 143,
     "bayesian_average": 82.4,
     "last_score": 72.4,
     "total_reviews": 13,
     "google_rating": 4.2,
-    "google_ratings_total": 811,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 811
   },
   {
     "id": 113,
@@ -2735,16 +2296,12 @@
     "address": "רוטשילד 61",
     "lat": 31.96624,
     "lng": 34.78596,
-    "national_rank": 148,
+    "national_rank": 144,
     "bayesian_average": 82.3,
     "last_score": 58.0,
     "total_reviews": 5,
     "google_rating": 4.6,
-    "google_ratings_total": 901,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 901
   },
   {
     "id": 117,
@@ -2755,14 +2312,12 @@
     "address": "הפטיש 6",
     "lat": 31.93992,
     "lng": 34.8006,
-    "national_rank": 149,
+    "national_rank": 145,
     "bayesian_average": 82.3,
     "last_score": 65.2,
     "total_reviews": 11,
     "google_rating": 4.4,
-    "google_ratings_total": 226,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 226
   },
   {
     "id": 321,
@@ -2773,14 +2328,12 @@
     "address": "טאהא חוסיין (כביש 754)",
     "lat": 32.75654,
     "lng": 35.33664,
-    "national_rank": 150,
+    "national_rank": 146,
     "bayesian_average": 82.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.7,
-    "google_ratings_total": 158,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 158
   },
   {
     "id": 62,
@@ -2791,14 +2344,12 @@
     "address": "דרך בן גוריון 73",
     "lat": 32.02832,
     "lng": 34.7473,
-    "national_rank": 151,
+    "national_rank": 147,
     "bayesian_average": 82.2,
     "last_score": 70.4,
     "total_reviews": 6,
     "google_rating": 4.3,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 368,
@@ -2809,14 +2360,12 @@
     "address": "דרך עכו 192",
     "lat": 32.843637,
     "lng": 35.090416,
-    "national_rank": 152,
+    "national_rank": 148,
     "bayesian_average": 82.2,
     "last_score": 49.2,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 690,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 690
   },
   {
     "id": 71,
@@ -2827,16 +2376,12 @@
     "address": "יהושע אביזוהר 8",
     "lat": 31.76132,
     "lng": 35.21388,
-    "national_rank": 153,
+    "national_rank": 149,
     "bayesian_average": 82.1,
     "last_score": 58.5,
     "total_reviews": 10,
     "google_rating": 4.3,
-    "google_ratings_total": 620,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 620
   },
   {
     "id": 85,
@@ -2847,16 +2392,12 @@
     "address": "אגריפס 115 (שוק מחנה יהודה)",
     "lat": 31.7852,
     "lng": 35.2116,
-    "national_rank": 154,
+    "national_rank": 150,
     "bayesian_average": 82.1,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.3,
-    "google_ratings_total": 690,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 690
   },
   {
     "id": 411,
@@ -2867,14 +2408,12 @@
     "address": "בן עמי 32",
     "lat": 32.9234,
     "lng": 35.0768,
-    "national_rank": 155,
+    "national_rank": 151,
     "bayesian_average": 82.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 780,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 780
   },
   {
     "id": 414,
@@ -2885,14 +2424,12 @@
     "address": "שדרות הגעתון 20",
     "lat": 33.0061,
     "lng": 35.0942,
-    "national_rank": 156,
+    "national_rank": 152,
     "bayesian_average": 82.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 590,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 590
   },
   {
     "id": 418,
@@ -2903,14 +2440,12 @@
     "address": "שפרינצק 2",
     "lat": 32.6082,
     "lng": 35.2884,
-    "national_rank": 157,
+    "national_rank": 153,
     "bayesian_average": 82.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 560,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 560
   },
   {
     "id": 434,
@@ -2921,14 +2456,12 @@
     "address": "ויצמן 24",
     "lat": 31.928428,
     "lng": 34.798618,
-    "national_rank": 158,
+    "national_rank": 154,
     "bayesian_average": 82.1,
     "last_score": 53.3,
     "total_reviews": 12,
     "google_rating": 4.5,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 9,
@@ -2939,14 +2472,12 @@
     "address": "יפת 7",
     "lat": 32.08216,
     "lng": 34.77352,
-    "national_rank": 159,
+    "national_rank": 155,
     "bayesian_average": 82.0,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.4,
-    "google_ratings_total": 530,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 530
   },
   {
     "id": 16,
@@ -2957,14 +2488,12 @@
     "address": "דרך מנחם בגין 48",
     "lat": 32.0862,
     "lng": 34.77692,
-    "national_rank": 160,
+    "national_rank": 156,
     "bayesian_average": 82.0,
     "last_score": 61.7,
     "total_reviews": 18,
     "google_rating": 4.4,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 22,
@@ -2975,14 +2504,12 @@
     "address": "החשמל 18",
     "lat": 32.08776,
     "lng": 34.77492,
-    "national_rank": 161,
+    "national_rank": 157,
     "bayesian_average": 82.0,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.5,
-    "google_ratings_total": 610,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 610
   },
   {
     "id": 455,
@@ -2993,14 +2520,12 @@
     "address": "הגליל 2",
     "lat": 32.312343,
     "lng": 34.932913,
-    "national_rank": 162,
+    "national_rank": 158,
     "bayesian_average": 82.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 153,
@@ -3011,34 +2536,12 @@
     "address": "שדרות גיבורי ישראל 32",
     "lat": 32.31568,
     "lng": 34.85096,
-    "national_rank": 163,
+    "national_rank": 159,
     "bayesian_average": 81.9,
     "last_score": 66.8,
     "total_reviews": 10,
     "google_rating": 4.3,
-    "google_ratings_total": 450,
-    "audit_flag": false,
-    "audit_reasons": []
-  },
-  {
-    "id": 389,
-    "name": "עבדאללה גריל ושווארמה",
-    "city": "אור יהודה",
-    "region": "center",
-    "platform_id": "עבדאללה_גריל_ושווארמה_אור_יהודה",
-    "address": "המפעל 17",
-    "lat": 32.0258,
-    "lng": 34.8614,
-    "national_rank": 164,
-    "bayesian_average": 81.9,
-    "last_score": 50.0,
-    "total_reviews": 0,
-    "google_rating": 4.4,
-    "google_ratings_total": 1450,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 450
   },
   {
     "id": 439,
@@ -3049,14 +2552,12 @@
     "address": "שדרות העצמאות 15",
     "lat": 31.871957,
     "lng": 34.748818,
-    "national_rank": 165,
+    "national_rank": 160,
     "bayesian_average": 81.9,
     "last_score": 59.4,
     "total_reviews": 9,
     "google_rating": 4.5,
-    "google_ratings_total": 540,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 540
   },
   {
     "id": 459,
@@ -3067,14 +2568,12 @@
     "address": "הרב עוזיאל 7",
     "lat": 32.439586,
     "lng": 34.911077,
-    "national_rank": 166,
+    "national_rank": 161,
     "bayesian_average": 81.9,
     "last_score": 67.0,
     "total_reviews": 5,
     "google_rating": 4.3,
-    "google_ratings_total": 1250,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1250
   },
   {
     "id": 19,
@@ -3085,16 +2584,12 @@
     "address": "הרצל 98",
     "lat": 32.0568,
     "lng": 34.7702,
-    "national_rank": 167,
+    "national_rank": 162,
     "bayesian_average": 81.8,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.4,
-    "google_ratings_total": 430,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 430
   },
   {
     "id": 39,
@@ -3105,14 +2600,12 @@
     "address": "צפרירים 2",
     "lat": 32.797103,
     "lng": 34.983862,
-    "national_rank": 168,
+    "national_rank": 163,
     "bayesian_average": 81.8,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.4,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 286,
@@ -3123,14 +2616,12 @@
     "address": "נדאא אל-סלאם 4",
     "lat": 32.26802,
     "lng": 35.01884,
-    "national_rank": 169,
+    "national_rank": 164,
     "bayesian_average": 81.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 264,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 264
   },
   {
     "id": 376,
@@ -3141,14 +2632,12 @@
     "address": "דרך שלמה 19",
     "lat": 32.05458,
     "lng": 34.762775,
-    "national_rank": 170,
+    "national_rank": 165,
     "bayesian_average": 81.8,
     "last_score": 70.6,
     "total_reviews": 8,
     "google_rating": 4.4,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 20,
@@ -3159,14 +2648,12 @@
     "address": "מקווה ישראל 4",
     "lat": 32.08296,
     "lng": 34.77606,
-    "national_rank": 171,
+    "national_rank": 166,
     "bayesian_average": 81.7,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.4,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 70,
@@ -3177,16 +2664,12 @@
     "address": "שדרות ויצמן 44",
     "lat": 32.83354,
     "lng": 35.07092,
-    "national_rank": 172,
+    "national_rank": 167,
     "bayesian_average": 81.7,
     "last_score": 58.0,
     "total_reviews": 5,
     "google_rating": 4.5,
-    "google_ratings_total": 640,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 640
   },
   {
     "id": 306,
@@ -3197,14 +2680,12 @@
     "address": "שכונת אל-דריג'את (רחוב אברבנאל)",
     "lat": 32.8536,
     "lng": 35.1986,
-    "national_rank": 173,
+    "national_rank": 168,
     "bayesian_average": 81.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 934,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 934
   },
   {
     "id": 319,
@@ -3215,14 +2696,12 @@
     "address": "כביש 5614 (כניסה ראשית)",
     "lat": 32.27866,
     "lng": 34.9884,
-    "national_rank": 174,
+    "national_rank": 169,
     "bayesian_average": 81.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 907,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 907
   },
   {
     "id": 38,
@@ -3233,14 +2712,12 @@
     "address": "שדרות ההסתדרות 56",
     "lat": 32.79392,
     "lng": 34.98346,
-    "national_rank": 175,
+    "national_rank": 170,
     "bayesian_average": 81.6,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.4,
-    "google_ratings_total": 780,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 780
   },
   {
     "id": 57,
@@ -3251,14 +2728,12 @@
     "address": "דרך ההגנה 20",
     "lat": 32.7936,
     "lng": 34.9874,
-    "national_rank": 176,
+    "national_rank": 171,
     "bayesian_average": 81.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 740,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 740
   },
   {
     "id": 26,
@@ -3269,14 +2744,12 @@
     "address": "שדרות ירושלים 83",
     "lat": 32.08104,
     "lng": 34.77714,
-    "national_rank": 177,
+    "national_rank": 172,
     "bayesian_average": 81.5,
     "last_score": 61.4,
     "total_reviews": 18,
     "google_rating": 4.5,
-    "google_ratings_total": 470,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 470
   },
   {
     "id": 285,
@@ -3287,14 +2760,12 @@
     "address": "עומר אל-מוח'תאר 10",
     "lat": 31.39414,
     "lng": 34.74634,
-    "national_rank": 178,
+    "national_rank": 173,
     "bayesian_average": 81.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 728,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 728
   },
   {
     "id": 417,
@@ -3305,14 +2776,12 @@
     "address": "ההגנה 35",
     "lat": 32.9152,
     "lng": 35.2981,
-    "national_rank": 179,
+    "national_rank": 174,
     "bayesian_average": 81.5,
     "last_score": 50.7,
     "total_reviews": 14,
     "google_rating": 4.5,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 436,
@@ -3323,14 +2792,12 @@
     "address": "הרצל 99",
     "lat": 31.8975,
     "lng": 34.8105,
-    "national_rank": 180,
+    "national_rank": 175,
     "bayesian_average": 81.5,
     "last_score": 44.2,
     "total_reviews": 6,
     "google_rating": 4.5,
-    "google_ratings_total": 740,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 740
   },
   {
     "id": 457,
@@ -3341,14 +2808,12 @@
     "address": "המייסדים 56",
     "lat": 32.269794,
     "lng": 34.88945,
-    "national_rank": 181,
+    "national_rank": 176,
     "bayesian_average": 81.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 310,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 310
   },
   {
     "id": 53,
@@ -3359,14 +2824,12 @@
     "address": "חניתה 40",
     "lat": 32.78584,
     "lng": 34.9809,
-    "national_rank": 182,
+    "national_rank": 177,
     "bayesian_average": 81.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 610,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 610
   },
   {
     "id": 95,
@@ -3377,14 +2840,12 @@
     "address": "שדרות דוד טוביהו 125",
     "lat": 31.25304,
     "lng": 34.80014,
-    "national_rank": 183,
+    "national_rank": 178,
     "bayesian_average": 81.4,
     "last_score": 61.4,
     "total_reviews": 7,
     "google_rating": 4.5,
-    "google_ratings_total": 774,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 774
   },
   {
     "id": 291,
@@ -3395,14 +2856,12 @@
     "address": "אל-ג'ליל 22",
     "lat": 32.86586,
     "lng": 35.30914,
-    "national_rank": 184,
+    "national_rank": 179,
     "bayesian_average": 81.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 312,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 312
   },
   {
     "id": 382,
@@ -3413,14 +2872,12 @@
     "address": "תובל 18",
     "lat": 32.087567,
     "lng": 34.803615,
-    "national_rank": 185,
+    "national_rank": 180,
     "bayesian_average": 81.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 431,
@@ -3431,14 +2888,12 @@
     "address": "נפתלי פלטין 4",
     "lat": 31.988323,
     "lng": 34.771844,
-    "national_rank": 186,
+    "national_rank": 181,
     "bayesian_average": 81.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 482,
@@ -3449,14 +2904,12 @@
     "address": "המלאכה 5",
     "lat": 29.563431,
     "lng": 34.958575,
-    "national_rank": 187,
+    "national_rank": 182,
     "bayesian_average": 81.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 480,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 480
   },
   {
     "id": 18,
@@ -3467,17 +2920,12 @@
     "address": "הירקון 296 (נמל תל אביב)",
     "lat": 32.096099,
     "lng": 34.774643,
-    "national_rank": 188,
+    "national_rank": 183,
     "bayesian_average": 81.3,
     "last_score": 59.7,
     "total_reviews": 22,
     "google_rating": 4.4,
-    "google_ratings_total": 510,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 510
   },
   {
     "id": 124,
@@ -3488,14 +2936,12 @@
     "address": "חיים עוזר 26",
     "lat": 32.09268,
     "lng": 34.88282,
-    "national_rank": 189,
+    "national_rank": 184,
     "bayesian_average": 81.3,
     "last_score": 75.2,
     "total_reviews": 14,
     "google_rating": 4.2,
-    "google_ratings_total": 252,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 252
   },
   {
     "id": 34,
@@ -3506,16 +2952,12 @@
     "address": "אבן גבירול 92",
     "lat": 32.0852,
     "lng": 34.77236,
-    "national_rank": 190,
+    "national_rank": 185,
     "bayesian_average": 81.2,
     "last_score": 60.7,
     "total_reviews": 21,
     "google_rating": 4.5,
-    "google_ratings_total": 630,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 630
   },
   {
     "id": 97,
@@ -3526,14 +2968,12 @@
     "address": "שער הגיא 1",
     "lat": 31.25314,
     "lng": 34.79414,
-    "national_rank": 191,
+    "national_rank": 186,
     "bayesian_average": 81.2,
     "last_score": 76.0,
     "total_reviews": 5,
     "google_rating": 4.1,
-    "google_ratings_total": 628,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 628
   },
   {
     "id": 386,
@@ -3544,14 +2984,12 @@
     "address": "בורוכוב 54",
     "lat": 32.0768,
     "lng": 34.8112,
-    "national_rank": 192,
+    "national_rank": 187,
     "bayesian_average": 81.2,
     "last_score": 50.0,
     "total_reviews": 2,
     "google_rating": 4.6,
-    "google_ratings_total": 980,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 980
   },
   {
     "id": 21,
@@ -3562,14 +3000,12 @@
     "address": "שונצינו 4",
     "lat": 32.07782,
     "lng": 34.78312,
-    "national_rank": 193,
+    "national_rank": 188,
     "bayesian_average": 81.1,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.5,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 59,
@@ -3580,14 +3016,12 @@
     "address": "שדרות טרומפלדור 56",
     "lat": 32.79538,
     "lng": 34.98646,
-    "national_rank": 194,
+    "national_rank": 189,
     "bayesian_average": 81.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 670,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 670
   },
   {
     "id": 73,
@@ -3598,14 +3032,12 @@
     "address": "יפו 43",
     "lat": 31.76306,
     "lng": 35.21564,
-    "national_rank": 195,
+    "national_rank": 190,
     "bayesian_average": 81.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 397,
@@ -3616,14 +3048,12 @@
     "address": "הזית 6",
     "lat": 32.106998,
     "lng": 34.95525,
-    "national_rank": 196,
+    "national_rank": 191,
     "bayesian_average": 81.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 350,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 350
   },
   {
     "id": 81,
@@ -3634,14 +3064,12 @@
     "address": "בן יהודה 2",
     "lat": 31.76948,
     "lng": 35.2047,
-    "national_rank": 197,
+    "national_rank": 192,
     "bayesian_average": 81.0,
     "last_score": 70.0,
     "total_reviews": 4,
     "google_rating": 4.2,
-    "google_ratings_total": 640,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 640
   },
   {
     "id": 84,
@@ -3652,14 +3080,12 @@
     "address": "דרך בית חנינא 61",
     "lat": 31.76454,
     "lng": 35.21706,
-    "national_rank": 198,
+    "national_rank": 193,
     "bayesian_average": 81.0,
     "last_score": 50.0,
     "total_reviews": 4,
     "google_rating": 4.4,
-    "google_ratings_total": 430,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 430
   },
   {
     "id": 215,
@@ -3670,14 +3096,12 @@
     "address": "ויצמן 158",
     "lat": 32.17454,
     "lng": 34.91102,
-    "national_rank": 199,
+    "national_rank": 194,
     "bayesian_average": 81.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 567,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 567
   },
   {
     "id": 396,
@@ -3688,14 +3112,12 @@
     "address": "העמל 13",
     "lat": 32.106334,
     "lng": 34.968996,
-    "national_rank": 200,
+    "national_rank": 195,
     "bayesian_average": 81.0,
     "last_score": 50.0,
     "total_reviews": 7,
     "google_rating": 4.5,
-    "google_ratings_total": 320,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 320
   },
   {
     "id": 474,
@@ -3706,14 +3128,12 @@
     "address": "יגאל אלון 1",
     "lat": 31.5261,
     "lng": 34.5949,
-    "national_rank": 201,
+    "national_rank": 196,
     "bayesian_average": 81.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 440,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 440
   },
   {
     "id": 476,
@@ -3724,14 +3144,12 @@
     "address": "משה שרת 24",
     "lat": 31.257609,
     "lng": 34.767658,
-    "national_rank": 202,
+    "national_rank": 197,
     "bayesian_average": 81.0,
     "last_score": 55.7,
     "total_reviews": 7,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 58,
@@ -3742,14 +3160,12 @@
     "address": "חלוצי התעשייה 2",
     "lat": 32.80264,
     "lng": 34.98986,
-    "national_rank": 203,
+    "national_rank": 198,
     "bayesian_average": 80.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 375,
@@ -3760,14 +3176,12 @@
     "address": "שדרות ירושלים 2",
     "lat": 32.056706,
     "lng": 34.759611,
-    "national_rank": 204,
+    "national_rank": 199,
     "bayesian_average": 80.9,
     "last_score": 70.6,
     "total_reviews": 8,
     "google_rating": 4.4,
-    "google_ratings_total": 890,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 890
   },
   {
     "id": 50,
@@ -3778,14 +3192,12 @@
     "address": "דרך יפו 134",
     "lat": 32.79384,
     "lng": 34.98036,
-    "national_rank": 205,
+    "national_rank": 200,
     "bayesian_average": 80.8,
     "last_score": 58.2,
     "total_reviews": 10,
     "google_rating": 4.5,
-    "google_ratings_total": 1680,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1680
   },
   {
     "id": 181,
@@ -3796,14 +3208,12 @@
     "address": "ביאליק 77",
     "lat": 32.06598,
     "lng": 34.82002,
-    "national_rank": 206,
+    "national_rank": 201,
     "bayesian_average": 80.8,
     "last_score": 70.2,
     "total_reviews": 10,
     "google_rating": 4.4,
-    "google_ratings_total": 281,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 281
   },
   {
     "id": 363,
@@ -3814,14 +3224,12 @@
     "address": "התע\"ש 10",
     "lat": 32.17868,
     "lng": 34.91374,
-    "national_rank": 207,
+    "national_rank": 202,
     "bayesian_average": 80.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 408,
@@ -3832,14 +3240,12 @@
     "address": "החרושת 4",
     "lat": 32.861243,
     "lng": 35.100219,
-    "national_rank": 208,
+    "national_rank": 203,
     "bayesian_average": 80.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 380,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 380
   },
   {
     "id": 419,
@@ -3850,14 +3256,12 @@
     "address": "קהילת ציון 4",
     "lat": 32.6065,
     "lng": 35.2902,
-    "national_rank": 209,
+    "national_rank": 204,
     "bayesian_average": 80.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 481,
@@ -3868,14 +3272,12 @@
     "address": "דרבן 2",
     "lat": 29.55207,
     "lng": 34.956498,
-    "national_rank": 210,
+    "national_rank": 205,
     "bayesian_average": 80.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 540,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 540
   },
   {
     "id": 32,
@@ -3886,14 +3288,12 @@
     "address": "הארבעה 28",
     "lat": 32.08088,
     "lng": 34.78018,
-    "national_rank": 211,
+    "national_rank": 206,
     "bayesian_average": 80.7,
     "last_score": 55.3,
     "total_reviews": 15,
     "google_rating": 4.4,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 66,
@@ -3904,14 +3304,12 @@
     "address": "רחוב 2 (מספר 11)",
     "lat": 32.6922,
     "lng": 35.0534,
-    "national_rank": 212,
+    "national_rank": 207,
     "bayesian_average": 80.7,
     "last_score": 50.0,
     "total_reviews": 4,
     "google_rating": 4.4,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 132,
@@ -3922,14 +3320,12 @@
     "address": "אלטלף 8",
     "lat": 32.03016,
     "lng": 34.88476,
-    "national_rank": 213,
+    "national_rank": 208,
     "bayesian_average": 80.7,
     "last_score": 50.0,
     "total_reviews": 9,
     "google_rating": 4.7,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 139,
@@ -3940,14 +3336,12 @@
     "address": "הבנאים 3",
     "lat": 31.79946,
     "lng": 34.6559,
-    "national_rank": 214,
+    "national_rank": 209,
     "bayesian_average": 80.7,
     "last_score": 67.2,
     "total_reviews": 9,
     "google_rating": 4.2,
-    "google_ratings_total": 476,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 476
   },
   {
     "id": 260,
@@ -3958,14 +3352,12 @@
     "address": "שדרות אבא חושי 42",
     "lat": 32.7094,
     "lng": 35.04678,
-    "national_rank": 215,
+    "national_rank": 210,
     "bayesian_average": 80.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 165,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 165
   },
   {
     "id": 347,
@@ -3976,16 +3368,12 @@
     "address": "החרש 8",
     "lat": 32.16156,
     "lng": 34.89594,
-    "national_rank": 216,
+    "national_rank": 211,
     "bayesian_average": 80.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 350,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 350
   },
   {
     "id": 469,
@@ -3996,14 +3384,12 @@
     "address": "שדרות אבני החושן 1",
     "lat": 31.6245,
     "lng": 34.7812,
-    "national_rank": 217,
+    "national_rank": 212,
     "bayesian_average": 80.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 350,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 350
   },
   {
     "id": 307,
@@ -4014,14 +3400,12 @@
     "address": "שכונת אל-דריג'את",
     "lat": 32.8508,
     "lng": 35.1948,
-    "national_rank": 218,
+    "national_rank": 213,
     "bayesian_average": 80.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 325,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 325
   },
   {
     "id": 12,
@@ -4032,14 +3416,12 @@
     "address": "אצ\"ל 2",
     "lat": 32.07976,
     "lng": 34.77604,
-    "national_rank": 219,
+    "national_rank": 214,
     "bayesian_average": 80.5,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.4,
-    "google_ratings_total": 490,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 490
   },
   {
     "id": 182,
@@ -4050,17 +3432,12 @@
     "address": "שדרות ירושלים 10",
     "lat": 32.06818,
     "lng": 34.8224,
-    "national_rank": 220,
+    "national_rank": 215,
     "bayesian_average": 80.5,
     "last_score": 60.2,
     "total_reviews": 12,
     "google_rating": 4.2,
-    "google_ratings_total": 771,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 771
   },
   {
     "id": 395,
@@ -4071,14 +3448,12 @@
     "address": "היצירה 5",
     "lat": 32.094529,
     "lng": 34.849619,
-    "national_rank": 221,
+    "national_rank": 216,
     "bayesian_average": 80.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 280,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 280
   },
   {
     "id": 445,
@@ -4089,14 +3464,12 @@
     "address": "הרצל 50",
     "lat": 31.9282,
     "lng": 34.8654,
-    "national_rank": 222,
+    "national_rank": 217,
     "bayesian_average": 80.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 690,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 690
   },
   {
     "id": 17,
@@ -4107,14 +3480,12 @@
     "address": "נחלת יצחק 7",
     "lat": 32.08558,
     "lng": 34.78772,
-    "national_rank": 223,
+    "national_rank": 218,
     "bayesian_average": 80.3,
     "last_score": 57.2,
     "total_reviews": 18,
     "google_rating": 4.3,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 36,
@@ -4125,14 +3496,12 @@
     "address": "קרליבך 39",
     "lat": 32.08178,
     "lng": 34.78058,
-    "national_rank": 224,
+    "national_rank": 219,
     "bayesian_average": 80.3,
     "last_score": 52.8,
     "total_reviews": 22,
     "google_rating": 4.3,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 188,
@@ -4143,14 +3512,12 @@
     "address": "סוקולוב 69",
     "lat": 32.1462,
     "lng": 34.8392,
-    "national_rank": 225,
+    "national_rank": 220,
     "bayesian_average": 80.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 272,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 272
   },
   {
     "id": 449,
@@ -4161,14 +3528,12 @@
     "address": "יהלום 3",
     "lat": 31.935129,
     "lng": 34.826303,
-    "national_rank": 226,
+    "national_rank": 221,
     "bayesian_average": 80.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 340,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 340
   },
   {
     "id": 373,
@@ -4179,14 +3544,12 @@
     "address": "אבא אחימאיר 17",
     "lat": 32.125458,
     "lng": 34.802223,
-    "national_rank": 227,
+    "national_rank": 222,
     "bayesian_average": 80.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 390,
@@ -4197,14 +3560,12 @@
     "address": "הכרמל 1",
     "lat": 32.034874,
     "lng": 34.859888,
-    "national_rank": 228,
+    "national_rank": 223,
     "bayesian_average": 80.2,
     "last_score": 90.0,
     "total_reviews": 1,
     "google_rating": 4.2,
-    "google_ratings_total": 430,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 430
   },
   {
     "id": 401,
@@ -4215,14 +3576,12 @@
     "address": "דרך יפו 138",
     "lat": 32.826942,
     "lng": 34.987424,
-    "national_rank": 229,
+    "national_rank": 224,
     "bayesian_average": 80.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 468,
@@ -4233,16 +3592,12 @@
     "address": "אסתר המלכה 11",
     "lat": 31.635831,
     "lng": 34.772341,
-    "national_rank": 230,
+    "national_rank": 225,
     "bayesian_average": 80.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 380,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 380
   },
   {
     "id": 51,
@@ -4253,14 +3608,12 @@
     "address": "חלוצי התעשייה 2 (צומת קרית אתא)",
     "lat": 32.7968,
     "lng": 35.0528,
-    "national_rank": 231,
+    "national_rank": 226,
     "bayesian_average": 80.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 1120,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1120
   },
   {
     "id": 72,
@@ -4271,17 +3624,12 @@
     "address": "רבן יוחנן בן זכאי 7",
     "lat": 31.76872,
     "lng": 35.22048,
-    "national_rank": 232,
+    "national_rank": 227,
     "bayesian_average": 80.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 1150,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 1150
   },
   {
     "id": 208,
@@ -4292,17 +3640,12 @@
     "address": "סוקולוב 20",
     "lat": 32.1728,
     "lng": 34.8476,
-    "national_rank": 233,
+    "national_rank": 228,
     "bayesian_average": 80.1,
     "last_score": 55.6,
     "total_reviews": 8,
     "google_rating": 4.7,
-    "google_ratings_total": 168,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 168
   },
   {
     "id": 46,
@@ -4313,16 +3656,12 @@
     "address": "דרך חיפה 30 (קניון שער הצפון)",
     "lat": 32.806217,
     "lng": 35.075632,
-    "national_rank": 234,
+    "national_rank": 229,
     "bayesian_average": 80.0,
     "last_score": 54.6,
     "total_reviews": 19,
     "google_rating": 4.5,
-    "google_ratings_total": 680,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 680
   },
   {
     "id": 60,
@@ -4333,14 +3672,12 @@
     "address": "שדרות המגינים 3",
     "lat": 32.79668,
     "lng": 34.98152,
-    "national_rank": 235,
+    "national_rank": 230,
     "bayesian_average": 80.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 540,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 540
   },
   {
     "id": 121,
@@ -4351,14 +3688,12 @@
     "address": "זאב אורלוב 55",
     "lat": 32.09128,
     "lng": 34.89382,
-    "national_rank": 236,
+    "national_rank": 231,
     "bayesian_average": 80.0,
     "last_score": 65.6,
     "total_reviews": 16,
     "google_rating": 4.1,
-    "google_ratings_total": 715,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 715
   },
   {
     "id": 143,
@@ -4369,14 +3704,12 @@
     "address": "יפה נוף 25",
     "lat": 31.66624,
     "lng": 34.5792,
-    "national_rank": 237,
+    "national_rank": 232,
     "bayesian_average": 80.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 906,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 906
   },
   {
     "id": 160,
@@ -4387,16 +3720,12 @@
     "address": "שדרות פנחס לבון 30",
     "lat": 32.3187,
     "lng": 34.85504,
-    "national_rank": 238,
+    "national_rank": 233,
     "bayesian_average": 80.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 226,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 226
   },
   {
     "id": 105,
@@ -4407,14 +3736,12 @@
     "address": "דוד סחרוב 22",
     "lat": 31.963,
     "lng": 34.80108,
-    "national_rank": 239,
+    "national_rank": 234,
     "bayesian_average": 79.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 235,
@@ -4425,17 +3752,12 @@
     "address": "כביש 4 (מתחם דור אלון)",
     "lat": 32.35958,
     "lng": 34.90024,
-    "national_rank": 240,
+    "national_rank": 235,
     "bayesian_average": 79.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 710,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 710
   },
   {
     "id": 240,
@@ -4446,14 +3768,12 @@
     "address": "תופיק זיאד 37",
     "lat": 32.69122,
     "lng": 35.30238,
-    "national_rank": 241,
+    "national_rank": 236,
     "bayesian_average": 79.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 692,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 692
   },
   {
     "id": 423,
@@ -4464,14 +3784,12 @@
     "address": "אגריפס 48",
     "lat": 31.783924,
     "lng": 35.212874,
-    "national_rank": 242,
+    "national_rank": 237,
     "bayesian_average": 79.9,
     "last_score": 50.0,
     "total_reviews": 12,
     "google_rating": 4.3,
-    "google_ratings_total": 1085,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1085
   },
   {
     "id": 101,
@@ -4482,14 +3800,12 @@
     "address": "שדרות יצחק רגר 28",
     "lat": 31.25436,
     "lng": 34.79838,
-    "national_rank": 243,
+    "national_rank": 238,
     "bayesian_average": 79.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 496,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 496
   },
   {
     "id": 380,
@@ -4500,14 +3816,12 @@
     "address": "הברזל 34",
     "lat": 32.110313,
     "lng": 34.842031,
-    "national_rank": 244,
+    "national_rank": 239,
     "bayesian_average": 79.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 520,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 520
   },
   {
     "id": 447,
@@ -4518,16 +3832,12 @@
     "address": "שדרות המלאכה 15 (ישפרו סנטר)",
     "lat": 31.8912,
     "lng": 34.9625,
-    "national_rank": 245,
+    "national_rank": 240,
     "bayesian_average": 79.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 620,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 620
   },
   {
     "id": 214,
@@ -4538,14 +3848,12 @@
     "address": "טרומפלדור 5",
     "lat": 32.14272,
     "lng": 34.84572,
-    "national_rank": 246,
+    "national_rank": 241,
     "bayesian_average": 79.7,
     "last_score": 70.0,
     "total_reviews": 2,
     "google_rating": 4.0,
-    "google_ratings_total": 233,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 233
   },
   {
     "id": 217,
@@ -4556,14 +3864,12 @@
     "address": "אנגל 78",
     "lat": 32.1769,
     "lng": 34.9006,
-    "national_rank": 247,
+    "national_rank": 242,
     "bayesian_average": 79.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.5,
-    "google_ratings_total": 300,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 300
   },
   {
     "id": 272,
@@ -4574,14 +3880,12 @@
     "address": "מרבד הקסמים 5",
     "lat": 32.0928,
     "lng": 34.9478,
-    "national_rank": 248,
+    "national_rank": 243,
     "bayesian_average": 79.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 566,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 566
   },
   {
     "id": 63,
@@ -4592,14 +3896,12 @@
     "address": "כיכר מאירהוף 6",
     "lat": 32.825676,
     "lng": 34.982795,
-    "national_rank": 249,
+    "national_rank": 244,
     "bayesian_average": 79.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 530,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 530
   },
   {
     "id": 167,
@@ -4610,14 +3912,12 @@
     "address": "דרך השבעה 20",
     "lat": 32.02152,
     "lng": 34.80802,
-    "national_rank": 250,
+    "national_rank": 245,
     "bayesian_average": 79.6,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 530,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 530
   },
   {
     "id": 54,
@@ -4628,14 +3928,12 @@
     "address": "שדרות הנשיא 128",
     "lat": 32.80108,
     "lng": 34.98718,
-    "national_rank": 251,
+    "national_rank": 246,
     "bayesian_average": 79.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 450,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 450
   },
   {
     "id": 448,
@@ -4646,16 +3944,12 @@
     "address": "השדרה המרכזית 15",
     "lat": 31.922147,
     "lng": 34.967574,
-    "national_rank": 252,
+    "national_rank": 247,
     "bayesian_average": 79.5,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 370,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 370
   },
   {
     "id": 269,
@@ -4666,16 +3960,12 @@
     "address": "א-סולטאני 15",
     "lat": 32.11768,
     "lng": 34.96868,
-    "national_rank": 253,
+    "national_rank": 248,
     "bayesian_average": 79.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 412,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 412
   },
   {
     "id": 443,
@@ -4686,14 +3976,12 @@
     "address": "כיכר הפלמ\"ח 4",
     "lat": 31.956449,
     "lng": 34.897315,
-    "national_rank": 254,
+    "national_rank": 249,
     "bayesian_average": 79.4,
     "last_score": 65.0,
     "total_reviews": 8,
     "google_rating": 4.3,
-    "google_ratings_total": 320,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 320
   },
   {
     "id": 7,
@@ -4704,16 +3992,12 @@
     "address": "דרך שלמה 44",
     "lat": 32.0554,
     "lng": 34.7659,
-    "national_rank": 255,
+    "national_rank": 250,
     "bayesian_average": 79.3,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.4,
-    "google_ratings_total": 640,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 640
   },
   {
     "id": 364,
@@ -4724,14 +4008,12 @@
     "address": "הרברט סמואל 67",
     "lat": 32.43346,
     "lng": 34.9262,
-    "national_rank": 256,
+    "national_rank": 251,
     "bayesian_average": 79.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 480,
@@ -4742,14 +4024,12 @@
     "address": "שדרות ששת הימים 318",
     "lat": 29.543012,
     "lng": 34.929366,
-    "national_rank": 257,
+    "national_rank": 252,
     "bayesian_average": 79.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 6,
@@ -4760,17 +4040,12 @@
     "address": "יפת 93",
     "lat": 32.0494,
     "lng": 34.7524,
-    "national_rank": 258,
+    "national_rank": 253,
     "bayesian_average": 79.2,
     "last_score": 50.0,
     "total_reviews": 12,
     "google_rating": 4.3,
-    "google_ratings_total": 2150,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 2150
   },
   {
     "id": 179,
@@ -4781,14 +4056,12 @@
     "address": "הירדן 94",
     "lat": 32.077,
     "lng": 34.833,
-    "national_rank": 259,
+    "national_rank": 254,
     "bayesian_average": 79.2,
     "last_score": 57.3,
     "total_reviews": 15,
     "google_rating": 4.2,
-    "google_ratings_total": 914,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 914
   },
   {
     "id": 30,
@@ -4799,14 +4072,12 @@
     "address": "קרליבך 1",
     "lat": 32.0905,
     "lng": 34.79162,
-    "national_rank": 260,
+    "national_rank": 255,
     "bayesian_average": 79.1,
     "last_score": 46.7,
     "total_reviews": 12,
     "google_rating": 4.2,
-    "google_ratings_total": 980,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 980
   },
   {
     "id": 348,
@@ -4817,16 +4088,12 @@
     "address": "אדר 4",
     "lat": 31.79494,
     "lng": 34.65094,
-    "national_rank": 261,
+    "national_rank": 256,
     "bayesian_average": 79.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 320,
-    "audit_flag": true,
-    "audit_reasons": [
-      "כריכייה / באגט / טאבון"
-    ]
+    "google_ratings_total": 320
   },
   {
     "id": 155,
@@ -4837,14 +4104,12 @@
     "address": "סמילנסקי 5",
     "lat": 32.31802,
     "lng": 34.85356,
-    "national_rank": 262,
+    "national_rank": 257,
     "bayesian_average": 79.0,
     "last_score": 55.0,
     "total_reviews": 6,
     "google_rating": 4.3,
-    "google_ratings_total": 468,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 468
   },
   {
     "id": 239,
@@ -4855,14 +4120,12 @@
     "address": "הרצל 135",
     "lat": 31.893,
     "lng": 34.81216,
-    "national_rank": 263,
+    "national_rank": 258,
     "bayesian_average": 79.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 146,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 146
   },
   {
     "id": 14,
@@ -4873,14 +4136,12 @@
     "address": "דיזנגוף 105",
     "lat": 32.09282,
     "lng": 34.77676,
-    "national_rank": 264,
+    "national_rank": 259,
     "bayesian_average": 78.9,
     "last_score": 52.7,
     "total_reviews": 14,
     "google_rating": 4.4,
-    "google_ratings_total": 1650,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1650
   },
   {
     "id": 107,
@@ -4891,14 +4152,12 @@
     "address": "ברשבסקי 7",
     "lat": 31.98204,
     "lng": 34.79728,
-    "national_rank": 265,
+    "national_rank": 260,
     "bayesian_average": 78.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 674,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 674
   },
   {
     "id": 131,
@@ -4909,14 +4168,12 @@
     "address": "א-סולטאני 72",
     "lat": 32.12066,
     "lng": 34.9738,
-    "national_rank": 266,
+    "national_rank": 261,
     "bayesian_average": 78.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 289,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 289
   },
   {
     "id": 3,
@@ -4927,14 +4184,12 @@
     "address": "ז'בוטינסקי 85",
     "lat": 32.06468,
     "lng": 34.83398,
-    "national_rank": 267,
+    "national_rank": 262,
     "bayesian_average": 78.7,
     "last_score": 41.2,
     "total_reviews": 8,
     "google_rating": 4.5,
-    "google_ratings_total": 3100,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 3100
   },
   {
     "id": 99,
@@ -4945,14 +4200,12 @@
     "address": "יוהנה ז'בוטינסקי 13",
     "lat": 31.25822,
     "lng": 34.79898,
-    "national_rank": 268,
+    "national_rank": 263,
     "bayesian_average": 78.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.6,
-    "google_ratings_total": 471,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 471
   },
   {
     "id": 210,
@@ -4963,14 +4216,12 @@
     "address": "שדרות אבא אבן 12",
     "lat": 32.15702,
     "lng": 34.838,
-    "national_rank": 269,
+    "national_rank": 264,
     "bayesian_average": 78.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 698,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 698
   },
   {
     "id": 320,
@@ -4981,14 +4232,12 @@
     "address": "עומר בן אל-חטאב 12",
     "lat": 32.28826,
     "lng": 34.97264,
-    "national_rank": 270,
+    "national_rank": 265,
     "bayesian_average": 78.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 726,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 726
   },
   {
     "id": 37,
@@ -4999,17 +4248,12 @@
     "address": "דרך נמיר 170",
     "lat": 32.07684,
     "lng": 34.774,
-    "national_rank": 271,
+    "national_rank": 266,
     "bayesian_average": 78.2,
     "last_score": 66.2,
     "total_reviews": 28,
     "google_rating": 4.2,
-    "google_ratings_total": 720,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 720
   },
   {
     "id": 114,
@@ -5020,14 +4264,12 @@
     "address": "רוטשילד 36",
     "lat": 31.97462,
     "lng": 34.79096,
-    "national_rank": 272,
+    "national_rank": 267,
     "bayesian_average": 78.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 682,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 682
   },
   {
     "id": 23,
@@ -5038,14 +4280,12 @@
     "address": "אבן גבירול 64",
     "lat": 32.09102,
     "lng": 34.77348,
-    "national_rank": 273,
+    "national_rank": 268,
     "bayesian_average": 78.1,
     "last_score": 59.2,
     "total_reviews": 18,
     "google_rating": 4.2,
-    "google_ratings_total": 1250,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 1250
   },
   {
     "id": 110,
@@ -5056,14 +4296,12 @@
     "address": "רוטשילד 39",
     "lat": 31.982,
     "lng": 34.79426,
-    "national_rank": 274,
+    "national_rank": 269,
     "bayesian_average": 78.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 281,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 281
   },
   {
     "id": 384,
@@ -5074,16 +4312,12 @@
     "address": "ז'בוטינסקי 155",
     "lat": 32.090968,
     "lng": 34.822406,
-    "national_rank": 275,
+    "national_rank": 270,
     "bayesian_average": 78.1,
     "last_score": 41.2,
     "total_reviews": 8,
     "google_rating": 4.4,
-    "google_ratings_total": 540,
-    "audit_flag": true,
-    "audit_reasons": [
-      "תפריט מעורב (פלאפל / חומוס-פול / שניצל / מפגש)"
-    ]
+    "google_ratings_total": 540
   },
   {
     "id": 440,
@@ -5094,14 +4328,12 @@
     "address": "הירמוך 1",
     "lat": 31.8785,
     "lng": 34.7392,
-    "national_rank": 276,
+    "national_rank": 271,
     "bayesian_average": 78.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 460,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 460
   },
   {
     "id": 374,
@@ -5112,14 +4344,12 @@
     "address": "איינשטיין 7",
     "lat": 32.112492,
     "lng": 34.786754,
-    "national_rank": 277,
+    "national_rank": 272,
     "bayesian_average": 78.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 433,
@@ -5130,14 +4360,12 @@
     "address": "דוד סחרוב 21",
     "lat": 31.990386,
     "lng": 34.774091,
-    "national_rank": 278,
+    "national_rank": 273,
     "bayesian_average": 78.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 410,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 410
   },
   {
     "id": 44,
@@ -5148,14 +4376,12 @@
     "address": "שדרות הנשיא 130",
     "lat": 32.79538,
     "lng": 34.98164,
-    "national_rank": 279,
+    "national_rank": 274,
     "bayesian_average": 77.9,
     "last_score": 55.3,
     "total_reviews": 17,
     "google_rating": 4.3,
-    "google_ratings_total": 860,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 860
   },
   {
     "id": 201,
@@ -5166,14 +4392,12 @@
     "address": "כיכר צפניה 10",
     "lat": 31.66784,
     "lng": 34.56782,
-    "national_rank": 280,
+    "national_rank": 275,
     "bayesian_average": 77.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 458,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 458
   },
   {
     "id": 377,
@@ -5184,14 +4408,12 @@
     "address": "לויטן 1",
     "lat": 32.119043,
     "lng": 34.795849,
-    "national_rank": 281,
+    "national_rank": 276,
     "bayesian_average": 77.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 310,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 310
   },
   {
     "id": 125,
@@ -5202,14 +4424,12 @@
     "address": "אבשלום גיסין 15",
     "lat": 32.0991,
     "lng": 34.8672,
-    "national_rank": 282,
+    "national_rank": 277,
     "bayesian_average": 77.7,
     "last_score": 70.8,
     "total_reviews": 6,
     "google_rating": 4.0,
-    "google_ratings_total": 878,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 878
   },
   {
     "id": 135,
@@ -5220,14 +4440,12 @@
     "address": "אל באיארה 23",
     "lat": 32.14588,
     "lng": 34.96096,
-    "national_rank": 283,
+    "national_rank": 278,
     "bayesian_average": 77.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 359,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 359
   },
   {
     "id": 216,
@@ -5238,14 +4456,12 @@
     "address": "גלגלי הפלדה 4",
     "lat": 32.18714,
     "lng": 34.90364,
-    "national_rank": 284,
+    "national_rank": 279,
     "bayesian_average": 77.7,
     "last_score": 70.0,
     "total_reviews": 6,
     "google_rating": 4.0,
-    "google_ratings_total": 878,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 878
   },
   {
     "id": 378,
@@ -5256,14 +4472,12 @@
     "address": "בית אל 12",
     "lat": 32.118158,
     "lng": 34.839532,
-    "national_rank": 285,
+    "national_rank": 280,
     "bayesian_average": 77.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 290,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 290
   },
   {
     "id": 441,
@@ -5274,14 +4488,12 @@
     "address": "אליהו גולומב 35",
     "lat": 31.954954,
     "lng": 34.89657,
-    "national_rank": 286,
+    "national_rank": 281,
     "bayesian_average": 77.7,
     "last_score": 32.5,
     "total_reviews": 2,
     "google_rating": 4.5,
-    "google_ratings_total": 891,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 891
   },
   {
     "id": 464,
@@ -5292,14 +4504,12 @@
     "address": "עופרה 16",
     "lat": 31.795778,
     "lng": 34.699869,
-    "national_rank": 287,
+    "national_rank": 282,
     "bayesian_average": 77.6,
     "last_score": 30.0,
     "total_reviews": 2,
     "google_rating": 4.5,
-    "google_ratings_total": 420,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 420
   },
   {
     "id": 24,
@@ -5310,14 +4520,12 @@
     "address": "דניאל 25",
     "lat": 32.08006,
     "lng": 34.78736,
-    "national_rank": 288,
+    "national_rank": 283,
     "bayesian_average": 77.4,
     "last_score": 53.3,
     "total_reviews": 12,
     "google_rating": 4.1,
-    "google_ratings_total": 680,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 680
   },
   {
     "id": 120,
@@ -5328,14 +4536,12 @@
     "address": "חיים עוזר 4",
     "lat": 32.0928,
     "lng": 34.87878,
-    "national_rank": 289,
+    "national_rank": 284,
     "bayesian_average": 77.3,
     "last_score": 62.5,
     "total_reviews": 16,
     "google_rating": 4.0,
-    "google_ratings_total": 259,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 259
   },
   {
     "id": 151,
@@ -5346,17 +4552,12 @@
     "address": "כביש החוף (מתחם השחר)",
     "lat": 32.32418,
     "lng": 34.84932,
-    "national_rank": 290,
+    "national_rank": 285,
     "bayesian_average": 77.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 234,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים",
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 234
   },
   {
     "id": 138,
@@ -5367,14 +4568,12 @@
     "address": "ניסים אלוני 4",
     "lat": 32.0942,
     "lng": 34.9562,
-    "national_rank": 291,
+    "national_rank": 286,
     "bayesian_average": 77.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 315,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 315
   },
   {
     "id": 276,
@@ -5385,14 +4584,12 @@
     "address": "הכביש הראשי (כביש 65)",
     "lat": 32.49272,
     "lng": 35.05452,
-    "national_rank": 292,
+    "national_rank": 287,
     "bayesian_average": 76.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 770,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 770
   },
   {
     "id": 123,
@@ -5403,14 +4600,12 @@
     "address": "דרך יצחק רבין 2",
     "lat": 32.07872,
     "lng": 34.87888,
-    "national_rank": 293,
+    "national_rank": 288,
     "bayesian_average": 76.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 923,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 923
   },
   {
     "id": 129,
@@ -5421,14 +4616,12 @@
     "address": "יצחק שדה 34",
     "lat": 32.07632,
     "lng": 34.8931,
-    "national_rank": 294,
+    "national_rank": 289,
     "bayesian_average": 76.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 931,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 931
   },
   {
     "id": 144,
@@ -5439,14 +4632,12 @@
     "address": "דרך ניר גלים (אזה\"ת עד הלום)",
     "lat": 31.80694,
     "lng": 34.64874,
-    "national_rank": 295,
+    "national_rank": 290,
     "bayesian_average": 76.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 940,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 940
   },
   {
     "id": 247,
@@ -5457,14 +4648,12 @@
     "address": "כביש 672 מרכז הכפר",
     "lat": 32.68532,
     "lng": 35.05218,
-    "national_rank": 296,
+    "national_rank": 291,
     "bayesian_average": 76.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 895,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 895
   },
   {
     "id": 383,
@@ -5475,14 +4664,12 @@
     "address": "תובל 9",
     "lat": 32.087599,
     "lng": 34.804004,
-    "national_rank": 297,
+    "national_rank": 292,
     "bayesian_average": 76.8,
     "last_score": 41.2,
     "total_reviews": 8,
     "google_rating": 4.3,
-    "google_ratings_total": 620,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 620
   },
   {
     "id": 229,
@@ -5493,14 +4680,12 @@
     "address": "רוטשילד 17",
     "lat": 32.4328,
     "lng": 34.91526,
-    "national_rank": 298,
+    "national_rank": 293,
     "bayesian_average": 76.4,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 466,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 466
   },
   {
     "id": 238,
@@ -5511,16 +4696,12 @@
     "address": "הגלעד 1 (מתחם תבורי)",
     "lat": 32.4735,
     "lng": 34.9721,
-    "national_rank": 299,
+    "national_rank": 294,
     "bayesian_average": 76.2,
     "last_score": 59.0,
     "total_reviews": 10,
     "google_rating": 4.2,
-    "google_ratings_total": 873,
-    "audit_flag": true,
-    "audit_reasons": [
-      "ללא המילה 'שווארמה' או 'דונר' בשם"
-    ]
+    "google_ratings_total": 873
   },
   {
     "id": 478,
@@ -5531,14 +4712,12 @@
     "address": "פרץ סנטר",
     "lat": 31.059932,
     "lng": 35.020314,
-    "national_rank": 300,
+    "national_rank": 295,
     "bayesian_average": 76.2,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.3,
-    "google_ratings_total": 390,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 390
   },
   {
     "id": 52,
@@ -5549,14 +4728,12 @@
     "address": "גת 4",
     "lat": 32.79232,
     "lng": 34.99388,
-    "national_rank": 301,
+    "national_rank": 296,
     "bayesian_average": 76.1,
     "last_score": 50.0,
     "total_reviews": 10,
     "google_rating": 4.1,
-    "google_ratings_total": 320,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 320
   },
   {
     "id": 126,
@@ -5567,14 +4744,12 @@
     "address": "הנביאים 47",
     "lat": 32.09336,
     "lng": 34.87856,
-    "national_rank": 302,
+    "national_rank": 297,
     "bayesian_average": 75.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 269,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 269
   },
   {
     "id": 283,
@@ -5585,14 +4760,12 @@
     "address": "עומר אל-מוח'תאר 24",
     "lat": 31.39158,
     "lng": 34.75884,
-    "national_rank": 303,
+    "national_rank": 298,
     "bayesian_average": 75.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.2,
-    "google_ratings_total": 109,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 109
   },
   {
     "id": 159,
@@ -5603,14 +4776,12 @@
     "address": "כביש החוף (מתחם פז מחלף נתניה)",
     "lat": 32.3238,
     "lng": 34.8648,
-    "national_rank": 304,
+    "national_rank": 299,
     "bayesian_average": 75.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 832,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 832
   },
   {
     "id": 444,
@@ -5621,14 +4792,12 @@
     "address": "צה\"ל 1",
     "lat": 31.934251,
     "lng": 34.858703,
-    "national_rank": 305,
+    "national_rank": 300,
     "bayesian_average": 75.1,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.4,
-    "google_ratings_total": 580,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 580
   },
   {
     "id": 248,
@@ -5639,14 +4808,12 @@
     "address": "כביש 672 (מול מרכז מסחרי)",
     "lat": 32.6976,
     "lng": 35.05062,
-    "national_rank": 306,
+    "national_rank": 301,
     "bayesian_average": 75.0,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 662,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 662
   },
   {
     "id": 204,
@@ -5657,14 +4824,12 @@
     "address": "שדרות ירושלים 119",
     "lat": 31.66626,
     "lng": 34.57164,
-    "national_rank": 307,
+    "national_rank": 302,
     "bayesian_average": 74.9,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 527,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 527
   },
   {
     "id": 161,
@@ -5675,16 +4840,12 @@
     "address": "המחקר 3",
     "lat": 32.32938,
     "lng": 34.8479,
-    "national_rank": 308,
+    "national_rank": 303,
     "bayesian_average": 74.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 474,
-    "audit_flag": true,
-    "audit_reasons": [
-      "מסעדת גריל / שיפודים / בשרים"
-    ]
+    "google_ratings_total": 474
   },
   {
     "id": 293,
@@ -5695,14 +4856,12 @@
     "address": "אל-ג'ליל 8",
     "lat": 32.86888,
     "lng": 35.29944,
-    "national_rank": 309,
+    "national_rank": 304,
     "bayesian_average": 74.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 474,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 474
   },
   {
     "id": 308,
@@ -5713,14 +4872,12 @@
     "address": "אל-קודס 5",
     "lat": 32.8444,
     "lng": 35.19984,
-    "national_rank": 310,
+    "national_rank": 305,
     "bayesian_average": 74.8,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 474,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 474
   },
   {
     "id": 86,
@@ -5731,14 +4888,12 @@
     "address": "כביש השלום 22",
     "lat": 31.8062,
     "lng": 35.1098,
-    "national_rank": 311,
+    "national_rank": 306,
     "bayesian_average": 74.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 388,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 388
   },
   {
     "id": 162,
@@ -5749,14 +4904,12 @@
     "address": "שדרות בנימין 2",
     "lat": 32.31678,
     "lng": 34.84358,
-    "national_rank": 312,
+    "national_rank": 307,
     "bayesian_average": 74.7,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.0,
-    "google_ratings_total": 394,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 394
   },
   {
     "id": 96,
@@ -5767,14 +4920,12 @@
     "address": "דרך חברון 21",
     "lat": 31.24752,
     "lng": 34.782,
-    "national_rank": 313,
+    "national_rank": 308,
     "bayesian_average": 74.0,
     "last_score": 37.5,
     "total_reviews": 6,
     "google_rating": 4.4,
-    "google_ratings_total": 693,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 693
   },
   {
     "id": 470,
@@ -5785,14 +4936,12 @@
     "address": "יוסף סמלו 9",
     "lat": 31.420357,
     "lng": 34.59991,
-    "national_rank": 314,
+    "national_rank": 309,
     "bayesian_average": 73.7,
     "last_score": 70.0,
     "total_reviews": 4,
     "google_rating": 4.5,
-    "google_ratings_total": 760,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 760
   },
   {
     "id": 109,
@@ -5803,14 +4952,12 @@
     "address": "לח\"י 2",
     "lat": 31.97246,
     "lng": 34.79386,
-    "national_rank": 315,
+    "national_rank": 310,
     "bayesian_average": 73.3,
     "last_score": 50.0,
     "total_reviews": 0,
     "google_rating": 4.1,
-    "google_ratings_total": 940,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 940
   },
   {
     "id": 180,
@@ -5821,13 +4968,11 @@
     "address": "שדרות דוד טוביהו 125 (גרנד קניון)",
     "lat": 31.250641,
     "lng": 34.771663,
-    "national_rank": 316,
+    "national_rank": 311,
     "bayesian_average": 64.6,
     "last_score": 31.2,
     "total_reviews": 2,
     "google_rating": 4.3,
-    "google_ratings_total": 906,
-    "audit_flag": false,
-    "audit_reasons": []
+    "google_ratings_total": 906
   }
 ]
