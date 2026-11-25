@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trackUserAction } from '../services/analytics';
 import './AdBanner.css';
 
 export interface BannerItem {
@@ -49,6 +50,11 @@ const AdBanner: React.FC<AdBannerProps> = ({ banners, rotationInterval = 5000 })
         rel="noopener noreferrer"
         className={`ad-banner-link ${isTransitioning ? 'fade-out' : 'fade-in'}`}
         aria-label={currentBanner.altText}
+        onClick={() => {
+          if (currentBanner.imageUrl) {
+            void trackUserAction('banner_click', currentBanner.altText);
+          }
+        }}
       >
         {currentBanner.imageUrl ? (
           <img

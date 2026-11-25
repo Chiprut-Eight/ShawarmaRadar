@@ -7,10 +7,12 @@ import NavigationModal from './NavigationModal';
 import './Layout.css';
 
 import { searchRestaurantLocal, type Restaurant } from '../services/firebase';
+import { trackUserAction } from '../services/analytics';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const modalHistoryPushedRef = useRef<boolean>(false);
@@ -50,7 +52,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   });
 
   useEffect(() => {
-    if (showWelcomePopup) {
+    if (showWelcomePopup && !isAdminRoute) {
       document.body.classList.add('welcome-popup-active');
     } else {
       document.body.classList.remove('welcome-popup-active');
@@ -58,7 +60,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return () => {
       document.body.classList.remove('welcome-popup-active');
     };
-  }, [showWelcomePopup]);
+  }, [showWelcomePopup, isAdminRoute]);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -142,6 +144,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     if (!searchQuery.trim()) return;
     setIsSearching(true);
     setSearchResult(null);
+    void trackUserAction('search');
     try {
       const result = searchRestaurantLocal(searchQuery);
       if (result.exists) {
@@ -246,103 +249,107 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <main className="main-content">
         {children}
 
-        {/* Banner 1 - Above Business Section (Shawarma Bon Ta'am) */}
-        <AdBanner banners={topAdvertiserBanners} rotationInterval={5000} />
+        {!isAdminRoute && (
+          <>
+            {/* Banner 1 - Above Business Section (Shawarma Bon Ta'am) */}
+            <AdBanner banners={topAdvertiserBanners} rotationInterval={5000} />
 
-        {/* Global Business Advertisement Section */}
-        <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto'}}>
-          <h3>{t('business_section_title')}</h3>
-          <p>{t('business_section_desc')}</p>
-          <div className="search-box">
-            <input 
-              type="text" 
-              placeholder={t('business_search_placeholder')} 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button onClick={handleSearchBusiness} disabled={isSearching}>
-              {isSearching ? t('business_scanning_btn') : t('business_search_btn')}
-            </button>
-          </div>
-          {searchResult && (
-            <div style={{marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px'}}>
-              <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
-                {searchResult.message}
+            {/* Global Business Advertisement Section */}
+            <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto'}}>
+              <h3>{t('business_section_title')}</h3>
+              <p>{t('business_section_desc')}</p>
+              <div className="search-box">
+                <input 
+                  type="text" 
+                  placeholder={t('business_search_placeholder')} 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button onClick={handleSearchBusiness} disabled={isSearching}>
+                  {isSearching ? t('business_scanning_btn') : t('business_search_btn')}
+                </button>
               </div>
-              {searchResult.matches && searchResult.matches.length > 0 && (
-                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px'}}>
-                  {searchResult.matches.map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => setNavRestaurant(item)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        background: '#1e1e22',
-                        border: '1px solid rgba(250, 204, 21, 0.3)',
-                        borderRadius: '10px',
-                        padding: '10px 14px',
-                        cursor: 'pointer',
-                        textAlign: i18n.language === 'he' ? 'right' : 'left'
-                      }}
-                    >
-                      <div>
-                        <div style={{fontWeight: 'bold', color: '#fff', fontSize: '1rem'}}>
-                          {item.name}
-                          {item.national_rank && (
-                            <span style={{marginInlineStart: '8px', fontSize: '0.78rem', color: '#facc15'}}>
-                              <Trophy size={12} style={{display: 'inline', verticalAlign: 'middle', marginInlineEnd: '3px'}} />
-                              #{item.national_rank} {t('in_israel_short')}
+              {searchResult && (
+                <div style={{marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                  <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
+                    {searchResult.message}
+                  </div>
+                  {searchResult.matches && searchResult.matches.length > 0 && (
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px'}}>
+                      {searchResult.matches.map((item) => (
+                        <div
+                          key={item.id}
+                          onClick={() => setNavRestaurant(item)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            background: '#1e1e22',
+                            border: '1px solid rgba(250, 204, 21, 0.3)',
+                            borderRadius: '10px',
+                            padding: '10px 14px',
+                            cursor: 'pointer',
+                            textAlign: i18n.language === 'he' ? 'right' : 'left'
+                          }}
+                        >
+                          <div>
+                            <div style={{fontWeight: 'bold', color: '#fff', fontSize: '1rem'}}>
+                              {item.name}
+                              {item.national_rank && (
+                                <span style={{marginInlineStart: '8px', fontSize: '0.78rem', color: '#facc15'}}>
+                                  <Trophy size={12} style={{display: 'inline', verticalAlign: 'middle', marginInlineEnd: '3px'}} />
+                                  #{item.national_rank} {t('in_israel_short')}
+                                </span>
+                              )}
+                            </div>
+                            <div style={{fontSize: '0.82rem', color: '#9ca3af'}}>
+                              {item.city} {item.address && item.address !== item.city ? `• ${item.address}` : ''}
+                            </div>
+                          </div>
+                          <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                            <span style={{color: '#4ade80', fontWeight: 'bold', fontFamily: 'monospace'}}>
+                              {item.bayesian_average.toFixed(1)}%
                             </span>
-                          )}
+                            <span style={{background: '#facc15', color: '#000', padding: '5px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
+                              <Navigation size={13} /> {t('navigate_btn')}
+                            </span>
+                          </div>
                         </div>
-                        <div style={{fontSize: '0.82rem', color: '#9ca3af'}}>
-                          {item.city} {item.address && item.address !== item.city ? `• ${item.address}` : ''}
-                        </div>
-                      </div>
-                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                        <span style={{color: '#4ade80', fontWeight: 'bold', fontFamily: 'monospace'}}>
-                          {item.bayesian_average.toFixed(1)}%
-                        </span>
-                        <span style={{background: '#facc15', color: '#000', padding: '5px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
-                          <Navigation size={13} /> {t('navigate_btn')}
-                        </span>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
+                  {searchResult.whatsapp && (
+                    <a 
+                      href={searchResult.whatsapp}
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="whatsapp-btn"
+                      style={{marginTop: '5px'}}
+                    >
+                      <MessageCircle size={20} /> {t('business_contact_btn')}
+                    </a>
+                  )}
                 </div>
               )}
-              {searchResult.whatsapp && (
+              
+              <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
+                <h3>{t('ads_section_title')}</h3>
+                <p>{t('ads_section_desc')}</p>
                 <a 
-                  href={searchResult.whatsapp}
+                  href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="whatsapp-btn"
-                  style={{marginTop: '5px'}}
                 >
-                  <MessageCircle size={20} /> {t('business_contact_btn')}
+                  <MessageCircle size={20} /> {t('ads_contact_btn')}
                 </a>
-              )}
+              </div>
             </div>
-          )}
-          
-          <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
-            <h3>{t('ads_section_title')}</h3>
-            <p>{t('ads_section_desc')}</p>
-            <a 
-              href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="whatsapp-btn"
-            >
-              <MessageCircle size={20} /> {t('ads_contact_btn')}
-            </a>
-          </div>
-        </div>
 
-        {/* Banner 2 - Below Business Section */}
-        <AdBanner banners={demoBanners} rotationInterval={7000} />
+            {/* Banner 2 - Below Business Section */}
+            <AdBanner banners={demoBanners} rotationInterval={7000} />
+          </>
+        )}
       </main>
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
@@ -421,7 +428,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       )}
 
-      {showWelcomePopup && (
+      {showWelcomePopup && !isAdminRoute && (
         <div className="modal-overlay welcome-popup-overlay" onClick={() => setShowWelcomePopup(false)}>
           <div
             className="modal-content welcome-popup-content"

@@ -76,8 +76,8 @@ def add_verified_shawarma(
     default_coords = CITY_COORDINATES.get(city, (32.0853, 34.7818))
     final_lat = lat if lat > 0 else default_coords[0]
     final_lng = lng if lng > 0 else default_coords[1]
-    eff_g_rating = float(google_rating) if google_rating is not None else 4.2
-    eff_g_total = int(google_ratings_total) if google_ratings_total is not None else 50
+    eff_g_rating = google_rating if google_rating is not None else 4.2
+    eff_g_total = google_ratings_total if google_ratings_total is not None else 50
 
     wolt_slug: Optional[str] = None
     if wolt_rating <= 0.0:

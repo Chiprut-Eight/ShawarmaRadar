@@ -1,7 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Anyone can read restaurant rankings and data
+    // Restaurant rankings remain strictly read-only from client browsers
+    match /restaurants/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Lightweight aggregate visitor counters (1 doc globally + 1 doc per day)
+    match /analytics/{docId} {
+      allow read: if true;
+      allow create, update: if docId == 'global_stats' && request.resource.data.keys().size() <= 40;
+      allow delete: if false;
+    }
+
+    match /analytics_daily/{dayId} {
+      allow read: if true;
+      allow create, update: if dayId.matches('^20[2-9][0-9]-[0-1][0-9]-[0-3][0-9]$')
+                            && request.resource.data.keys().size() <= 30;
+      allow delete: if false;
+    }
+
+    // Ephemeral live visitor presence (1 doc per browser session)
+    match /analytics_presence/{sessionId} {
+      allow read: if true;
+      allow create, update: if sessionId.size() >= 8
+                            && sessionId.size() <= 64
+                            && request.resource.data.keys().size() <= 10;
+      allow delete: if false;
+    }
+
+    // Default deny writes everywhere else
     match /{document=**} {
       allow read: if true;
       allow write: if false;

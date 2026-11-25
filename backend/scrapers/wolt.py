@@ -211,7 +211,7 @@ class WoltTracker(PoliteScraper):
         if not slug:
             return None
         city_venues = self._preload_city(city)
-        return city_venues.get(str(slug))
+        return city_venues.get(slug)
 
     def search_venue(
         self,
@@ -373,7 +373,7 @@ class TenBisTracker(PoliteScraper):
             return None
         city_items = self._preload_city(city)
         for item in city_items:
-            if int(item.get("restaurantId") or 0) == int(restaurant_id):
+            if int(item.get("restaurantId") or 0) == restaurant_id:
                 return self._format_10bis_item(item)
         return None
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigation, MapPin, Trophy, X, ExternalLink, Ticket } from 'lucide-react';
 import type { Restaurant } from '../services/firebase';
+import { trackUserAction } from '../services/analytics';
 import './NavigationModal.css';
 
 interface NavigationModalProps {
@@ -95,7 +96,10 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ restaurant, onClose }
             target="_blank"
             rel="noopener noreferrer"
             className="nav-app-btn waze-btn"
-            onClick={onClose}
+            onClick={() => {
+              void trackUserAction('nav_waze');
+              onClose();
+            }}
           >
             <div className="nav-app-icon">🚗</div>
             <div className="nav-app-info">
@@ -110,7 +114,10 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ restaurant, onClose }
             target="_blank"
             rel="noopener noreferrer"
             className="nav-app-btn gmaps-btn"
-            onClick={onClose}
+            onClick={() => {
+              void trackUserAction('nav_gmaps');
+              onClose();
+            }}
           >
             <div className="nav-app-icon">🗺️</div>
             <div className="nav-app-info">

@@ -83,7 +83,7 @@ class GoogleBusinessScraper:
         month = self._current_month_key()
         ledger = self._load_ledger()
         month_entry = ledger.setdefault(month, {"get_place": 0, "search_text": 0})
-        current = int(month_entry.get(sku_key, 0))
+        current = month_entry.get(sku_key, 0)
         if current >= cap:
             print(f"[QuotaGuard] Hard monthly free cap reached for '{sku_key}' ({current}/{cap} in {month}). Blocking call to guarantee ₪0 cost.")
             return False

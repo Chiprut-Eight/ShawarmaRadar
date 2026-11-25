@@ -301,7 +301,7 @@ def run_daily_scan_sync() -> None:
             # D. Recalculate Final Radar Score from persisted official numbers
             all_revs = db.query(models.Review).filter(models.Review.restaurant_id == rest.id).all()
             eff_g_rating = float(rest.google_rating) if rest.google_rating is not None else 3.5
-            eff_g_total = int(rest.google_ratings_total or 0)
+            eff_g_total = rest.google_ratings_total or 0
             eff_wolt = float(rest.wolt_rating or 0.0)
             eff_tenbis = float(rest.tenbis_rating or 0.0)
 

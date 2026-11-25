@@ -39,6 +39,9 @@ export interface Restaurant {
   distance_km?: number;
   google_rating?: number;
   google_ratings_total?: number;
+  wolt_rating?: number | null;
+  tenbis_rating?: number | null;
+  google_place_id?: string | null;
 }
 
 export const ISRAEL_CITY_COORDINATES: Record<string, [number, number]> = {
@@ -129,6 +132,10 @@ export function getAvailableCities(): { city: string; count: number }[] {
   return Object.entries(counts)
     .map(([city, count]) => ({ city, count }))
     .sort((a, b) => a.city.localeCompare(b.city, 'he'));
+}
+
+export function getAllRankedRestaurants(): Restaurant[] {
+  return getRankedLocalRestaurants();
 }
 
 function getRankedLocalRestaurants(): Restaurant[] {
