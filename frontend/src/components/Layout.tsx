@@ -13,6 +13,34 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
+  const modalHistoryPushedRef = useRef<boolean>(false);
+
+  const openInfoModal = (modalKey: string) => {
+    setActiveInfo(modalKey);
+    if (!modalHistoryPushedRef.current) {
+      window.history.pushState({ shawarmaModal: modalKey }, '');
+      modalHistoryPushedRef.current = true;
+    }
+  };
+
+  const closeInfoModal = () => {
+    setActiveInfo(null);
+    if (modalHistoryPushedRef.current) {
+      modalHistoryPushedRef.current = false;
+      window.history.back();
+    }
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (modalHistoryPushedRef.current) {
+        modalHistoryPushedRef.current = false;
+        setActiveInfo(null);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
   const [showWelcomePopup, setShowWelcomePopup] = useState<boolean>(() => {
     try {
       return localStorage.getItem('shawarma_radar_welcome_understood_v1') !== 'true';
@@ -167,7 +195,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         
         <nav className="header-nav">
-          <button className="info-btn" onClick={() => setActiveInfo('ai')} title={t('nav_info_btn')} style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
+          <button className="info-btn" onClick={() => openInfoModal('ai')} title={t('nav_info_btn')} style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
             <Activity size={22} />
           </button>
           <Link to="/" className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`}>
@@ -319,10 +347,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button className="nav-btn" onClick={() => setActiveInfo('ai')} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={() => openInfoModal('ai')} style={{background: '#1a1a1a'}}>
             <Activity size={18} /> {t('nav_info_btn')}
           </button>
-          <button className="nav-btn" onClick={() => setActiveInfo('about')} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={() => openInfoModal('about')} style={{background: '#1a1a1a'}}>
             <InfoIcon size={18} /> {t('footer_about')}
           </button>
           <button className="nav-btn" onClick={handleShare} style={{background: '#1a1a1a'}}>
@@ -340,7 +368,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* Modals overlay */}
       {activeInfo === 'ai' && (
-        <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
+        <div className="modal-overlay" onClick={closeInfoModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()} dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{ textAlign: i18n.language === 'he' ? 'right' : 'left' }}>
             <h3><Activity color="#4ade80" /> {t('ai_modal_title')}</h3>
             <p>{t('ai_modal_subtitle')}</p>
@@ -368,7 +396,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <p style={{fontWeight: 'bold', marginTop: '1rem'}}>{t('ai_modal_footer')}</p>
             
             <div style={{marginTop: '2rem', clear: 'both'}}>
-              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{background: '#facc15', color: 'black'}}>{t('btn_understood')}</button>
+              <button className="nav-btn" onClick={closeInfoModal} style={{background: '#facc15', color: 'black'}}>{t('btn_understood')}</button>
             </div>
             <p style={{fontSize: '0.8rem', color: '#9ca3af', marginTop: '1.2rem', lineHeight: '1.4', borderTop: '1px solid #333', paddingTop: '0.8rem'}}>
               {t('footer_disclaimer')}
@@ -378,7 +406,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       )}
 
       {activeInfo === 'about' && (
-        <div className="modal-overlay" onClick={() => setActiveInfo(null)}>
+        <div className="modal-overlay" onClick={closeInfoModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()} dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{ textAlign: i18n.language === 'he' ? 'right' : 'left' }}>
             <h3><Globe color="#3b82f6" /> {t('about_modal_title')}</h3>
             <p>
@@ -387,7 +415,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <p>{t('about_modal_desc2')}</p>
             
             <div style={{marginTop: '2rem'}}>
-              <button className="nav-btn" onClick={() => setActiveInfo(null)} style={{border: '1px solid #444'}}>{t('btn_close')}</button>
+              <button className="nav-btn" onClick={closeInfoModal} style={{border: '1px solid #444'}}>{t('btn_close')}</button>
             </div>
           </div>
         </div>
