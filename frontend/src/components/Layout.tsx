@@ -14,24 +14,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const logoHoldTimerRef = useRef<number | null>(null);
-
-  const startLogoHold = () => {
-    if (logoHoldTimerRef.current) {
-      window.clearTimeout(logoHoldTimerRef.current);
-    }
-    logoHoldTimerRef.current = window.setTimeout(() => {
-      logoHoldTimerRef.current = null;
-      navigate(isAdminRoute ? '/' : '/admin');
-    }, 1100);
-  };
-
-  const clearLogoHold = () => {
-    if (logoHoldTimerRef.current) {
-      window.clearTimeout(logoHoldTimerRef.current);
-      logoHoldTimerRef.current = null;
-    }
-  };
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const modalHistoryPushedRef = useRef<boolean>(false);
@@ -232,21 +214,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="radar-scan"></div>
       
       <header className="header">
-        <div
-          className="header-logo"
-          style={{ flexShrink: 0, userSelect: 'none', WebkitUserSelect: 'none', cursor: 'pointer' }}
-          onPointerDown={startLogoHold}
-          onPointerUp={clearLogoHold}
-          onPointerLeave={clearLogoHold}
-          onPointerCancel={clearLogoHold}
-          onContextMenu={(e) => e.preventDefault()}
-        >
-          <img
-            src="/logo.png"
-            alt="ShawarmaRadar Logo"
-            draggable={false}
-            style={{ height: '80px', width: 'auto', borderRadius: '4px', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
-          />
+        <div className="header-logo" style={{ flexShrink: 0 }}>
+          <img src="/logo.png" alt="ShawarmaRadar Logo" style={{ height: '80px', width: 'auto', borderRadius: '4px', display: 'block' }} />
         </div>
         
         <nav className="header-nav">
