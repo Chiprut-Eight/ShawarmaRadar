@@ -5,6 +5,7 @@ import { MapPin, Navigation, Trophy } from 'lucide-react';
 import './RegionalDashboard.css';
 import { getRegionalRankings, getBundledRegionalRankings, type Restaurant } from '../services/firebase';
 import NavigationModal from '../components/NavigationModal';
+import AdBanner, { type BannerItem } from '../components/AdBanner';
 
 const RegionalDashboard: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,27 @@ const RegionalDashboard: React.FC = () => {
   
   const [restaurants, setRestaurants] = useState<Restaurant[]>(() => getBundledRegionalRankings(id || 'center'));
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+
+  // Regional Advertiser Banners per region (if empty for a region, displays the default placeholder banner)
+  const regionalAdvertiserBanners: Record<string, BannerItem[]> = {
+    north: [],
+    center: [],
+    south: [],
+    sharon: [],
+    shfela: [],
+  };
+
+  const defaultRegionalBanner: BannerItem[] = [
+    {
+      altText: t('banner_demo_text'),
+      linkUrl: `https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`,
+    },
+  ];
+
+  const activeRegionalBanners =
+    id && regionalAdvertiserBanners[id] && regionalAdvertiserBanners[id].length > 0
+      ? regionalAdvertiserBanners[id]
+      : defaultRegionalBanner;
 
   const regionNameMap: Record<string, string> = {
     north: t('region_north'),
@@ -88,6 +110,9 @@ const RegionalDashboard: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Regional Dedicated Banner — Directly below the Regional King and above the Leaderboard Table */}
+      <AdBanner banners={activeRegionalBanners} rotationInterval={5000} />
 
       <div className="signals-panel" style={{marginTop: '30px'}}>
         <h2 className="signals-section-title">{t('region_leaders')} {currentRegionName}</h2>

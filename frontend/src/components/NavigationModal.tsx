@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigation, MapPin, Trophy, X, ExternalLink } from 'lucide-react';
+import { Navigation, MapPin, Trophy, X, ExternalLink, Ticket } from 'lucide-react';
 import type { Restaurant } from '../services/firebase';
 import './NavigationModal.css';
 
@@ -9,10 +9,33 @@ interface NavigationModalProps {
   onClose: () => void;
 }
 
+/**
+ * Active navigation coupon campaigns for main-page advertisers.
+ * Match by business name substring (e.g., "בון טעם") or exact restaurant ID.
+ */
+interface CouponCampaign {
+  matchName: string;
+  couponTextHe: string;
+  couponTextEn: string;
+}
+
+const ACTIVE_NAVIGATION_COUPONS: CouponCampaign[] = [
+  // Example for main-page banner advertiser (uncomment or add businesses with active coupon add-on):
+  // {
+  //   matchName: 'שווארמה בון טעם',
+  //   couponTextHe: 'הציגו מסך זה בקופה וקבלו פחית שתייה מתנה ברכישת מנה!',
+  //   couponTextEn: 'Show this screen at the register for a free drink with your meal!'
+  // }
+];
+
 const NavigationModal: React.FC<NavigationModalProps> = ({ restaurant, onClose }) => {
   const { t, i18n } = useTranslation();
 
   if (!restaurant) return null;
+
+  const matchedCoupon = ACTIVE_NAVIGATION_COUPONS.find((c) =>
+    restaurant.name.includes(c.matchName)
+  );
 
   const fullLocationText =
     restaurant.address && restaurant.address !== restaurant.city
@@ -97,6 +120,29 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ restaurant, onClose }
             <ExternalLink size={18} className="nav-app-arrow" />
           </a>
         </div>
+
+        {/* Navigation Coupon Slot */}
+        {matchedCoupon ? (
+          <div className="nav-coupon-box nav-coupon-active">
+            <div className="nav-coupon-header">
+              <Ticket size={16} />
+              <span>{t('nav_coupon_badge')}</span>
+            </div>
+            <p className="nav-coupon-text">
+              {i18n.language === 'he' ? matchedCoupon.couponTextHe : matchedCoupon.couponTextEn}
+            </p>
+          </div>
+        ) : (
+          <a
+            href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-coupon-box nav-coupon-placeholder"
+          >
+            <Ticket size={15} className="nav-coupon-icon" />
+            <span>{t('nav_coupon_demo_text')}</span>
+          </a>
+        )}
 
         <div className="nav-modal-footer">
           <Navigation size={13} />
