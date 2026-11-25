@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-24T18:15:32.728772+00:00",
+  "last_updated": "2026-11-25T11:19:31.498379+00:00",
   "reigns": [
     {
       "platform_id": "Walla_Shawarma_(וואלה_שווארמה)_שפרעם",
@@ -35,7 +35,7 @@
       "score_at_start": 97.5,
       "current_score": 92.9,
       "peak_score": 97.5,
-      "duration_seconds": 53697
+      "duration_seconds": 115135
     }
   ]
 }
