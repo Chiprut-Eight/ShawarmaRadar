@@ -122,12 +122,15 @@ def export_all():
             'address': d['address'] or '',
             'lat': d.get('lat'),
             'lng': d.get('lng'),
+            'google_place_id': d.get('google_place_id'),
             'national_rank': idx,
             'bayesian_average': d['bayesian_average'],
             'last_score': d['last_score'],
             'total_reviews': d['total_reviews'],
             'google_rating': d['google_rating'],
-            'google_ratings_total': d['google_ratings_total']
+            'google_ratings_total': d['google_ratings_total'],
+            'wolt_rating': d.get('wolt_rating'),
+            'tenbis_rating': d.get('tenbis_rating'),
         }
         result.append(out)
 

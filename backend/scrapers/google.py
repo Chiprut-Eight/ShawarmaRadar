@@ -1,200 +1,262 @@
-from .base import PoliteScraper
+import json
+import math
+import os
 import re
-import urllib.parse
-from typing import Any
-from bs4 import BeautifulSoup
+from datetime import datetime, timezone
+from typing import Any, Optional
 import httpx
-import time
+from dotenv import load_dotenv
 
-class GoogleBusinessScraper(PoliteScraper):
-    def __init__(self):
-        super().__init__(base_url="https://html.duckduckgo.com", delay_seconds=1.5)
-        self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-        }
-        self.nominatim_headers = {
-            "User-Agent": "ShawarmaRadar/1.0",
-            "Accept-Language": "he"
-        }
+# Load .env from backend/ or workspace root
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(_BASE_DIR, ".env"))
+load_dotenv(os.path.join(os.path.dirname(_BASE_DIR), ".env"))
 
-    def _extract_address_from_snippet(self, snippet: str) -> str:
-        """
-        Extract a clean street address from a DuckDuckGo snippet.
-        Returns just 'street name + number' (no city, no country).
-        """
-        patterns = [
-            # "רחוב הרצל 42" or "רח' הרצל 42"
-            r'(?:רחוב|רח[\'׳])\s+([א-ת][א-ת\s\-\'׳]{1,25}?\s+\d{1,4})',
-            # "בהמלאכה 19" / "ב-המלאכה 19" - ב prefix before street
-            r'(?:^|\s)ב-?([א-ת][א-ת\-\'׳]{1,15}\s+\d{1,4})',
-            # "Street Number, City" - e.g. "רוטשילד 58, ראשון לציון"
-            r'([א-ת][א-ת\s\-\'׳]{1,25}?\s+\d{1,4})\s*[,،]',
-            # "Street Number" at end of snippet
-            r'([א-ת][א-ת\s\-\'׳]{1,25}?\s+\d{1,4})\s*$',
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, snippet)
-            if match:
-                addr = match.group(1).strip()
-                # Sanity check: should have at least 2 Hebrew chars and a number
-                if re.search(r'[א-ת]{2}', addr) and re.search(r'\d', addr):
-                    return addr
+QUOTA_LEDGER_PATH = os.path.join(_BASE_DIR, "google_quota_ledger.json")
+
+# Hard code-level monthly caps (strictly below Google's 1,000 free monthly tier per SKU — ₪0.00 guaranteed)
+MONTHLY_HARD_CAP_GET_PLACE = 850
+MONTHLY_HARD_CAP_SEARCH_TEXT = 850
+
+
+def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    )
+    return r * (2 * math.atan2(math.sqrt(a), math.sqrt(1 - a)))
+
+
+def _clean_formatted_address(formatted: str, city: str = "") -> str:
+    if not formatted:
         return ""
+    parts = [p.strip() for p in formatted.split(",") if p.strip()]
+    cleaned: list[str] = []
+    for p in parts:
+        if any(skip in p for skip in ("ישראל", "Israel", "מחוז", "נפת")):
+            continue
+        if re.match(r"^\d{5,7}$", p):
+            continue
+        # Strip trailing postal codes attached to city name (e.g. "תל אביב-יפו, 65251")
+        p_no_zip = re.sub(r"\s+\d{5,7}$", "", p).strip()
+        if city and (p_no_zip == city or city in p_no_zip or p_no_zip in city):
+            continue
+        cleaned.append(p_no_zip)
+    return ", ".join(cleaned[:2])
 
-    def _parse_nominatim_address(self, nom_result: dict, business_name: str = "", city: str = "") -> str:
-        """
-        Parse a Nominatim result with addressdetails into a clean 'street number' format.
-        Returns only the street-level address (no city, no business name, no country).
-        """
-        addr = nom_result.get("address", {})
-        
-        road = addr.get("road", "")
-        house_number = addr.get("house_number", "")
-        
-        if road and house_number:
-            return f"{road} {house_number}"
-        elif road:
-            return road
-        
-        # Fallback: parse display_name manually
-        display = nom_result.get("display_name", "")
-        if not display:
-            return ""
-            
-        parts = [p.strip() for p in display.split(",")]
-        clean_parts = []
-        
-        # Normalize business name for comparison (remove diacritics, lowercase)
-        bname_words = set(business_name.split()) if business_name else set()
-        
-        for part in parts:
-            stripped = part.strip()
-            # Skip empty
-            if not stripped:
-                continue
-            # Skip if it's the business name
-            if business_name and (stripped == business_name or stripped in business_name or business_name in stripped):
-                continue
-            # Skip if all words overlap with business name
-            part_words = set(stripped.split())
-            if bname_words and part_words.issubset(bname_words):
-                continue
-            # Skip city name
-            if city and (stripped == city or city in stripped):
-                continue
-            # Skip district/country/postal
-            if any(skip in stripped for skip in ["נפת", "מחוז", "ישראל", "district", "Israel"]):
-                continue
-            if re.match(r'^\d{5,}$', stripped):
-                continue
-            # This part looks like a street/address component
-            clean_parts.append(stripped)
-            # We only want 1-2 components (street + number or neighborhood)
-            if len(clean_parts) >= 2:
-                break
-        
-        return ", ".join(clean_parts) if clean_parts else ""
 
-    def fetch_place_data(self, query: str, city: str = "", skip_address_lookup: bool = False) -> dict[str, Any]:
-        """
-        Free Web & Google/Local Knowledge Scraper.
-        Uses DuckDuckGo for reviews/ratings and Nominatim for addresses (when needed).
-        """
-        self._wait_for_rate_limit()
-        encoded_query = urllib.parse.quote(f"{query} ביקורות דירוג")
-        url = f"https://html.duckduckgo.com/html/?q={encoded_query}"
-        
-        result: dict[str, Any] = {
-            "name": query,
-            "rating": None,
-            "user_ratings_total": 0,
-            "address": None,
-            "reviews": []
+class GoogleBusinessScraper:
+    """
+    100% Official, Deterministic Google Places API (New) Client.
+    Replaces all legacy web/search-engine scraping with exact `place_id` lookups,
+    protected by both Google Cloud Quotas and a local hard monthly quota ledger ($0.00 guaranteed).
+    """
+
+    PLACES_BASE = "https://places.googleapis.com/v1"
+    DETAIL_MASK = "id,displayName,formattedAddress,location,rating,userRatingCount,businessStatus,reviews"
+    SEARCH_MASK = (
+        "places.id,places.displayName,places.formattedAddress,places.location,"
+        "places.rating,places.userRatingCount,places.businessStatus,places.reviews"
+    )
+
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = (api_key or os.getenv("GOOGLE_PLACES_API_KEY") or "").strip()
+
+    def _current_month_key(self) -> str:
+        return datetime.now(timezone.utc).strftime("%Y-%m")
+
+    def _load_ledger(self) -> dict[str, dict[str, int]]:
+        if os.path.exists(QUOTA_LEDGER_PATH):
+            try:
+                with open(QUOTA_LEDGER_PATH, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        return data
+            except Exception:
+                pass
+        return {}
+
+    def _check_and_increment_quota(self, sku_key: str, cap: int) -> bool:
+        month = self._current_month_key()
+        ledger = self._load_ledger()
+        month_entry = ledger.setdefault(month, {"get_place": 0, "search_text": 0})
+        current = int(month_entry.get(sku_key, 0))
+        if current >= cap:
+            print(f"[QuotaGuard] Hard monthly free cap reached for '{sku_key}' ({current}/{cap} in {month}). Blocking call to guarantee ₪0 cost.")
+            return False
+        month_entry[sku_key] = current + 1
+        try:
+            with open(QUOTA_LEDGER_PATH, "w", encoding="utf-8") as f:
+                json.dump(ledger, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"[QuotaGuard] Warning saving quota ledger: {e}")
+        return True
+
+    def get_monthly_usage(self) -> dict[str, int]:
+        month = self._current_month_key()
+        ledger = self._load_ledger()
+        return ledger.get(month, {"get_place": 0, "search_text": 0})
+
+    def _parse_place_payload(self, place: dict[str, Any], city: str = "") -> dict[str, Any]:
+        place_id = str(place.get("id") or "")
+        disp = (place.get("displayName") or {}).get("text") or ""
+        formatted_addr = str(place.get("formattedAddress") or "")
+        clean_addr = _clean_formatted_address(formatted_addr, city=city)
+        loc = place.get("location") or {}
+        lat = float(loc["latitude"]) if loc.get("latitude") is not None else None
+        lng = float(loc["longitude"]) if loc.get("longitude") is not None else None
+        rating = float(place["rating"]) if place.get("rating") is not None else None
+        count = int(place.get("userRatingCount") or 0)
+        status = str(place.get("businessStatus") or "OPERATIONAL")
+
+        parsed_reviews: list[dict[str, Any]] = []
+        for rv in place.get("reviews") or []:
+            txt_obj = rv.get("text") or rv.get("originalText") or {}
+            txt = str(txt_obj.get("text") or "").strip()
+            rv_rating = float(rv["rating"]) if rv.get("rating") is not None else None
+            pub_str = rv.get("publishTime")
+            pub_dt: Optional[datetime] = None
+            if pub_str:
+                try:
+                    pub_dt = datetime.fromisoformat(pub_str.replace("Z", "+00:00"))
+                except Exception:
+                    pub_dt = None
+            if txt:
+                parsed_reviews.append({
+                    "text": txt,
+                    "rating": rv_rating,
+                    "published_at": pub_dt,
+                    "source": "google",
+                })
+
+        return {
+            "place_id": place_id,
+            "official_name": disp,
+            "rating": rating,
+            "user_ratings_total": count,
+            "address": clean_addr,
+            "formatted_address": formatted_addr,
+            "lat": lat,
+            "lng": lng,
+            "business_status": status,
+            "reviews": parsed_reviews,
         }
 
-        # --- DuckDuckGo (with Bing fallback if DDG returns 202): reviews, rating, and address attempt ---
-        try:
-            res = httpx.get(url, headers=self.headers, timeout=8.0)
-            self.last_request_time = time.time()
-            snippets = []
-            if res.status_code == 200:
-                soup = BeautifulSoup(res.text, "html.parser")
-                snippets = [a.get_text(strip=True) for a in soup.find_all('a', class_='result__snippet')]
-            if not snippets:
-                bing_q = urllib.parse.quote(f'"{query}" שווארמה ביקורות')
-                bing_res = httpx.get(f"https://www.bing.com/search?q={bing_q}", headers=self.headers, timeout=8.0, follow_redirects=True)
-                if bing_res.status_code == 200:
-                    bsoup = BeautifulSoup(bing_res.text, "html.parser")
-                    snippets = [p.get_text(" ", strip=True) for p in bsoup.select("li.b_algo .b_caption p, li.b_algo p") if query.split()[0] in p.get_text()]
+    def get_place_by_id(self, place_id: str, city: str = "") -> Optional[dict[str, Any]]:
+        """Fetches 100% deterministic official Google data for a locked `place_id`."""
+        if not self.api_key or not place_id:
+            return None
+        if not self._check_and_increment_quota("get_place", MONTHLY_HARD_CAP_GET_PLACE):
+            return None
 
-            for snippet in snippets:
-                # Strict guard: only extract ratings/counts/reviews from snippets that actually mention this business's core name!
-                display_name = query.replace(f" {city}", "").strip() if city else query
-                core_words = [
-                    w for w in re.findall(r'[א-תa-zA-Z0-9]{2,}', display_name.lower())
-                    if w not in ("שווארמה", "שוארמה", "השווארמה", "מסעדת", "גריל", "בשרים", "בעמ", "shawarma")
-                ]
-                snippet_lower = snippet.lower()
-                if core_words and not any(cw in snippet_lower for cw in core_words):
+        url = f"{self.PLACES_BASE}/places/{place_id}"
+        headers = {
+            "X-Goog-Api-Key": self.api_key,
+            "X-Goog-FieldMask": self.DETAIL_MASK,
+        }
+        params = {"languageCode": "he", "regionCode": "IL"}
+        try:
+            res = httpx.get(url, headers=headers, params=params, timeout=12.0)
+            if res.status_code == 200:
+                return self._parse_place_payload(res.json(), city=city)
+            print(f"[GooglePlaces] get_place_by_id({place_id}) returned HTTP {res.status_code}: {res.text[:200]}")
+        except Exception as e:
+            print(f"[GooglePlaces] Error in get_place_by_id({place_id}): {e}")
+        return None
+
+    def search_place(
+        self,
+        query: str,
+        city: str = "",
+        target_lat: Optional[float] = None,
+        target_lng: Optional[float] = None,
+    ) -> Optional[dict[str, Any]]:
+        """
+        Searches Official Google Places API (New) to discover & lock a business's `place_id`,
+        official rating, review count, coordinates, address, and reviews.
+        """
+        if not self.api_key or not query:
+            return None
+        if not self._check_and_increment_quota("search_text", MONTHLY_HARD_CAP_SEARCH_TEXT):
+            return None
+
+        full_query = query if (city and city in query) else f"{query} {city}".strip()
+        url = f"{self.PLACES_BASE}/places:searchText"
+        headers = {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": self.api_key,
+            "X-Goog-FieldMask": self.SEARCH_MASK,
+        }
+        payload: dict[str, Any] = {
+            "textQuery": full_query,
+            "languageCode": "he",
+            "regionCode": "IL",
+            "maxResultCount": 5,
+        }
+        if target_lat and target_lng:
+            payload["locationBias"] = {
+                "circle": {
+                    "center": {"latitude": target_lat, "longitude": target_lng},
+                    "radius": 5000.0,
+                }
+            }
+
+        try:
+            res = httpx.post(url, headers=headers, json=payload, timeout=15.0)
+            if res.status_code != 200:
+                print(f"[GooglePlaces] search_place('{full_query}') returned HTTP {res.status_code}: {res.text[:200]}")
+                return None
+
+            places = res.json().get("places") or []
+            if not places:
+                return None
+
+            scored: list[tuple[float, dict[str, Any]]] = []
+            q_words = [
+                w for w in re.findall(r"[א-תa-zA-Z0-9]{2,}", query.lower())
+                if w not in ("שווארמה", "שוארמה", "השווארמה", "מסעדת", "shawarma")
+            ]
+
+            for idx, p in enumerate(places):
+                p_name = str((p.get("displayName") or {}).get("text") or "").lower()
+                # Never match a shopping mall or unrelated non-shawarma business
+                bad_place_names = ("פיצה", "סושי", "מאפייה", "קונדיטוריה", "סופרמרקט", "תחנת דלק")
+                if any(bad in p_name and bad not in query.lower() for bad in bad_place_names):
+                    continue
+                if p_name in ("מול החוף וילג'", "מול החוף וילג", "גרנד קניון", "קניון לב המפרץ", "קניון הזהב"):
                     continue
 
-                # Filter out generic directory listing boilerplate (Rest, Easy, Dapei Zahav, 2eat, Ontopo) so only genuine review snippets enter NLP
-                boilerplate_markers = [
-                    "מידע, פרטים,ביקורות", "שעות פתיחה, המלצות, טיפים", "הכל אודות",
-                    "תוכלו למצוא באתר איזי", "דפי זהב מציג מידע", "אתר המסעדות 2eat",
-                    "הרשימה מבוססת על דירוגים", "מזמינים משלוח מ", "צפו בתפריט, שעות פעילות",
-                    "טלפון, שעות פתיחה, תפריט, ניווט"
-                ]
-                is_directory_boilerplate = any(bm in snippet for bm in boilerplate_markers)
+                score = max(0.0, 30.0 - idx * 6.0)  # Google's own relevance rank bonus
+                status = str(p.get("businessStatus") or "OPERATIONAL")
+                if status == "OPERATIONAL":
+                    score += 25.0
+                elif status == "CLOSED_PERMANENTLY":
+                    score -= 60.0
 
-                if len(snippet) > 20 and not is_directory_boilerplate:
-                    result["reviews"].append({"text": snippet, "source": "web"})
+                p_addr = str(p.get("formattedAddress") or "")
+                if q_words:
+                    hits = sum(1 for w in q_words if w in p_name)
+                    score += hits * 25.0
+                if city and city in p_addr:
+                    score += 20.0
 
-                # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7)
-                if not result["rating"]:
-                    rating_match = re.search(r'([1-4][\.,]\d|5[\.,]0)\s*(?:stars|כוכבים|★|\/5|מתוך\s*5)', snippet)
-                    if not rating_match:
-                        rating_match = re.search(r'(?:דירוג|ציון)\s*:?\s*([1-4][\.,]\d|5[\.,]0)', snippet)
-                    if rating_match:
-                        result["rating"] = float(rating_match.group(1).replace(',', '.'))
+                loc = p.get("location") or {}
+                if target_lat and target_lng and loc.get("latitude") and loc.get("longitude"):
+                    dist = _haversine_km(target_lat, target_lng, float(loc["latitude"]), float(loc["longitude"]))
+                    if dist <= 0.3:
+                        score += 40.0
+                    elif dist <= 1.5:
+                        score += 20.0
+                    elif dist > 12.0:
+                        score -= 35.0
 
-                # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת)
-                if not result["user_ratings_total"]:
-                    count_match = re.search(r'(\d[\d,]{1,5})\s*(?:ביקורות|חוות דעת|דירוגים|reviews)', snippet)
-                    if count_match:
-                        try:
-                            result["user_ratings_total"] = int(count_match.group(1).replace(',', ''))
-                        except ValueError:
-                            pass
+                scored.append((score, p))
 
-                # Address extraction with improved regex
-                if not skip_address_lookup and not result["address"]:
-                    addr = self._extract_address_from_snippet(snippet)
-                    if addr:
-                        result["address"] = addr
-
+            scored.sort(key=lambda x: x[0], reverse=True)
+            return self._parse_place_payload(scored[0][1], city=city)
         except Exception as e:
-            print(f"Web/Google search error for {query}: {e}")
-
-        # --- Nominatim: reliable structured address fallback ---
-        if not skip_address_lookup and not result["address"]:
-            try:
-                # Try with city context for better accuracy
-                search_term = f"{query}" if city in query else f"{query} {city}"
-                nom_query = urllib.parse.quote(search_term)
-                nom_url = f"https://nominatim.openstreetmap.org/search?q={nom_query}&format=json&addressdetails=1&limit=1&countrycodes=il"
-                nom_res = httpx.get(nom_url, headers=self.nominatim_headers, timeout=8.0)
-                if nom_res.status_code == 200:
-                    nom_data = nom_res.json()
-                    if nom_data and len(nom_data) > 0:
-                        display_name = query.replace(f" {city}", "").strip() if city else query
-                        clean_addr = self._parse_nominatim_address(nom_data[0], business_name=display_name, city=city)
-                        if clean_addr:
-                            result["address"] = clean_addr
-                time.sleep(1.1)  # Nominatim policy: max 1 request/second
-            except Exception as e:
-                print(f"Nominatim error for {query}: {e}")
-
-        return result
+            print(f"[GooglePlaces] Error in search_place('{full_query}'): {e}")
+            return None

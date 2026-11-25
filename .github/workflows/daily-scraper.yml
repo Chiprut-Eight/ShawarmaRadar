@@ -28,6 +28,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
         run: |
           cd backend
           python -c "import asyncio; from worker import run_daily_scan; asyncio.run(run_daily_scan())"
@@ -52,7 +53,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add backend/shawarma_radar.db frontend/src/data/restaurants_data.json frontend/src/data/king_history.json
+          git add backend/shawarma_radar.db backend/auto_seeds.json backend/google_quota_ledger.json frontend/src/data/restaurants_data.json frontend/src/data/king_history.json
           git commit -m "Auto-update database and JSON [skip ci]" || echo "No changes to commit"
           git push
           

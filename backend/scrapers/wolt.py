@@ -206,6 +206,13 @@ class WoltTracker(PoliteScraper):
         cleaned = re.sub(r'\s+', ' ', cleaned).strip()
         return cleaned
 
+    def get_venue_by_slug(self, slug: str, city: str) -> Optional[dict[str, Any]]:
+        """Deterministic lookup of a Wolt venue by its locked slug."""
+        if not slug:
+            return None
+        city_venues = self._preload_city(city)
+        return city_venues.get(str(slug))
+
     def search_venue(
         self,
         query: str,
@@ -359,6 +366,37 @@ class TenBisTracker(PoliteScraper):
 
         self.reviews_cache[restaurant_id] = reviews
         return reviews
+
+    def get_restaurant_by_id(self, restaurant_id: int, city: str) -> Optional[dict[str, Any]]:
+        """Deterministic lookup of a 10Bis restaurant by its locked restaurantId."""
+        if not restaurant_id:
+            return None
+        city_items = self._preload_city(city)
+        for item in city_items:
+            if int(item.get("restaurantId") or 0) == int(restaurant_id):
+                return self._format_10bis_item(item)
+        return None
+
+    def _format_10bis_item(self, best: dict[str, Any]) -> dict[str, Any]:
+        raw_dec = best.get("reviewsRankDecimal")
+        raw_int = best.get("reviewsRank")
+        rating_val = 0.0
+        if raw_dec and float(raw_dec) > 0:
+            rating_val = float(raw_dec)
+            if rating_val > 5.0:
+                rating_val = rating_val / 2.0
+        elif raw_int and float(raw_int) > 0:
+            rating_val = float(raw_int)
+            if rating_val > 5.0:
+                rating_val = rating_val / 2.0
+
+        return {
+            "restaurantId": int(best.get("restaurantId") or 0),
+            "name": best.get("restaurantName"),
+            "rating": round(min(5.0, max(1.0, rating_val)), 2) if rating_val > 0 else 0.0,
+            "numOfReviews": int(best.get("numOfReviews") or 0),
+            "address": best.get("restaurantAddress"),
+        }
 
     def search_restaurant(
         self,
