@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Lock,
   LogOut,
+  ArrowRight,
   Users,
   Clock,
   Eye,
@@ -237,6 +239,12 @@ const AdminDashboard: React.FC = () => {
           <button type="submit" className="admin-unlock-btn">
             כניסה למערכת הניהול
           </button>
+          <Link
+            to="/"
+            style={{ display: 'inline-block', marginTop: '1rem', color: '#9ca3af', fontSize: '0.85rem', textDecoration: 'none' }}
+          >
+            חזרה למכ"ם הראשי
+          </Link>
         </form>
       </div>
     );
@@ -301,9 +309,29 @@ const AdminDashboard: React.FC = () => {
             <p>נתוני אמת רשמיים • {allRestaurants.length} שווארמיות מאומתות במעקב</p>
           </div>
         </div>
-        <button type="button" className="admin-logout-btn" onClick={handleLogout}>
-          <LogOut size={15} /> נעל והתנתק
-        </button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Link
+            to="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '0.5rem 0.95rem',
+              background: 'rgba(255, 255, 255, 0.07)',
+              border: '1px solid #3f3f46',
+              color: '#e4e4e7',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              textDecoration: 'none',
+            }}
+          >
+            <ArrowRight size={15} /> חזרה למכ"ם
+          </Link>
+          <button type="button" className="admin-logout-btn" onClick={handleLogout}>
+            <LogOut size={15} /> נעל והתנתק
+          </button>
+        </div>
       </div>
 
       {/* Section 1: Live KPIs */}

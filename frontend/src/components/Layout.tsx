@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy, X } from 'lucide-react';
 import AdBanner from './AdBanner';
 import NavigationModal from './NavigationModal';
@@ -12,7 +12,26 @@ import { trackUserAction } from '../services/analytics';
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const logoHoldTimerRef = useRef<number | null>(null);
+
+  const startLogoHold = () => {
+    if (logoHoldTimerRef.current) {
+      window.clearTimeout(logoHoldTimerRef.current);
+    }
+    logoHoldTimerRef.current = window.setTimeout(() => {
+      logoHoldTimerRef.current = null;
+      navigate(isAdminRoute ? '/' : '/admin');
+    }, 1100);
+  };
+
+  const clearLogoHold = () => {
+    if (logoHoldTimerRef.current) {
+      window.clearTimeout(logoHoldTimerRef.current);
+      logoHoldTimerRef.current = null;
+    }
+  };
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const modalHistoryPushedRef = useRef<boolean>(false);
@@ -141,7 +160,27 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   const handleSearchBusiness = async () => {
-    if (!searchQuery.trim()) return;
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+
+    // Secret PWA shortcut: entering admin PIN in business search jumps straight into unlocked /admin
+    if (window.crypto?.subtle && /^\d{6,12}$/.test(trimmed)) {
+      const digestBuf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(trimmed));
+      const hex = Array.from(new Uint8Array(digestBuf))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+      if (hex === '690501f679c5b198f428baca6a7c15771095696e8e096948d83376bf933d55c0') {
+        try {
+          localStorage.setItem('sr_admin_unlocked_v1', hex);
+        } catch {
+          // ignore
+        }
+        setSearchQuery('');
+        navigate('/admin');
+        return;
+      }
+    }
+
     setIsSearching(true);
     setSearchResult(null);
     void trackUserAction('search');
@@ -193,8 +232,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="radar-scan"></div>
       
       <header className="header">
-        <div className="header-logo" style={{ flexShrink: 0 }}>
-          <img src="/logo.png" alt="ShawarmaRadar Logo" style={{height: '80px', width: 'auto', borderRadius: '4px', display: 'block'}} />
+        <div
+          className="header-logo"
+          style={{ flexShrink: 0, userSelect: 'none', WebkitUserSelect: 'none', cursor: 'pointer' }}
+          onPointerDown={startLogoHold}
+          onPointerUp={clearLogoHold}
+          onPointerLeave={clearLogoHold}
+          onPointerCancel={clearLogoHold}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <img
+            src="/logo.png"
+            alt="ShawarmaRadar Logo"
+            draggable={false}
+            style={{ height: '80px', width: 'auto', borderRadius: '4px', display: 'block', pointerEvents: 'none', userSelect: 'none' }}
+          />
         </div>
         
         <nav className="header-nav">
