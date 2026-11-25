@@ -130,10 +130,29 @@ class GoogleBusinessScraper(PoliteScraper):
                     snippets = [p.get_text(" ", strip=True) for p in bsoup.select("li.b_algo .b_caption p, li.b_algo p") if query.split()[0] in p.get_text()]
 
             for snippet in snippets:
-                if len(snippet) > 20:
+                # Strict guard: only extract ratings/counts/reviews from snippets that actually mention this business's core name!
+                display_name = query.replace(f" {city}", "").strip() if city else query
+                core_words = [
+                    w for w in re.findall(r'[א-תa-zA-Z0-9]{2,}', display_name.lower())
+                    if w not in ("שווארמה", "שוארמה", "השווארמה", "מסעדת", "גריל", "בשרים", "בעמ", "shawarma")
+                ]
+                snippet_lower = snippet.lower()
+                if core_words and not any(cw in snippet_lower for cw in core_words):
+                    continue
+
+                # Filter out generic directory listing boilerplate (Rest, Easy, Dapei Zahav, 2eat, Ontopo) so only genuine review snippets enter NLP
+                boilerplate_markers = [
+                    "מידע, פרטים,ביקורות", "שעות פתיחה, המלצות, טיפים", "הכל אודות",
+                    "תוכלו למצוא באתר איזי", "דפי זהב מציג מידע", "אתר המסעדות 2eat",
+                    "הרשימה מבוססת על דירוגים", "מזמינים משלוח מ", "צפו בתפריט, שעות פעילות",
+                    "טלפון, שעות פתיחה, תפריט, ניווט"
+                ]
+                is_directory_boilerplate = any(bm in snippet for bm in boilerplate_markers)
+
+                if len(snippet) > 20 and not is_directory_boilerplate:
                     result["reviews"].append({"text": snippet, "source": "web"})
 
-                # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7, or Easy 8.8/10)
+                # Rating pattern (e.g. 4.5/5, 4.6 כוכבים, דירוג 4.7)
                 if not result["rating"]:
                     rating_match = re.search(r'([1-4][\.,]\d|5[\.,]0)\s*(?:stars|כוכבים|★|\/5|מתוך\s*5)', snippet)
                     if not rating_match:
@@ -141,7 +160,7 @@ class GoogleBusinessScraper(PoliteScraper):
                     if rating_match:
                         result["rating"] = float(rating_match.group(1).replace(',', '.'))
 
-                # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת, (520))
+                # Review count pattern (e.g. 688 ביקורות, 450 חוות דעת)
                 if not result["user_ratings_total"]:
                     count_match = re.search(r'(\d[\d,]{1,5})\s*(?:ביקורות|חוות דעת|דירוגים|reviews)', snippet)
                     if count_match:

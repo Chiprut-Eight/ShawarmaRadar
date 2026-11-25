@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-25T14:02:29.496816+00:00",
+  "last_updated": "2026-11-25T14:56:37.519540+00:00",
   "reigns": [
     {
       "platform_id": "Walla_Shawarma_(וואלה_שווארמה)_שפרעם",
@@ -31,11 +31,23 @@
       "city": "שפרעם",
       "address": "וואדי אל-ג'מאל (ליד משרד הרישוי)",
       "started_at": "2026-11-24T03:20:35.635267+00:00",
-      "ended_at": null,
+      "ended_at": "2026-11-25T14:56:37.519540+00:00",
       "score_at_start": 97.5,
       "current_score": 92.9,
       "peak_score": 97.5,
-      "duration_seconds": 124913
+      "duration_seconds": 128161
+    },
+    {
+      "platform_id": "שווארמה_ראש_העיר_אשקלון",
+      "name": "שווארמה ראש העיר",
+      "city": "אשקלון",
+      "address": "הרצל 31",
+      "started_at": "2026-11-25T14:56:37.519540+00:00",
+      "ended_at": null,
+      "score_at_start": 89.4,
+      "current_score": 89.4,
+      "peak_score": 89.4,
+      "duration_seconds": 0
     }
   ]
 }

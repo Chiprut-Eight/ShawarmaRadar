@@ -106,6 +106,25 @@ def _normalize_hebrew(text: str) -> str:
     s = re.sub(r'\s+', ' ', s).strip()
     return s
 
+def _has_whole_phrase(haystack: str, needle: str) -> bool:
+    if not haystack or not needle:
+        return False
+    pattern = rf'(?:^|\s){re.escape(needle)}(?=\s|$)'
+    return bool(re.search(pattern, haystack))
+
+NON_SHAWARMA_VENUE_WORDS = [
+    "פיצה", "בורגר", "המבורגר", "סושי", "גלידה", "מקסיקני", "סמבוסק",
+    "פסטה", "קפה", "מאפייה", "קונדיטוריה", "שניצליה", "חומוסיה"
+]
+
+def _is_incompatible_venue_name(venue_name: str, query_name: str) -> bool:
+    v_norm = _normalize_hebrew(venue_name)
+    q_norm = _normalize_hebrew(query_name)
+    for bad in NON_SHAWARMA_VENUE_WORDS:
+        if bad in v_norm and bad not in q_norm:
+            return True
+    return False
+
 def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     import math
     r = 6371.0
@@ -214,34 +233,43 @@ class WoltTracker(PoliteScraper):
 
         for _, vdata in city_venues.items():
             v_name_raw = vdata.get("name", "")
+            if _is_incompatible_venue_name(v_name_raw, query):
+                continue
             v_name = _normalize_hebrew(v_name_raw)
             v_brand = self._extract_brand_core(v_name_raw)
             v_addr = _normalize_hebrew(vdata.get("address", ""))
 
             score = 0.0
-            # Name / brand match
+            # Name / brand match (strict whole-word / whole-phrase matching only)
             if query_norm == v_name or (query_core and query_core == v_name):
                 score += 100.0
-            elif query_core and (query_core in v_name or v_name in query_core):
+            elif query_core and (_has_whole_phrase(v_name, query_core) or _has_whole_phrase(query_core, v_name)):
                 score += 80.0
             elif query_brand and len(query_brand) >= 2 and v_brand:
                 if query_brand == v_brand:
                     score += 75.0
-                elif len(query_brand) >= 3 and (query_brand in v_brand or (len(v_brand) >= 3 and v_brand in query_brand)):
+                elif len(query_brand) >= 3 and (
+                    _has_whole_phrase(v_brand, query_brand)
+                    or (len(v_brand) >= 3 and _has_whole_phrase(query_brand, v_brand))
+                ):
                     score += 60.0
+
+            if score == 0.0:
+                continue
 
             # Coordinate / address proximity bonus
             dist_km = 999.0
             if target_lat and target_lng and vdata.get("lat") and vdata.get("lng"):
                 dist_km = _haversine_km(target_lat, target_lng, float(vdata["lat"]), float(vdata["lng"]))
-                if dist_km <= 0.12:
+                if dist_km <= 0.15:
                     score += 50.0
-                elif dist_km <= 0.35:
+                elif dist_km <= 0.40:
                     score += 25.0
-                elif dist_km > 4.0:
-                    score -= 30.0
+                elif dist_km > 1.8:
+                    # Different branch or unrelated business across town
+                    score -= 40.0
 
-            if addr_num and addr_num in v_addr:
+            if addr_num and _has_whole_phrase(v_addr, addr_num):
                 score += 20.0
 
             if score >= 60.0:
@@ -362,7 +390,7 @@ class TenBisTracker(PoliteScraper):
 
         for item in city_items:
             r_name_raw = (item.get("restaurantName") or "").strip()
-            if not r_name_raw:
+            if not r_name_raw or _is_incompatible_venue_name(r_name_raw, restaurant_name):
                 continue
             r_name = _normalize_hebrew(r_name_raw)
             r_brand = self._extract_brand_core(r_name_raw)
@@ -371,26 +399,32 @@ class TenBisTracker(PoliteScraper):
             score = 0.0
             if query_norm == r_name or (query_core and query_core == r_name):
                 score += 100.0
-            elif query_core and (query_core in r_name or r_name in query_core):
+            elif query_core and (_has_whole_phrase(r_name, query_core) or _has_whole_phrase(query_core, r_name)):
                 score += 80.0
             elif query_brand and len(query_brand) >= 2 and r_brand:
                 if query_brand == r_brand:
                     score += 75.0
-                elif len(query_brand) >= 3 and (query_brand in r_brand or (len(r_brand) >= 3 and r_brand in query_brand)):
+                elif len(query_brand) >= 3 and (
+                    _has_whole_phrase(r_brand, query_brand)
+                    or (len(r_brand) >= 3 and _has_whole_phrase(query_brand, r_brand))
+                ):
                     score += 60.0
+
+            if score == 0.0:
+                continue
 
             item_lat = item.get("latitude")
             item_lng = item.get("longitude")
             if target_lat and target_lng and item_lat and item_lng:
                 dist_km = _haversine_km(target_lat, target_lng, float(item_lat), float(item_lng))
-                if dist_km <= 0.12:
+                if dist_km <= 0.15:
                     score += 50.0
-                elif dist_km <= 0.35:
+                elif dist_km <= 0.40:
                     score += 25.0
-                elif dist_km > 4.0:
-                    score -= 30.0
+                elif dist_km > 1.8:
+                    score -= 40.0
 
-            if addr_num and addr_num in r_addr:
+            if addr_num and _has_whole_phrase(r_addr, addr_num):
                 score += 20.0
 
             if score >= 60.0:

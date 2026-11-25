@@ -150,7 +150,8 @@ class RankingEngine:
             # Equal scale (no 20% penalty) for traditional/HAAT venues not on 10Bis
             tenbis_score = (bayesian_rating / 5.0) * 15.0
             
-        # 4. Sentiment & Buzz (15 Points Max) - Pure Hebrew text sentiment only
+        # 4. Sentiment & Buzz (15 Points Max) - Bayesian-smoothed Hebrew text sentiment
+        # Uses a neutral prior of 5 review-weights so 1-2 isolated reviews cannot distort the 15-point component
         sentiment_points = 7.5 # Neutral baseline (50%)
         if recent_reviews:
             total_weight = 0.0
@@ -163,8 +164,9 @@ class RankingEngine:
                 weighted_sentiment += sentiment_score * live_weight
                 
             if total_weight > 0:
-                avg_sentiment = weighted_sentiment / total_weight # -1.0 to 1.0
-                sentiment_points = ((avg_sentiment + 1.0) / 2.0) * 15.0
+                prior_weight = 5.0
+                smoothed_sentiment = weighted_sentiment / (total_weight + prior_weight) # -1.0 to 1.0
+                sentiment_points = ((smoothed_sentiment + 1.0) / 2.0) * 15.0
                 
         final_score = google_score + wolt_score + tenbis_score + sentiment_points
         return round(min(100.0, max(0.0, final_score)), 1)
