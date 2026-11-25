@@ -30,7 +30,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [navRestaurant, setNavRestaurant] = useState<Restaurant | null>(null);
 
-  // Demo banners - replace with real advertiser data later
+  // Advertiser Banner 1 (Above Business Search): Shawarma Bon Ta'am
+  const topAdvertiserBanners = [
+    {
+      imageUrl: '/banners/bon-taam-tlv.jpg',
+      altText: 'שווארמה בון טעם - אלנבי 56, תל אביב',
+      linkUrl: 'https://www.google.com/maps/search/?api=1&query=%D7%A9%D7%95%D7%95%D7%90%D7%A8%D7%9E%D7%94+%D7%91%D7%95%D7%9F+%D7%98%D7%A2%D7%9D+%D7%90%D7%9C%D7%A0%D7%91%D7%99+56+%D7%AA%D7%9C+%D7%90%D7%91%D7%99%D7%91',
+    },
+  ];
+
+  // Available Banner Slot 2 (Below WhatsApp button - open for next advertiser)
   const demoBanners = [
     {
       altText: t('banner_demo_text'),
@@ -198,8 +207,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <main className="main-content">
         {children}
 
-        {/* Banner 1 - Above Business Section */}
-        <AdBanner banners={demoBanners} rotationInterval={5000} />
+        {/* Banner 1 - Above Business Section (Shawarma Bon Ta'am) */}
+        <AdBanner banners={topAdvertiserBanners} rotationInterval={5000} />
 
         {/* Global Business Advertisement Section */}
         <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto'}}>
