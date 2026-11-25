@@ -190,20 +190,14 @@ export function getNearMeRankings(
     };
   });
 
-  // 1. Determine candidate pool: either strictly within the chosen city, or the nearby pool around the user
+  // 1. Determine candidate pool: either strictly within the chosen city, or the 10 closest shawarmas to the user
   let candidatePool: Restaurant[];
   if (filterCity) {
     candidatePool = withDist.filter(r => r.city === filterCity);
   } else {
-    // Take shawarmas within 10km radius around user (or at least the 10 closest shawarmas if <10 exist within 10km)
-    const within10Km = withDist.filter(r => (r.distance_km ?? 999) <= 10);
-    if (within10Km.length >= 10 && sortBy === 'national_rank') {
-      candidatePool = within10Km;
-    } else {
-      candidatePool = [...withDist]
-        .sort((a, b) => (a.distance_km ?? 999) - (b.distance_km ?? 999))
-        .slice(0, 10);
-    }
+    candidatePool = [...withDist]
+      .sort((a, b) => (a.distance_km ?? 999) - (b.distance_km ?? 999))
+      .slice(0, 10);
   }
 
   // 2. Sort the candidate pool according to user's selected sort mode
@@ -275,18 +269,37 @@ export async function getRegionalRankings(regionId: string): Promise<Restaurant[
   return getBundledRegionalRankings(regionId);
 }
 
-// 4. Search Restaurant (returns matching restaurant objects so user can click & navigate to any of the 222 places)
+function normalizeHebrewSearch(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/[׳'״"\-–()]/g, ' ')
+    .replace(/שאווארמה|שאוורמה|שוארמה|שוורמה/g, 'שווארמה')
+    .replace(/קריית/g, 'קרית')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// 4. Search Restaurant (returns matching restaurant objects so user can click & navigate to any place)
 export function searchRestaurantLocal(queryStr: string): { exists: boolean; name?: string; matches: Restaurant[] } {
   if (!queryStr || queryStr.trim().length < 2) return { exists: false, matches: [] };
-  const clean = queryStr.trim().toLowerCase();
+  const clean = normalizeHebrewSearch(queryStr);
+  const tokens = clean.split(' ').filter(t => t.length >= 2);
   const ranked = getRankedLocalRestaurants();
 
-  const matches = ranked.filter(r =>
-    r.name.toLowerCase().includes(clean) ||
-    clean.includes(r.name.toLowerCase()) ||
-    r.city.toLowerCase().includes(clean) ||
-    (r.address && r.address.toLowerCase().includes(clean))
-  ).slice(0, 8);
+  const matches = ranked.filter(r => {
+    const normName = normalizeHebrewSearch(r.name);
+    const normCity = normalizeHebrewSearch(r.city);
+    const normAddr = normalizeHebrewSearch(r.address || '');
+    const fullText = `${normName} ${normCity} ${normAddr}`;
+
+    if (normName.includes(clean) || clean.includes(normName) || normCity.includes(clean) || normAddr.includes(clean)) {
+      return true;
+    }
+    if (tokens.length > 0 && tokens.every(tok => fullText.includes(tok))) {
+      return true;
+    }
+    return false;
+  }).slice(0, 8);
 
   if (matches.length > 0) {
     return { exists: true, name: matches[0].name, matches };
