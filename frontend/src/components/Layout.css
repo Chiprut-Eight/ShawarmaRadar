@@ -147,6 +147,44 @@
   backdrop-filter: blur(4px);
 }
 
+/* Welcome popup overlay: keeps "מלך השווארמה עכשיו" and live date/time clearly readable at the top while blurring the rest */
+.welcome-popup-overlay {
+  align-items: flex-start;
+  padding-top: 235px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.28) 205px,
+    rgba(0, 0, 0, 0.78) 275px,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+body.welcome-popup-active .king-radar-title,
+body.welcome-popup-active .king-radar-time {
+  position: relative;
+  z-index: 1001;
+  filter: blur(0.4px);
+  opacity: 0.92;
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.welcome-popup-content {
+  position: relative;
+  z-index: 1002;
+}
+
+@media (max-width: 768px) {
+  .welcome-popup-overlay {
+    padding-top: 195px;
+    padding-bottom: 24px;
+  }
+}
+
 .modal-content {
   background: #1a1a1a;
   border: 1px solid #333;

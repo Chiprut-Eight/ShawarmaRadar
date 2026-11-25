@@ -20,6 +20,17 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       return true;
     }
   });
+
+  useEffect(() => {
+    if (showWelcomePopup) {
+      document.body.classList.add('welcome-popup-active');
+    } else {
+      document.body.classList.remove('welcome-popup-active');
+    }
+    return () => {
+      document.body.classList.remove('welcome-popup-active');
+    };
+  }, [showWelcomePopup]);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -383,16 +394,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       )}
 
       {showWelcomePopup && (
-        <div className="modal-overlay" onClick={() => setShowWelcomePopup(false)}>
+        <div className="modal-overlay welcome-popup-overlay" onClick={() => setShowWelcomePopup(false)}>
           <div
-            className="modal-content"
+            className="modal-content welcome-popup-content"
             onClick={(e) => e.stopPropagation()}
             dir={i18n.language === 'he' ? 'rtl' : 'ltr'}
             style={{
               textAlign: i18n.language === 'he' ? 'right' : 'left',
               position: 'relative',
               border: '1px solid rgba(250, 204, 21, 0.45)',
-              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.75)'
+              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.85)'
             }}
           >
             <button
