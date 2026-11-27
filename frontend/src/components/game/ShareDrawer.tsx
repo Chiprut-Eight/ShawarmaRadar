@@ -108,8 +108,8 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
   const achievedVerb = gender === 'female' ? 'השיגה' : 'השיג';
 
   const shareCaption = isHe
-    ? `${rankTitle}\n${roleHe} ${playerName} ${achievedVerb} ${evaluation.overallAccuracy}% דיוק באתגר השווארמה של ShawarmaRadar!\n${dishBreakdown}\nבואו לראות איפה אוכלים הכי טוב ולנסות בעצמכם: ${homeUrl}`
-    : `${rankTitle}\n${playerName} scored ${evaluation.overallAccuracy}% accuracy on ShawarmaRadar's Shawarma Slicing Challenge!\n${dishBreakdown}\nCheck out the live Shawarma Radar and try it yourself: ${homeUrl}`;
+    ? `${rankTitle}\n${roleHe} ${playerName} ${achievedVerb} ${evaluation.overallAccuracy}% דיוק באתגר השווארמה של ShawarmaRadar!\n${dishBreakdown}\nחושבים שאתם שווארמולוגים טובים יותר? בואו לשחק: ${homeUrl}`
+    : `${rankTitle}\n${playerName} scored ${evaluation.overallAccuracy}% accuracy on ShawarmaRadar's Shawarma Slicing Challenge!\n${dishBreakdown}\nThink you can beat that? Play now: ${homeUrl}`;
 
   const getPngFile = (): File | null => {
     if (!cardBlob) return null;
