@@ -466,19 +466,6 @@
   font-size: 0.84rem;
 }
 
-.blind-weight-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #e4e4e7;
-  font-weight: 700;
-  font-size: 0.82rem;
-}
-
 /* Side-by-side Spit + 3 Side Portion Icons */
 .game-arena-grid {
   display: grid;

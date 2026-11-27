@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Clock,
   Flame,
-  Lock,
   Play,
   RotateCcw,
   Share2,
@@ -471,10 +470,6 @@ const ShawarmaGame: React.FC = () => {
               <span className="target-gram-chip">
                 {t('game_target_label', { grams: activeDishConfig.targetGrams })}
               </span>
-              <span className="blind-weight-chip">
-                <Lock size={13} />
-                <span>{t('game_weight_hidden')}</span>
-              </span>
             </div>
           </div>
 
@@ -488,7 +483,6 @@ const ShawarmaGame: React.FC = () => {
                 forceSlicing={forceSlicing}
                 dishWeightsRef={dishWeightsRef}
                 targetLabel={t('game_target_label', { grams: activeDishConfig.targetGrams })}
-                hiddenWeightLabel={t('game_weight_hidden_short')}
                 dragHintLabel={t('game_drag_hint')}
                 onSliceStateChange={handleSliceStateChange}
                 onDishStatusChange={handleDishStatusChange}

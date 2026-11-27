@@ -7,7 +7,6 @@ interface ShawarmaSpitCanvasProps {
   forceSlicing: boolean;
   dishWeightsRef: React.MutableRefObject<Record<DishId, number>>;
   targetLabel: string;
-  hiddenWeightLabel: string;
   dragHintLabel: string;
   onSliceStateChange: (slicing: boolean) => void;
   onDishStatusChange: (dishId: DishId, hasMeat: boolean, isOverflowing: boolean) => void;
@@ -73,7 +72,6 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
   forceSlicing,
   dishWeightsRef,
   targetLabel,
-  hiddenWeightLabel,
   dragHintLabel,
   onSliceStateChange,
   onDishStatusChange,
@@ -86,7 +84,6 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
     isPlaying,
     forceSlicing,
     targetLabel,
-    hiddenWeightLabel,
     dragHintLabel,
     onSliceStateChange,
     onDishStatusChange,
@@ -98,7 +95,6 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
       isPlaying,
       forceSlicing,
       targetLabel,
-      hiddenWeightLabel,
       dragHintLabel,
       onSliceStateChange,
       onDishStatusChange,
@@ -108,7 +104,6 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
     isPlaying,
     forceSlicing,
     targetLabel,
-    hiddenWeightLabel,
     dragHintLabel,
     onSliceStateChange,
     onDishStatusChange,
@@ -393,8 +388,7 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
       weight: number,
       centerX: number,
       baseY: number,
-      tLabel: string,
-      hLabel: string
+      tLabel: string
     ) => {
       const cfg = DISH_MAP[dishId];
       // Visual fill maps loosely to capacity so it's appetizing without serving as an exact ruler
@@ -487,9 +481,9 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
         ctx.restore();
       }
 
-      // Target & hidden weight badge directly under vessel (NEVER displays actual grams!)
+      // Target weight badge directly under vessel (NEVER displays actual grams!)
       const pillY = baseY + 26;
-      const pillText = `${tLabel}  •  ${hLabel}`;
+      const pillText = tLabel;
       ctx.save();
       ctx.direction = /[\u0590-\u05FF]/.test(tLabel) ? 'rtl' : 'ltr';
       ctx.font = 'bold 12px Heebo, Inter, sans-serif';
@@ -520,7 +514,6 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
         isPlaying: playing,
         forceSlicing: extSlicing,
         targetLabel: tLabel,
-        hiddenWeightLabel: hLabel,
         dragHintLabel: hintLabel,
         onSliceStateChange: sliceCb,
         onDishStatusChange: statusCb,
@@ -751,7 +744,7 @@ const ShawarmaSpitCanvas: React.FC<ShawarmaSpitCanvasProps> = ({
       drawElectricKnife(bladeX, knifeY, sim.bladeAngle, activelyCutting);
 
       // Draw active portion vessel at bottom
-      drawActiveVessel(curDish, updatedWeight, spitX, height * 0.85, tLabel, hLabel);
+      drawActiveVessel(curDish, updatedWeight, spitX, height * 0.85, tLabel);
 
       // Subtle touch/drag hint when idle and dish is still empty
       if (playing && !wantsSlice && !hasMeat) {
