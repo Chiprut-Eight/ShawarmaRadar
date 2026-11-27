@@ -78,6 +78,7 @@ export function normalizePageKey(pathname: string): string {
   if (pathname.startsWith('/region/south')) return 'region_south';
   if (pathname.startsWith('/region/sharon')) return 'region_sharon';
   if (pathname.startsWith('/region/shfela')) return 'region_shfela';
+  if (pathname.startsWith('/play')) return 'play';
   return 'other';
 }
 
@@ -89,6 +90,7 @@ export const PAGE_LABELS_HE: Record<string, string> = {
   region_sharon: 'אזור השרון',
   region_shfela: 'אזור השפלה',
   region_south: 'אזור דרום',
+  play: '🔪 הכינו מנות עכשיו',
   other: 'אחר',
 };
 
@@ -257,7 +259,14 @@ export function initAnalyticsLifecycle(): void {
 }
 
 export async function trackUserAction(
-  action: 'banner_click' | 'nav_waze' | 'nav_gmaps' | 'search',
+  action:
+    | 'banner_click'
+    | 'nav_waze'
+    | 'nav_gmaps'
+    | 'search'
+    | 'game_start'
+    | 'game_complete'
+    | 'game_share',
   bannerKey?: string
 ): Promise<void> {
   if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) return;
@@ -290,6 +299,15 @@ export async function trackUserAction(
     } else if (action === 'search') {
       await setDoc(globalRef, { searches: increment(1) }, { merge: true });
       await setDoc(dailyRef, { date: today, searches: increment(1) }, { merge: true });
+    } else if (action === 'game_start') {
+      await setDoc(globalRef, { game_starts: increment(1) }, { merge: true });
+      await setDoc(dailyRef, { date: today, game_starts: increment(1) }, { merge: true });
+    } else if (action === 'game_complete') {
+      await setDoc(globalRef, { game_completions: increment(1) }, { merge: true });
+      await setDoc(dailyRef, { date: today, game_completions: increment(1) }, { merge: true });
+    } else if (action === 'game_share') {
+      await setDoc(globalRef, { game_shares: increment(1) }, { merge: true });
+      await setDoc(dailyRef, { date: today, game_shares: increment(1) }, { merge: true });
     }
   } catch {
     // ignore

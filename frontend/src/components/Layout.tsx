@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy, X } from 'lucide-react';
+import { Globe, Map, Share2, Download, Info as InfoIcon, Activity, MessageCircle, Navigation, Trophy, X, Flame, ChevronDown } from 'lucide-react';
 import AdBanner from './AdBanner';
 import NavigationModal from './NavigationModal';
 import './Layout.css';
@@ -14,6 +14,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isGameRoute = location.pathname.startsWith('/play');
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const modalHistoryPushedRef = useRef<boolean>(false);
@@ -53,7 +54,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   });
 
   useEffect(() => {
-    if (showWelcomePopup && !isAdminRoute) {
+    if (showWelcomePopup && !isAdminRoute && !isGameRoute) {
       document.body.classList.add('welcome-popup-active');
     } else {
       document.body.classList.remove('welcome-popup-active');
@@ -61,7 +62,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return () => {
       document.body.classList.remove('welcome-popup-active');
     };
-  }, [showWelcomePopup, isAdminRoute]);
+  }, [showWelcomePopup, isAdminRoute, isGameRoute]);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -219,21 +220,24 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
         
         <nav className="header-nav">
-          <button className="info-btn" onClick={() => openInfoModal('ai')} title={t('nav_info_btn')} style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
-            <Activity size={22} />
-          </button>
           <Link to="/" className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`}>
-            <Globe size={18} />
-            <span className="hide-mobile">{t('national_king')}</span>
+            <Globe size={16} />
+            <span>{t('national_king')}</span>
           </Link>
           <div className="dropdown" ref={dropdownRef}>
             <button
               type="button"
-              className={`nav-btn ${location.pathname.includes('/region') || location.pathname === '/near-me' ? 'active' : ''}`}
+              className={`nav-btn nav-btn-region ${
+                location.pathname.includes('/region') || location.pathname === '/near-me' || isRegionMenuOpen
+                  ? 'active'
+                  : ''
+              }`}
               onClick={() => setIsRegionMenuOpen((prev) => !prev)}
+              aria-expanded={isRegionMenuOpen}
             >
-              <Map size={18} />
-              <span className="hide-mobile">{t('nav_filter_region')}</span>
+              <Map size={16} />
+              <span>{t('nav_filter_region')}</span>
+              <ChevronDown size={14} className={`nav-chevron ${isRegionMenuOpen ? 'open' : ''}`} />
             </button>
             {isRegionMenuOpen && (
               <div className="dropdown-content open">
@@ -260,11 +264,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </div>
             )}
           </div>
+          <Link to="/play" className={`nav-btn nav-btn-game ${location.pathname === '/play' ? 'active' : ''}`}>
+            <Flame size={16} />
+            <span className="hide-mobile">{t('nav_play_game')}</span>
+            <span className="show-mobile-inline">{t('nav_play_game_short')}</span>
+          </Link>
         </nav>
 
-        <button className="lang-toggle" onClick={toggleLanguage}>
-          {t('toggle_lang')}
-        </button>
+        <div className="header-utilities">
+          <button className="info-btn" onClick={() => openInfoModal('ai')} title={t('nav_info_btn')} style={{ color: '#4ade80', borderColor: '#4ade80', width: '36px', height: '36px' }}>
+            <Activity size={22} />
+          </button>
+          <button className="lang-toggle" onClick={toggleLanguage}>
+            {t('toggle_lang')}
+          </button>
+        </div>
       </header>
 
       <main className="main-content">
@@ -449,7 +463,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       )}
 
-      {showWelcomePopup && !isAdminRoute && (
+      {showWelcomePopup && !isAdminRoute && !isGameRoute && (
         <div className="modal-overlay welcome-popup-overlay" onClick={() => setShowWelcomePopup(false)}>
           <div
             className="modal-content welcome-popup-content"

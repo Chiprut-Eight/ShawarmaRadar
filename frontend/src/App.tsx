@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import RegionalDashboard from './pages/RegionalDashboard';
 import NearMe from './pages/NearMe';
 import AdminDashboard from './pages/AdminDashboard';
+import ShawarmaGame from './pages/ShawarmaGame';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import { initAnalyticsLifecycle, trackPageView } from './services/analytics';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/near-me" element={<NearMe />} />
           <Route path="/region/:id" element={<RegionalDashboard />} />
+          <Route path="/play" element={<ShawarmaGame />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </Layout>

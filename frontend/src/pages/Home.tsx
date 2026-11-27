@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import './Home.css';
-import { Crown, Navigation } from 'lucide-react';
+import { Crown, Flame, Navigation } from 'lucide-react';
 import { getNationalRankings, getBundledNationalRankings, type Restaurant } from '../services/firebase';
 import NavigationModal from '../components/NavigationModal';
 
@@ -86,6 +87,18 @@ const Home: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Gamification Promo Card */}
+      <Link to="/play" className="game-promo-card">
+        <div className="game-promo-content">
+          <h3 className="game-promo-title">
+            <Flame size={19} className="game-promo-title-icon" />
+            <span>{t('game_promo_title')}</span>
+          </h3>
+          <p className="game-promo-desc">{t('game_promo_desc')}</p>
+        </div>
+        <span className="game-promo-cta">{t('game_promo_cta')}</span>
+      </Link>
 
       <div className="signals-panel">
         <h2 className="signals-section-title">{t('home_runners_title')}</h2>
