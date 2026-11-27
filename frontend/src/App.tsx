@@ -17,6 +17,9 @@ function RouteAnalyticsObserver() {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     void trackPageView(location.pathname);
   }, [location.pathname]);
 

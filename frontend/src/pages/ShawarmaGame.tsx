@@ -196,6 +196,22 @@ const ShawarmaGame: React.FC = () => {
     };
   }, [phase, evaluation, playerName, resolvedGender, langKey]);
 
+  // Always start every game screen/phase cleanly from the top of the page
+  useEffect(() => {
+    const scrollTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    scrollTop();
+    const rafId = window.requestAnimationFrame(scrollTop);
+    const timerId = window.setTimeout(scrollTop, 60);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timerId);
+    };
+  }, [phase, roundId]);
+
   const startRound = useCallback(
     (chosenName: string, chosenGender: PlayerGender | null) => {
       const clean = chosenName.trim();
@@ -205,6 +221,10 @@ const ShawarmaGame: React.FC = () => {
       setGenderError(missingGender);
       if (missingName || missingGender) {
         return;
+      }
+
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
       }
 
       savePlayerName(clean);

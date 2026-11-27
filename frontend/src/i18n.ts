@@ -119,7 +119,7 @@ const resources = {
 
       "game_badge": "אתגר השווארמה",
       "game_page_title": "הכינו מנות עכשיו",
-      "game_intro_subtitle": "תפסו את הסכין החשמלית, חתכו בשר מהגלגל המסתובב והתאימו את המשקל המדויק לכל מנה — בלי לראות את המשקל עד הסוף!",
+      "game_intro_subtitle": "תפסו את הסכין החשמלית, חתכו בשר מהגלגל המסתובב והתאימו את המשקל המדויק לכל מנה!",
       "game_personal_best": "השיא האישי שלך: {{score}}% דיוק",
       "game_grams_value": "{{grams}} גרם",
       "game_rule_knife": "חיתוך בסכין חשמלית",
@@ -299,7 +299,7 @@ const resources = {
 
       "game_badge": "The Shawarma Challenge",
       "game_page_title": "Prep Portions Now",
-      "game_intro_subtitle": "Grab the electric rotary knife, slice off the spinning spit, and nail the exact target weights — blind until the reveal!",
+      "game_intro_subtitle": "Grab the electric rotary knife, slice off the spinning spit, and nail the exact target weights!",
       "game_personal_best": "Your Personal Best: {{score}}% Accuracy",
       "game_grams_value": "{{grams}}g",
       "game_rule_knife": "Electric knife slicing",
