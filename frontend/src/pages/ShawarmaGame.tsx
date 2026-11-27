@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   Clock,
   Flame,
+  Home as HomeIcon,
   Play,
   RotateCcw,
   Share2,
@@ -66,6 +68,7 @@ const CONFETTI_PIECES = Array.from({ length: 24 }, (_, idx) => ({
 
 const ShawarmaGame: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isHe = i18n.language === 'he';
   const langKey: 'he' | 'en' = isHe ? 'he' : 'en';
 
@@ -420,6 +423,15 @@ const ShawarmaGame: React.FC = () => {
               {isMuted ? <Volume2 size={16} /> : <VolumeX size={16} />}
               <span>{isMuted ? t('game_unmute_sound_btn') : t('game_mute_sound_btn')}</span>
             </button>
+
+            <button
+              type="button"
+              className="game-home-link-btn"
+              onClick={() => navigate('/')}
+            >
+              <HomeIcon size={15} />
+              <span>{t('game_go_radar_home_btn')}</span>
+            </button>
           </form>
         </section>
       )}
@@ -748,11 +760,24 @@ const ShawarmaGame: React.FC = () => {
               <User size={16} />
               <span>{t('game_change_name_btn')}</span>
             </button>
+
+            <button
+              type="button"
+              className="game-ghost-btn results-home-btn"
+              onClick={() => navigate('/')}
+            >
+              <HomeIcon size={16} />
+              <span>{t('game_back_home_btn')}</span>
+            </button>
           </div>
 
           <ShareDrawer
             isOpen={isShareOpen}
             onClose={() => setIsShareOpen(false)}
+            onShareComplete={() => {
+              setIsShareOpen(false);
+              navigate('/');
+            }}
             playerName={playerName}
             gender={resolvedGender}
             evaluation={evaluation}

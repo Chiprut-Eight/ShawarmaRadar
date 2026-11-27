@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   X,
@@ -15,6 +15,7 @@ import './ShareDrawer.css';
 interface ShareDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  onShareComplete: () => void;
   playerName: string;
   gender: PlayerGender;
   evaluation: RoundEvaluation;
@@ -26,6 +27,7 @@ interface ShareDrawerProps {
 const ShareDrawer: React.FC<ShareDrawerProps> = ({
   isOpen,
   onClose,
+  onShareComplete,
   playerName,
   gender,
   evaluation,
@@ -38,26 +40,64 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
 
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
+  const onShareCompleteRef = useRef(onShareComplete);
   useEffect(() => {
-    if (!isOpen) return;
+    onShareCompleteRef.current = onShareComplete;
+  }, [onShareComplete]);
+
+  const returnTimerRef = useRef<number | null>(null);
+  const pendingReturnRef = useRef<boolean>(false);
+
+  const clearScheduledReturn = () => {
+    pendingReturnRef.current = false;
+    if (returnTimerRef.current !== null) {
+      window.clearTimeout(returnTimerRef.current);
+      returnTimerRef.current = null;
+    }
+  };
+
+  const scheduleReturnHome = (delayMs: number) => {
+    clearScheduledReturn();
+    pendingReturnRef.current = true;
+    returnTimerRef.current = window.setTimeout(() => {
+      pendingReturnRef.current = false;
+      returnTimerRef.current = null;
+      onShareCompleteRef.current();
+    }, delayMs);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      clearScheduledReturn();
+      return;
+    }
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
       }
     };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && pendingReturnRef.current) {
+        clearScheduledReturn();
+        onShareCompleteRef.current();
+      }
+    };
     window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
+      clearScheduledReturn();
       window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       document.body.style.overflow = prevOverflow;
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
-  const playUrl = `${window.location.origin}/play`;
+  const homeUrl = window.location.origin;
   const rankTitle = isHe ? evaluation.rank.titleHe : evaluation.rank.titleEn;
 
   const dishBreakdown = evaluation.dishes
@@ -68,8 +108,8 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
   const achievedVerb = gender === 'female' ? 'השיגה' : 'השיג';
 
   const shareCaption = isHe
-    ? `${rankTitle}\n${roleHe} ${playerName} ${achievedVerb} ${evaluation.overallAccuracy}% דיוק באתגר השווארמה של ShawarmaRadar!\n${dishBreakdown}\nחושבים שאתם שווארמולוגים טובים יותר? בואו לשחק: ${playUrl}`
-    : `${rankTitle}\n${playerName} scored ${evaluation.overallAccuracy}% accuracy on ShawarmaRadar's Shawarma Slicing Challenge!\n${dishBreakdown}\nThink you can beat that? Play now: ${playUrl}`;
+    ? `${rankTitle}\n${roleHe} ${playerName} ${achievedVerb} ${evaluation.overallAccuracy}% דיוק באתגר השווארמה של ShawarmaRadar!\n${dishBreakdown}\nבואו לראות איפה אוכלים הכי טוב ולנסות בעצמכם: ${homeUrl}`
+    : `${rankTitle}\n${playerName} scored ${evaluation.overallAccuracy}% accuracy on ShawarmaRadar's Shawarma Slicing Challenge!\n${dishBreakdown}\nCheck out the live Shawarma Radar and try it yourself: ${homeUrl}`;
 
   const getPngFile = (): File | null => {
     if (!cardBlob) return null;
@@ -126,7 +166,8 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
           title: 'ShawarmaRadar',
           text: shareCaption,
         });
-        setStatusMessage(t('share_drawer_shared_ok'));
+        clearScheduledReturn();
+        onShareCompleteRef.current();
         return;
       } catch (err) {
         if ((err as Error)?.name === 'AbortError') return;
@@ -135,6 +176,7 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
     triggerDownload();
     await copyCaption();
     setStatusMessage(t('share_drawer_story_fallback'));
+    scheduleReturnHome(1600);
   };
 
   const handleWhatsAppShare = async () => {
@@ -148,7 +190,8 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
           title: 'ShawarmaRadar',
           text: shareCaption,
         });
-        setStatusMessage(t('share_drawer_shared_ok'));
+        clearScheduledReturn();
+        onShareCompleteRef.current();
         return;
       } catch (err) {
         if ((err as Error)?.name === 'AbortError') return;
@@ -157,21 +200,24 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
     triggerDownload();
     window.open(`https://wa.me/?text=${encodeURIComponent(shareCaption)}`, '_blank', 'noopener,noreferrer');
     setStatusMessage(t('share_drawer_whatsapp_fallback'));
+    scheduleReturnHome(400);
   };
 
   const handleFacebookShare = async () => {
     void trackUserAction('game_share');
     triggerDownload();
     await copyCaption();
-    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(playUrl)}&quote=${encodeURIComponent(shareCaption)}`;
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(homeUrl)}&quote=${encodeURIComponent(shareCaption)}`;
     window.open(fbUrl, '_blank', 'noopener,noreferrer');
     setStatusMessage(t('share_drawer_facebook_fallback'));
+    scheduleReturnHome(400);
   };
 
   const handleDownloadClick = () => {
     void trackUserAction('game_share');
     if (triggerDownload()) {
       setStatusMessage(t('share_drawer_downloaded'));
+      scheduleReturnHome(1400);
     }
   };
 
@@ -183,9 +229,10 @@ const ShareDrawer: React.FC<ShareDrawerProps> = ({
         if (file && canUseNativeFileShare(file)) {
           await navigator.share({ files: [file], title: 'ShawarmaRadar', text: shareCaption });
         } else {
-          await navigator.share({ title: 'ShawarmaRadar', text: shareCaption, url: playUrl });
+          await navigator.share({ title: 'ShawarmaRadar', text: shareCaption, url: homeUrl });
         }
-        setStatusMessage(t('share_drawer_shared_ok'));
+        clearScheduledReturn();
+        onShareCompleteRef.current();
         return;
       } catch (err) {
         if ((err as Error)?.name === 'AbortError') return;

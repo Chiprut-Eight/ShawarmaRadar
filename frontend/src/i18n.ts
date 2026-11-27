@@ -162,6 +162,8 @@ const resources = {
       "game_share_results_btn": "שתפו את התוצאה",
       "game_play_again_btn": "שחקו שוב",
       "game_change_name_btn": "החלפת שם / מגדר",
+      "game_back_home_btn": "חזרה לעמוד הראשי",
+      "game_go_radar_home_btn": "לעמוד הראשי • רדאר השווארמה",
 
       "share_drawer_title": "שתפו את המנות שלכם! 📸",
       "share_drawer_subtitle": "תמונת הניצחון שלכם מוכנה לשיתוף בכל הרשתות",
@@ -340,6 +342,8 @@ const resources = {
       "game_share_results_btn": "Share Results",
       "game_play_again_btn": "Play Again",
       "game_change_name_btn": "Change Name / Gender",
+      "game_back_home_btn": "Back to Home",
+      "game_go_radar_home_btn": "Go to Shawarma Radar Home",
 
       "share_drawer_title": "Share Your Shawarma Results! 📸",
       "share_drawer_subtitle": "Your custom victory card is ready to share everywhere",

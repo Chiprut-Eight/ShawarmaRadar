@@ -669,7 +669,7 @@ export async function generateResultShareCard(
   ctx.fillStyle = '#111111';
   ctx.textBaseline = 'middle';
   ctx.font = '900 30px Inter, Heebo, sans-serif';
-  ctx.fillText(`${siteHost}/play`, W / 2, ctaPillY + 38);
+  ctx.fillText(siteHost, W / 2, ctaPillY + 38);
   ctx.restore();
 
   const blob = await new Promise<Blob>((resolve, reject) => {

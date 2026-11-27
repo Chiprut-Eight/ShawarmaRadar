@@ -947,6 +947,32 @@
   font-size: 1.05rem;
 }
 
+.results-home-btn {
+  border-color: rgba(250, 204, 21, 0.35);
+  color: #fde68a;
+}
+
+.game-home-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  align-self: center;
+  margin-top: 0.15rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #d4d4d8;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.game-home-link-btn:hover {
+  border-color: rgba(250, 204, 21, 0.45);
+  color: #fde68a;
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 760px) {
   .results-dishes-grid {
