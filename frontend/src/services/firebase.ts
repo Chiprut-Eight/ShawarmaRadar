@@ -18,7 +18,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyDrfZXDROUn9AnyOmSB6ZvxeiDuxBpnBF8",
   authDomain: "shawarmaradar-app.firebaseapp.com",
   messagingSenderId: "906387185943",
-  projectNumber: "906387185943"
+  projectNumber: "906387185943",
+  measurementId: "G-KQ4V7NQQGX"
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);

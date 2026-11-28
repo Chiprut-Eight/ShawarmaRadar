@@ -100,7 +100,7 @@
    * מסמכי התמחור והמודל העסקי מרוכזים בשורש הפרויקט (`ShawarmaRadar_Advertiser_Pricing_Proposal.docx`, `ShawarmaRadar_Business_Model_And_Pricing.docx`, `ShawarmaRadar_Internal_Revenue_Forecast.docx`).
 5. **חדר בקרה נסתר למנהל (`/admin`) ואנליטיקס חי ב-Firestore**:
    * [`AdminDashboard.tsx`](frontend/src/pages/AdminDashboard.tsx) — מוגן בקוד PIN עם חתימת `SHA-256` (נגיש דרך כתובת `/admin` או הקלדת הקוד בשורת חיפוש העסקים).
-   * [`analytics.ts`](frontend/src/services/analytics.ts) — מעקב חי וקל משקל ב-Firestore (`firestore.rules`): גולשים באתר כרגע (`LIVE`), סה"כ גולשים ייחודיים, זמן שהייה ממוצע, התפלגות צפיות לפי עמודים ומכשירים, קליקים על באנר מפרסמים וניווטים, ומדדי המשחק (`/play`).
+   * [`analytics.ts`](frontend/src/services/analytics.ts) — שירות אנליטיקס כפול (Google Analytics 4 `G-KQ4V7NQQGX` + מעקב חי ב-Firestore תחת `firestore.rules`, עם החרגה אוטומטית של `/admin`): גולשים באתר כרגע (`LIVE`), סה"כ גולשים ייחודיים, זמן שהייה ממוצע, התפלגות צפיות לפי עמודים ומכשירים, קליקים על באנר מפרסמים וניווטים, ומדדי המשחק (`/play`).
    * מציג בנוסף את היסטוריית כס המלכות ([`king_history.json`](frontend/src/data/king_history.json)) וטבלת דירוג מלאה, מסוננת וניתנת לחיפוש של כל 300+ השווארמיות.
 6. **חוויית משתמש ומובייל (PWA)**:
    * כותרת רספונסיבית עם לוגו מפוצל למובייל (`logo-icon.png`), פופ-אפ פתיחה המשאיר את כותרת "מלך השווארמה עכשיו" והשעון החי קריאים, סגירת חלון ההסבר בלחיצה על כפתור "חזור" בטלפון/דפדפן, וממשק דו-לשוני מלא (`i18n.ts`).
@@ -150,7 +150,7 @@ ShawarmaRadar/
 │       └── social.py                               # עזר היסטורי לאזכורי רשת
 └── frontend/
     ├── package.json                                # תלויות React 19, TypeScript, Vite, Firebase, i18next
-    ├── index.html                                  # כניסת האפליקציה ומטא-תגיות PWA / מובייל
+    ├── index.html                                  # כניסת האפליקציה, GA4 (G-KQ4V7NQQGX) ומטא-תגיות PWA / מובייל
     ├── public/
     │   ├── logo.png                                # לוגו ראשי רחב (לשיתוף ומטא)
     │   ├── logo-icon.png                           # סמל המכ"ם הנפרד לכותרת המובייל והדסקטופ
@@ -164,7 +164,7 @@ ShawarmaRadar/
         │   └── king_history.json                   # היסטוריית כהונות ושיאי מקום #1 הארצי
         ├── services/
         │   ├── firebase.ts                         # שכבת שליפה, חישובי מרחק קרוב אלי וחיפוש מקומי
-        │   └── analytics.ts                        # שירות האנליטיקס ונוכחות חיה ב-Firestore
+        │   └── analytics.ts                        # שירות האנליטיקס (GA4 + נוכחות חיה ב-Firestore)
         ├── game/
         │   ├── shawarmaGameConfig.ts               # חוקי המנות (לאפה/פיתה/חצי), שקילה ודרגות תוצאה
         │   └── soundEffects.ts                     # מנוע אפקטים קוליים פרוצדורלי (Web Audio API)

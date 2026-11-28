@@ -11,6 +11,23 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+function sendGtagEvent(eventName: string, params?: Record<string, unknown>): void {
+  if (typeof window === 'undefined') return;
+  if (window.location.pathname.startsWith('/admin')) return;
+  if (typeof window.gtag !== 'function') return;
+  try {
+    window.gtag('event', eventName, params || {});
+  } catch {
+    // Silent fail so UI is never affected
+  }
+}
+
 const VISITOR_KEY = 'sr_visitor_uid_v1';
 const VISITOR_COUNTED_KEY = 'sr_visitor_counted_v1';
 const SESSION_KEY = 'sr_session_uid_v1';
@@ -144,6 +161,12 @@ export async function trackPageView(pathname: string): Promise<void> {
   const today = getTodayIso();
   const device = getDeviceType();
 
+  sendGtagEvent('page_view', {
+    page_path: pathname,
+    page_title: PAGE_LABELS_HE[pageKey] || document.title,
+    page_location: window.location.href,
+  });
+
   let isNewVisitor = false;
   let isNewSession = false;
   let isNewDailyVisitor = false;
@@ -276,6 +299,7 @@ export async function trackUserAction(
   bannerKey?: string
 ): Promise<void> {
   if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) return;
+  sendGtagEvent(action, bannerKey ? { banner_name: bannerKey } : undefined);
   const today = getTodayIso();
   try {
     const globalRef = doc(db, 'analytics', 'global_stats');
