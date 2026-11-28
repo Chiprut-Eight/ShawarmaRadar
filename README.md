@@ -154,7 +154,8 @@ ShawarmaRadar/
     ├── package.json                                # תלויות React 19, TypeScript, Vite, Firebase, i18next
     ├── index.html                                  # כניסת האפליקציה, GA4 (G-KQ4V7NQQGX) ומטא-תגיות PWA / מובייל
     ├── public/
-    │   ├── logo.png                                # לוגו ראשי רחב (לכרטיסי שיתוף ומטא)
+    │   ├── logo.png                                # אייקון המכ"ם הראשי (512×512 רקע כהה מלא ל-PWA)
+    │   ├── logo-banner.png                         # לוגו ראשי רחב (לכרטיסי שיתוף בסטורי)
     │   ├── logo-icon.png                           # סמל המכ"ם הנפרד לכותרת המובייל והדסקטופ
     │   ├── pwa-icon-192.png                        # אייקון אפליקציית PWA (192×192 רקע כהה מלא)
     │   ├── pwa-icon-512.png                        # אייקון אפליקציית PWA (512×512 רקע כהה מלא)

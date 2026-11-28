@@ -346,7 +346,7 @@ export async function generateResultShareCard(
     ]);
   }
 
-  const logoImg = await loadImageWithTimeout('/logo.png', 2000);
+  const logoImg = await loadImageWithTimeout('/logo-banner.png', 2000);
 
   const W = 1080;
   const H = 1920;

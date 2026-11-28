@@ -11,6 +11,17 @@
         "source": "**",
         "destination": "/index.html"
       }
+    ],
+    "headers": [
+      {
+        "source": "/{manifest.json,index.html,logo.png,pwa-icon-192.png,pwa-icon-512.png}",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, must-revalidate"
+          }
+        ]
+      }
     ]
   },
   "firestore": {
