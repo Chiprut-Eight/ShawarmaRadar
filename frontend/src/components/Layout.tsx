@@ -18,6 +18,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const [activeInfo, setActiveInfo] = useState<string | null>(null);
   const modalHistoryPushedRef = useRef<boolean>(false);
+  const welcomeOverlayRef = useRef<HTMLDivElement | null>(null);
 
   const openInfoModal = (modalKey: string) => {
     setActiveInfo(modalKey);
@@ -63,13 +64,79 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       document.body.classList.remove('welcome-popup-active');
     };
   }, [showWelcomePopup, isAdminRoute, isGameRoute]);
+
+  useEffect(() => {
+    if (!showWelcomePopup || isAdminRoute || isGameRoute) return;
+
+    const updatePopupOffset = () => {
+      const overlayEl = welcomeOverlayRef.current;
+      if (!overlayEl) return;
+      const anchor =
+        document.querySelector('.king-radar-time') ||
+        document.querySelector('.king-radar-title');
+      if (anchor) {
+        const rect = anchor.getBoundingClientRect();
+        if (rect.bottom > 0) {
+          const maxTop = Math.floor(window.innerHeight * 0.52);
+          const desiredTop = Math.min(Math.max(140, Math.ceil(rect.bottom + 18)), maxTop);
+          overlayEl.style.setProperty('--welcome-popup-top', `${desiredTop}px`);
+          return;
+        }
+      }
+      const fallbackTop = window.innerWidth <= 768 ? 245 : 265;
+      overlayEl.style.setProperty('--welcome-popup-top', `${fallbackTop}px`);
+    };
+
+    const rafId = window.requestAnimationFrame(updatePopupOffset);
+    const timerId = window.setTimeout(updatePopupOffset, 180);
+    window.addEventListener('resize', updatePopupOffset);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timerId);
+      window.removeEventListener('resize', updatePopupOffset);
+    };
+  }, [showWelcomePopup, isAdminRoute, isGameRoute, location.pathname]);
+
+  useEffect(() => {
+    if (!showWelcomePopup || isAdminRoute || isGameRoute) return;
+
+    const updatePopupOffset = () => {
+      const overlayEl = welcomeOverlayRef.current;
+      if (!overlayEl) return;
+      const anchor =
+        document.querySelector('.king-radar-time') ||
+        document.querySelector('.king-radar-title');
+      if (anchor) {
+        const rect = anchor.getBoundingClientRect();
+        if (rect.bottom > 0) {
+          const maxTop = Math.floor(window.innerHeight * 0.52);
+          const desiredTop = Math.min(Math.max(140, Math.ceil(rect.bottom + 18)), maxTop);
+          overlayEl.style.setProperty('--welcome-popup-top', `${desiredTop}px`);
+          return;
+        }
+      }
+      const fallbackTop = window.innerWidth <= 768 ? 245 : 265;
+      overlayEl.style.setProperty('--welcome-popup-top', `${fallbackTop}px`);
+    };
+
+    const rafId = window.requestAnimationFrame(updatePopupOffset);
+    const timerId = window.setTimeout(updatePopupOffset, 180);
+    window.addEventListener('resize', updatePopupOffset);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timerId);
+      window.removeEventListener('resize', updatePopupOffset);
+    };
+  }, [showWelcomePopup, isAdminRoute, isGameRoute, location.pathname]);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isRegionMenuOpen, setIsRegionMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  
+
   // Business Search
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResult, setSearchResult] = useState<{message: string, isFound: boolean, matches?: Restaurant[], whatsapp?: string} | null>(null);
+  const [searchResult, setSearchResult] = useState<{ message: string, isFound: boolean, matches?: Restaurant[], whatsapp?: string } | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [navRestaurant, setNavRestaurant] = useState<Restaurant | null>(null);
 
@@ -170,8 +237,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     try {
       const result = searchRestaurantLocal(searchQuery);
       if (result.exists) {
-        const foundMsg = i18n.language === 'he' 
-          ? `כן! נמצאו ${result.matches.length} תוצאות במעקב הרדאר (לחץ על עסק לניווט):` 
+        const foundMsg = i18n.language === 'he'
+          ? `כן! נמצאו ${result.matches.length} תוצאות במעקב הרדאר (לחץ על עסק לניווט):`
           : `Yes! Found ${result.matches.length} matching businesses on the radar (click to navigate):`;
         setSearchResult({
           message: foundMsg,
@@ -213,7 +280,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="layout">
       <div className="radar-scan"></div>
-      
+
       <header className="header">
         <div className="header-logo">
           <Link to="/" className="header-logo-link" dir="ltr" aria-label="ShawarmaRadar">
@@ -221,7 +288,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <img src="/logo-icon.png" alt="" className="header-logo-emblem" />
           </Link>
         </div>
-        
+
         <nav className="header-nav">
           <Link to="/" className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`}>
             <Globe size={16} />
@@ -230,11 +297,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="dropdown" ref={dropdownRef}>
             <button
               type="button"
-              className={`nav-btn nav-btn-region ${
-                location.pathname.includes('/region') || location.pathname === '/near-me' || isRegionMenuOpen
-                  ? 'active'
-                  : ''
-              }`}
+              className={`nav-btn nav-btn-region ${location.pathname.includes('/region') || location.pathname === '/near-me' || isRegionMenuOpen
+                ? 'active'
+                : ''
+                }`}
               onClick={() => setIsRegionMenuOpen((prev) => !prev)}
               aria-expanded={isRegionMenuOpen}
             >
@@ -284,25 +350,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </header>
 
-      {/* Slim Radar Network Switcher Bar (Option A) */}
-      {!isAdminRoute && (
-        <div className="radar-network-bar" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
-          <span className="radar-network-label">{t('radar_network_label')}:</span>
-          <Link to="/" className="radar-net-pill active-shawarma">
-            🥙 {t('radar_network_shawarma')}
-          </Link>
-          <a
-            href="https://sushiradar-app.web.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="radar-net-pill sibling-sushi"
-            onClick={() => void trackUserAction('radar_network_click', 'sushiradar')}
-          >
-            🍣 {t('radar_network_sushi')}
-          </a>
-        </div>
-      )}
-
       <main className="main-content">
         {children}
 
@@ -312,13 +359,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <AdBanner banners={topAdvertiserBanners} rotationInterval={5000} />
 
             {/* Global Business Advertisement Section */}
-            <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto'}}>
+            <div className="business-section" dir={i18n.language === 'he' ? 'rtl' : 'ltr'} style={{ marginTop: '1.5rem', maxWidth: '800px', marginInline: 'auto' }}>
               <h3>{t('business_section_title')}</h3>
               <p>{t('business_section_desc')}</p>
               <div className="search-box">
-                <input 
-                  type="text" 
-                  placeholder={t('business_search_placeholder')} 
+                <input
+                  type="text"
+                  placeholder={t('business_search_placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -327,12 +374,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </button>
               </div>
               {searchResult && (
-                <div style={{marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                  <div style={{color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold'}}>
+                <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ color: searchResult.isFound ? '#facc15' : '#ef4444', fontWeight: 'bold' }}>
                     {searchResult.message}
                   </div>
                   {searchResult.matches && searchResult.matches.length > 0 && (
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px'}}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
                       {searchResult.matches.map((item) => (
                         <div
                           key={item.id}
@@ -350,24 +397,24 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           }}
                         >
                           <div>
-                            <div style={{fontWeight: 'bold', color: '#fff', fontSize: '1rem'}}>
+                            <div style={{ fontWeight: 'bold', color: '#fff', fontSize: '1rem' }}>
                               {item.name}
                               {item.national_rank && (
-                                <span style={{marginInlineStart: '8px', fontSize: '0.78rem', color: '#facc15'}}>
-                                  <Trophy size={12} style={{display: 'inline', verticalAlign: 'middle', marginInlineEnd: '3px'}} />
+                                <span style={{ marginInlineStart: '8px', fontSize: '0.78rem', color: '#facc15' }}>
+                                  <Trophy size={12} style={{ display: 'inline', verticalAlign: 'middle', marginInlineEnd: '3px' }} />
                                   #{item.national_rank} {t('in_israel_short')}
                                 </span>
                               )}
                             </div>
-                            <div style={{fontSize: '0.82rem', color: '#9ca3af'}}>
+                            <div style={{ fontSize: '0.82rem', color: '#9ca3af' }}>
                               {item.city} {item.address && item.address !== item.city ? `• ${item.address}` : ''}
                             </div>
                           </div>
-                          <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <span style={{color: '#4ade80', fontWeight: 'bold', fontFamily: 'monospace'}}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ color: '#4ade80', fontWeight: 'bold', fontFamily: 'monospace' }}>
                               {item.bayesian_average.toFixed(1)}%
                             </span>
-                            <span style={{background: '#facc15', color: '#000', padding: '5px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px'}}>
+                            <span style={{ background: '#facc15', color: '#000', padding: '5px 10px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                               <Navigation size={13} /> {t('navigate_btn')}
                             </span>
                           </div>
@@ -376,26 +423,26 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </div>
                   )}
                   {searchResult.whatsapp && (
-                    <a 
+                    <a
                       href={searchResult.whatsapp}
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="whatsapp-btn"
-                      style={{marginTop: '5px'}}
+                      style={{ marginTop: '5px' }}
                     >
                       <MessageCircle size={20} /> {t('business_contact_btn')}
                     </a>
                   )}
                 </div>
               )}
-              
-              <div style={{marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem'}}>
+
+              <div style={{ marginTop: '2rem', borderTop: '1px solid #333', paddingTop: '1.5rem' }}>
                 <h3>{t('ads_section_title')}</h3>
                 <p>{t('ads_section_desc')}</p>
-                <a 
-                  href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={`https://wa.me/972523445081?text=${encodeURIComponent(t('whatsapp_ad_prefill'))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="whatsapp-btn"
                 >
                   <MessageCircle size={20} /> {t('ads_contact_btn')}
@@ -411,23 +458,57 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       <footer className="footer" style={{ borderTop: '1px solid #333', marginTop: '2rem', padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button className="nav-btn" onClick={() => openInfoModal('ai')} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={() => openInfoModal('ai')} style={{ background: '#1a1a1a' }}>
             <Activity size={18} /> {t('nav_info_btn')}
           </button>
-          <button className="nav-btn" onClick={() => openInfoModal('about')} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={() => openInfoModal('about')} style={{ background: '#1a1a1a' }}>
             <InfoIcon size={18} /> {t('footer_about')}
           </button>
-          <button className="nav-btn" onClick={handleShare} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={handleShare} style={{ background: '#1a1a1a' }}>
             <Share2 size={18} /> {t('footer_share')}
           </button>
-          <button className="nav-btn" onClick={handleInstallClick} style={{background: '#1a1a1a'}}>
+          <button className="nav-btn" onClick={handleInstallClick} style={{ background: '#1a1a1a' }}>
             <Download size={18} /> {t('footer_save')}
           </button>
         </div>
-        <p style={{fontSize: '0.85rem', color: '#9ca3af', textAlign: 'center', maxWidth: '650px', lineHeight: '1.4', margin: '0 10px'}}>
+        {!isAdminRoute && (
+          <div className="radar-network-bar" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
+            <span className="radar-network-label">{t('radar_network_label')}:</span>
+            <Link to="/" className="radar-net-pill active-shawarma">
+              🥙 {t('radar_network_shawarma')}
+            </Link>
+            <a
+              href="https://sushiradar-app.web.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="radar-net-pill sibling-sushi"
+              onClick={() => void trackUserAction('radar_network_click', 'sushiradar')}
+            >
+              🍣 {t('radar_network_sushi')}
+            </a>
+          </div>
+        )}
+        {!isAdminRoute && (
+          <div className="radar-network-bar" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
+            <span className="radar-network-label">{t('radar_network_label')}:</span>
+            <Link to="/" className="radar-net-pill active-shawarma">
+              🥙 {t('radar_network_shawarma')}
+            </Link>
+            <a
+              href="https://sushiradar-app.web.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="radar-net-pill sibling-sushi"
+              onClick={() => void trackUserAction('radar_network_click', 'sushiradar')}
+            >
+              🍣 {t('radar_network_sushi')}
+            </a>
+          </div>
+        )}
+        <p style={{ fontSize: '0.85rem', color: '#9ca3af', textAlign: 'center', maxWidth: '650px', lineHeight: '1.4', margin: '0 10px' }}>
           {t('footer_disclaimer')}
         </p>
-        <p style={{fontSize: '0.8rem', color: '#666', fontWeight: 'bold', margin: '0'}}>{t('footer_copyright')}</p>
+        <p style={{ fontSize: '0.8rem', color: '#666', fontWeight: 'bold', margin: '0' }}>{t('footer_copyright')}</p>
       </footer>
 
       {/* Modals overlay */}
@@ -443,7 +524,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <strong>{t('ai_modal_live_title')}</strong>{t('ai_modal_live_desc')}
             </p>
             <ul>
-              <li style={{marginBottom: '10px'}}><strong>{t('ai_modal_tension_title')}</strong> {t('ai_modal_tension_desc')}</li>
+              <li style={{ marginBottom: '10px' }}><strong>{t('ai_modal_tension_title')}</strong> {t('ai_modal_tension_desc')}</li>
               <li><strong>{t('ai_modal_nlp_title')}</strong> {t('ai_modal_nlp_desc')}</li>
             </ul>
             <p>
@@ -457,12 +538,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {t('community_boost_body')}
               </p>
             </div>
-            <p style={{fontWeight: 'bold', marginTop: '1rem'}}>{t('ai_modal_footer')}</p>
-            
-            <div style={{marginTop: '2rem', clear: 'both'}}>
-              <button className="nav-btn" onClick={closeInfoModal} style={{background: '#facc15', color: 'black'}}>{t('btn_understood')}</button>
+            <p style={{ fontWeight: 'bold', marginTop: '1rem' }}>{t('ai_modal_footer')}</p>
+
+            <div style={{ marginTop: '2rem', clear: 'both' }}>
+              <button className="nav-btn" onClick={closeInfoModal} style={{ background: '#facc15', color: 'black' }}>{t('btn_understood')}</button>
             </div>
-            <p style={{fontSize: '0.8rem', color: '#9ca3af', marginTop: '1.2rem', lineHeight: '1.4', borderTop: '1px solid #333', paddingTop: '0.8rem'}}>
+            <p style={{ fontSize: '0.8rem', color: '#9ca3af', marginTop: '1.2rem', lineHeight: '1.4', borderTop: '1px solid #333', paddingTop: '0.8rem' }}>
               {t('footer_disclaimer')}
             </p>
           </div>
@@ -477,16 +558,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {t('about_modal_desc1')}
             </p>
             <p>{t('about_modal_desc2')}</p>
-            
-            <div style={{marginTop: '2rem'}}>
-              <button className="nav-btn" onClick={closeInfoModal} style={{border: '1px solid #444'}}>{t('btn_close')}</button>
+
+            <div style={{ marginTop: '2rem' }}>
+              <button className="nav-btn" onClick={closeInfoModal} style={{ border: '1px solid #444' }}>{t('btn_close')}</button>
             </div>
           </div>
         </div>
       )}
 
       {showWelcomePopup && !isAdminRoute && !isGameRoute && (
-        <div className="modal-overlay welcome-popup-overlay" onClick={() => setShowWelcomePopup(false)}>
+        <div
+          ref={welcomeOverlayRef}
+          className="modal-overlay welcome-popup-overlay"
+          onClick={() => setShowWelcomePopup(false)}
+        >
           <div
             className="modal-content welcome-popup-content"
             onClick={(e) => e.stopPropagation()}
