@@ -57,21 +57,44 @@ def add_verified_shawarma(
         target_lng=lng if lng > 0 else None,
     )
 
-    place_id: Optional[str] = None
-    g_reviews = []
-    if g_data:
-        place_id = str(g_data.get("place_id") or "") or None
-        if g_data.get("rating") is not None:
-            google_rating = float(g_data["rating"])
-        if g_data.get("user_ratings_total") is not None:
-            google_ratings_total = int(g_data["user_ratings_total"])
-        if not address and g_data.get("address"):
-            address = str(g_data["address"])
-        if lat <= 0 and g_data.get("lat"):
-            lat = float(g_data["lat"])
-        if lng <= 0 and g_data.get("lng"):
-            lng = float(g_data["lng"])
-        g_reviews = g_data.get("reviews") or []
+    if not g_data:
+        print(f"ABORTED: Could not find '{name}' ({city}) on Official Google Places API.")
+        db.close()
+        return
+
+    business_status = str(g_data.get("business_status") or "OPERATIONAL")
+    if business_status == "CLOSED_PERMANENTLY":
+        print(f"ABORTED: Business is marked CLOSED_PERMANENTLY on Google Places (place_id={g_data.get('place_id')}).")
+        db.close()
+        return
+
+    official_name = str(g_data.get("official_name") or "")
+    place_id: Optional[str] = str(g_data.get("place_id") or "") or None
+    if place_id:
+        conflict = (
+            db.query(models.Restaurant)
+            .filter(models.Restaurant.google_place_id == place_id)
+            .first()
+        )
+        if conflict and (not rest or conflict.id != rest.id):
+            print(
+                f"ABORTED: Duplicate Google place_id={place_id} ('{official_name}') already assigned to "
+                f"[{conflict.id}] '{conflict.name}' ({conflict.city})."
+            )
+            db.close()
+            return
+
+    if g_data.get("rating") is not None:
+        google_rating = float(g_data["rating"])
+    if g_data.get("user_ratings_total") is not None:
+        google_ratings_total = int(g_data["user_ratings_total"])
+    if not address and g_data.get("address"):
+        address = str(g_data["address"])
+    if lat <= 0 and g_data.get("lat"):
+        lat = float(g_data["lat"])
+    if lng <= 0 and g_data.get("lng"):
+        lng = float(g_data["lng"])
+    g_reviews = g_data.get("reviews") or []
 
     default_coords = CITY_COORDINATES.get(city, (32.0853, 34.7818))
     final_lat = lat if lat > 0 else default_coords[0]
@@ -183,8 +206,9 @@ def add_verified_shawarma(
     db.close()
     export_all()
     print(
-        f"Added/Updated '{name}' ({city} • {rest.address}) | place_id={place_id} | "
-        f"Google={eff_g_rating} ({eff_g_total}) -> Rank #{rank}/{total_count} | Score: {rest.bayesian_average}%"
+        f"Added/Updated '{name}' ({city} • {rest.address}) | official_name='{official_name}' | "
+        f"status={business_status} | place_id={place_id} | Google={eff_g_rating} ({eff_g_total}) | "
+        f"Wolt={rest.wolt_rating} | 10Bis={rest.tenbis_rating} -> Rank #{rank}/{total_count} | Score: {rest.bayesian_average}%"
     )
 
 

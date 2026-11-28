@@ -28,6 +28,9 @@ export interface GlobalStatsDoc {
   nav_waze_clicks?: number;
   nav_gmaps_clicks?: number;
   searches?: number;
+  game_starts?: number;
+  game_completions?: number;
+  game_shares?: number;
   pages?: Record<string, number>;
   devices?: Record<string, number>;
   banners?: Record<string, number>;
@@ -42,6 +45,9 @@ export interface DailyStatsDoc {
   banner_clicks?: number;
   nav_clicks?: number;
   searches?: number;
+  game_starts?: number;
+  game_completions?: number;
+  game_shares?: number;
 }
 
 export interface PresenceDoc {

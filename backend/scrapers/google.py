@@ -215,13 +215,30 @@ class GoogleBusinessScraper:
                 return None
 
             scored: list[tuple[float, dict[str, Any]]] = []
+            stop_words = {
+                "שווארמה", "שוארמה", "השווארמה", "מסעדת", "shawarma", "על", "גחלים",
+            }
+            if city:
+                stop_words.update(re.findall(r"[א-תa-zA-Z0-9]{2,}", city.lower()))
+
+            def _norm_he(s: str) -> str:
+                return (
+                    s.lower()
+                    .replace("שווארמא", "שווארמ")
+                    .replace("שאוורמ", "שווארמ")
+                    .replace("שוארמ", "שווארמ")
+                    .replace("שוורמ", "שווארמ")
+                )
+
             q_words = [
-                w for w in re.findall(r"[א-תa-zA-Z0-9]{2,}", query.lower())
-                if w not in ("שווארמה", "שוארמה", "השווארמה", "מסעדת", "shawarma")
+                _norm_he(w)
+                for w in re.findall(r"[א-תa-zA-Z0-9]{2,}", query.lower())
+                if w not in stop_words
             ]
 
             for idx, p in enumerate(places):
                 p_name = str((p.get("displayName") or {}).get("text") or "").lower()
+                p_name_norm = _norm_he(p_name)
                 # Never match a shopping mall or unrelated non-shawarma business
                 bad_place_names = ("פיצה", "סושי", "מאפייה", "קונדיטוריה", "סופרמרקט", "תחנת דלק")
                 if any(bad in p_name and bad not in query.lower() for bad in bad_place_names):
@@ -238,8 +255,8 @@ class GoogleBusinessScraper:
 
                 p_addr = str(p.get("formattedAddress") or "")
                 if q_words:
-                    hits = sum(1 for w in q_words if w in p_name)
-                    score += hits * 25.0
+                    hits = sum(1 for w in q_words if w in p_name_norm)
+                    score += hits * 35.0
                 if city and city in p_addr:
                     score += 20.0
 

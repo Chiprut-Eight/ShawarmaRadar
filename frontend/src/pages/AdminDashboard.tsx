@@ -17,6 +17,7 @@ import {
   MousePointerClick,
   Search,
   Trophy,
+  Flame,
 } from 'lucide-react';
 import { getAllRankedRestaurants, type Restaurant } from '../services/firebase';
 import {
@@ -408,6 +409,18 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="admin-kpi-sub">
             היום: {(todayRow?.banner_clicks || 0).toLocaleString()} קליקים לעמודי מפרסמים
+          </div>
+        </div>
+
+        <div className="admin-kpi-card">
+          <div className="admin-kpi-label">
+            <Flame size={15} color="#fb923c" /> משחק השווארמה (/play)
+          </div>
+          <div className="admin-kpi-value" style={{ color: '#fb923c' }}>
+            {(globalStats.game_starts || 0).toLocaleString()}
+          </div>
+          <div className="admin-kpi-sub">
+            התחלות • {globalStats.game_completions || 0} השלמות • {globalStats.game_shares || 0} שיתופים
           </div>
         </div>
       </div>

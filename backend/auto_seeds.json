@@ -3610,5 +3610,29 @@
     "google_place_id": "ChIJZfT5YQ-vHRURlY2mL56oLJ0",
     "wolt_slug": null,
     "tenbis_id": null
+  },
+  {
+    "id": 485,
+    "name": "הפונדק שווארמה על גחלים",
+    "query": "הפונדק שווארמה על גחלים יהוד-מונוסון",
+    "city": "יהוד-מונוסון",
+    "address": "אלטלף 3",
+    "lat": 32.0265724,
+    "lng": 34.8986302,
+    "google_place_id": "ChIJsTXpj6c1HRURT0vULZBGzI0",
+    "wolt_slug": "hapundak",
+    "tenbis_id": null
+  },
+  {
+    "id": 486,
+    "name": "שווארמאתי",
+    "query": "שווארמאתי דאלית אל-כרמל",
+    "city": "דאלית אל-כרמל",
+    "address": "כביש 672",
+    "lat": 32.6937774,
+    "lng": 35.0471096,
+    "google_place_id": "ChIJzappLU-vHRURWxWU8oh8iiA",
+    "wolt_slug": null,
+    "tenbis_id": null
   }
 ]
