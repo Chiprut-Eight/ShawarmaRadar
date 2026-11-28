@@ -14,9 +14,9 @@ load_dotenv(os.path.join(os.path.dirname(_BASE_DIR), ".env"))
 
 QUOTA_LEDGER_PATH = os.path.join(_BASE_DIR, "google_quota_ledger.json")
 
-# Hard code-level monthly caps (strictly below Google's 1,000 free monthly tier per SKU — ₪0.00 guaranteed)
-MONTHLY_HARD_CAP_GET_PLACE = 850
-MONTHLY_HARD_CAP_SEARCH_TEXT = 850
+# Per-radar hard monthly caps (450 ShawarmaRadar + 450 SushiRadar <= 900, safely under Google's 1,000 free tier -> ₪0.00 guaranteed)
+MONTHLY_HARD_CAP_GET_PLACE = 450
+MONTHLY_HARD_CAP_SEARCH_TEXT = 450
 
 
 def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

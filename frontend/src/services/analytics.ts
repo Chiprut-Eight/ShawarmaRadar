@@ -48,6 +48,8 @@ export interface GlobalStatsDoc {
   game_starts?: number;
   game_completions?: number;
   game_shares?: number;
+  radar_network_clicks?: number;
+  radar_targets?: Record<string, number>;
   pages?: Record<string, number>;
   devices?: Record<string, number>;
   banners?: Record<string, number>;
@@ -65,6 +67,7 @@ export interface DailyStatsDoc {
   game_starts?: number;
   game_completions?: number;
   game_shares?: number;
+  radar_network_clicks?: number;
 }
 
 export interface PresenceDoc {
@@ -295,11 +298,16 @@ export async function trackUserAction(
     | 'search'
     | 'game_start'
     | 'game_complete'
-    | 'game_share',
+    | 'game_share'
+    | 'radar_network_click',
   bannerKey?: string
 ): Promise<void> {
   if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) return;
-  sendGtagEvent(action, bannerKey ? { banner_name: bannerKey } : undefined);
+  if (action === 'radar_network_click') {
+    sendGtagEvent('radar_network_click', { target_radar: bannerKey || 'sushiradar' });
+  } else {
+    sendGtagEvent(action, bannerKey ? { banner_name: bannerKey } : undefined);
+  }
   const today = getTodayIso();
   try {
     const globalRef = doc(db, 'analytics', 'global_stats');
@@ -316,6 +324,17 @@ export async function trackUserAction(
         { merge: true }
       );
       await setDoc(dailyRef, { date: today, banner_clicks: increment(1) }, { merge: true });
+    } else if (action === 'radar_network_click') {
+      const safeTarget = (bannerKey || 'sushiradar').replace(/[./[\]#$]/g, '_');
+      await setDoc(
+        globalRef,
+        {
+          radar_network_clicks: increment(1),
+          radar_targets: { [safeTarget]: increment(1) },
+        },
+        { merge: true }
+      );
+      await setDoc(dailyRef, { date: today, radar_network_clicks: increment(1) }, { merge: true });
     } else if (action === 'nav_waze' || action === 'nav_gmaps') {
       await setDoc(
         globalRef,

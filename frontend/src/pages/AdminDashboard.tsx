@@ -18,6 +18,7 @@ import {
   Search,
   Trophy,
   Flame,
+  Compass,
 } from 'lucide-react';
 import { getAllRankedRestaurants, type Restaurant } from '../services/firebase';
 import {
@@ -421,6 +422,18 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="admin-kpi-sub">
             התחלות • {globalStats.game_completions || 0} השלמות • {globalStats.game_shares || 0} שיתופים
+          </div>
+        </div>
+
+        <div className="admin-kpi-card">
+          <div className="admin-kpi-label">
+            <Compass size={15} color="#fb7185" /> מעברים לסושי רדאר (רשת הראדרים)
+          </div>
+          <div className="admin-kpi-value" style={{ color: '#fda4af' }}>
+            {(globalStats.radar_network_clicks || 0).toLocaleString()}
+          </div>
+          <div className="admin-kpi-sub">
+            היום: {(todayRow?.radar_network_clicks || 0).toLocaleString()} מעברים לסושי רדאר
           </div>
         </div>
       </div>

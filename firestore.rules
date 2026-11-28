@@ -10,14 +10,14 @@ service cloud.firestore {
     // Lightweight aggregate visitor counters (1 doc globally + 1 doc per day)
     match /analytics/{docId} {
       allow read: if true;
-      allow create, update: if docId == 'global_stats' && request.resource.data.keys().size() <= 40;
+      allow create, update: if docId == 'global_stats' && request.resource.data.keys().size() <= 45;
       allow delete: if false;
     }
 
     match /analytics_daily/{dayId} {
       allow read: if true;
       allow create, update: if dayId.matches('^20[2-9][0-9]-[0-1][0-9]-[0-3][0-9]$')
-                            && request.resource.data.keys().size() <= 30;
+                            && request.resource.data.keys().size() <= 35;
       allow delete: if false;
     }
 

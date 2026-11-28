@@ -284,6 +284,25 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </header>
 
+      {/* Slim Radar Network Switcher Bar (Option A) */}
+      {!isAdminRoute && (
+        <div className="radar-network-bar" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
+          <span className="radar-network-label">{t('radar_network_label')}:</span>
+          <Link to="/" className="radar-net-pill active-shawarma">
+            🥙 {t('radar_network_shawarma')}
+          </Link>
+          <a
+            href="https://sushiradar-app.web.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="radar-net-pill sibling-sushi"
+            onClick={() => void trackUserAction('radar_network_click', 'sushiradar')}
+          >
+            🍣 {t('radar_network_sushi')}
+          </a>
+        </div>
+      )}
+
       <main className="main-content">
         {children}
 

@@ -24,8 +24,8 @@ import models
 from regions import get_region_by_city
 from export_json import update_king_history, format_hebrew_duration
 
-# Strictly <= 20/day (below the 25/day Google Cloud Quota and 1,000/month free tier -> ₪0.00 guaranteed)
-DAILY_GOOGLE_REFRESH_LIMIT = 20
+# Strictly <= 12/day per radar (12 ShawarmaRadar + 12 SushiRadar = 24/day <= 25/day Quota -> ₪0.00 guaranteed)
+DAILY_GOOGLE_REFRESH_LIMIT = 12
 
 BLACKLISTED_TERMS = [
     "סמבוסק", "פיצה", "המבורגר", "בורגר", "סושי", "גלידה",
@@ -118,7 +118,7 @@ def run_daily_scan_sync() -> None:
     """
     Deterministic Daily Scan:
     1. Ensures all seeds exist in DB.
-    2. Refreshes up to DAILY_GOOGLE_REFRESH_LIMIT (20) oldest-synced businesses from Official Google Places API (New) by locked `place_id`.
+    2. Refreshes up to DAILY_GOOGLE_REFRESH_LIMIT (12) oldest-synced businesses from Official Google Places API (New) by locked `place_id`.
     3. Refreshes Wolt & 10Bis ratings + customer reviews for ALL businesses by locked `wolt_slug` / `tenbis_id`.
     4. Recalculates scores, updates `auto_seeds.json`, and sends the daily Telegram report.
     """
@@ -419,7 +419,7 @@ def run_daily_scan_sync() -> None:
         movements_text = "📈 *תנועות בדירוג הבוקר:*\n➖ לא הייתה שום תנועה בדירוגים הבוקר (הטבלה יציבה ללא שינויי מיקום).\n"
 
     usage = google_client.get_monthly_usage()
-    quota_line = f"• מכסת גוגל החודש (חינם): `{usage.get('get_place', 0)}/850` רענונים\n"
+    quota_line = f"• מכסת גוגל של שווארמה רדאר החודש (חינם): `{usage.get('get_place', 0)}/450` רענונים\n"
 
     telegram_report = (
         f"👑 *ShawarmaRadar — דו\"ח סריקה יומי רשמי*\n\n"
